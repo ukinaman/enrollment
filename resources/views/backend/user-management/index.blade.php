@@ -23,7 +23,13 @@
                                 <td>{{ $user->email }}</td>
                                 <td>
                                     @foreach($user->roles as $role)
-                                        <span class="badge bg-primary">{{ $role->name }}</span>
+                                        <span class="badge 
+                                            @if ($role->name == "registrar")
+                                                bg-primary
+                                            @elseif ($role->name == "accounting")   
+                                                bg-success
+                                            @endif"
+                                        >{{ $role->name }}</span>
                                     @endforeach
                                 </td>
                             </tr>
