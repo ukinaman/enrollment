@@ -26,7 +26,7 @@
 </head>
 <body>
     @include('backend.partials.sidebar')
-    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+    <div class="wrapper d-flex flex-column min-vh-100">
         @include('backend.partials.header')
         <div class="body flex-grow-1 px-3">
             <div class="container-lg">
