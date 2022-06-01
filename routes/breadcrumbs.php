@@ -24,6 +24,10 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('courses.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Courses', route('courses.index'));
 });
+Breadcrumbs::for('courses.create', function (BreadcrumbTrail $trail): void {
+    $trail->parent('courses.index')
+        ->push('Create course', route('courses.create'));
+});
 Breadcrumbs::for('students.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Students', route('students.index'));
 });
