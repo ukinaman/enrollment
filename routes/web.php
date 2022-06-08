@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SubjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,13 @@ Route::controller(CourseController::class)->group(function () {
     Route::get('/courses', 'index')->name('courses.index');
     Route::get('/courses/create', 'create')->name('courses.create');
     Route::post('/courses/store', 'store')->name('courses.store');
+    Route::get('/courses/show/{id}', 'show')->name('course.show');
+});
+Route::controller(SubjectController::class)->group(function () {
+    Route::get('/subjects', 'index')->name('subject.index');
+    Route::get('/subjects/create', 'create')->name('subject.create');
+    Route::get('/subjects/upload-view', 'getUploadView')->name('subject.uploadBlade');
+    Route::post('/subjects/upload', 'uploadSubjects')->name('subject.upload');
 });
 
 Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');

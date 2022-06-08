@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Year;
+use App\Models\Semester;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,12 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $years = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
-
-        foreach($years as $year)
+        for($i = 1; $i < 5; $i++)
         {
             Year::create([
-                'year_level' => $year
+                'level' => $i
+            ]);
+        }
+
+        for($i = 1; $i < 3; $i++)
+        {
+            Semester::create([
+                'sem' => $i
             ]);
         }
     }

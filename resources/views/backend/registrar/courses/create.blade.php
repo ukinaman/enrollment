@@ -49,19 +49,6 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="duration" class="form-label">Course Duration<span class="text-danger">*</label>
-                    <select class="form-select @error('course_duration') is-invalid @enderror" name="course_duration" id="duration">
-                        <option selected>Select duration</option>
-                        <option {{ old('course_duration') == 2 ? selected : '' }} value="2">Two years</option>
-                        <option {{ old('course_duration') == 4 ? selected : '' }} value="4">Four years</option>
-                    </select>
-                    @error('course_duration')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Description<span class="text-danger">*</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" id="exampleFormControlTextarea1" rows="3"></textarea>
                     @error('description')

@@ -38,6 +38,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{{ route('subject.index') }}">
+                <i class="nav-icon fa-solid fa-book"></i>
+                Subjects
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{{ route('students.index') }}">
                 <i class="nav-icon fa-solid fa-book-open-reader"></i>
                 Students

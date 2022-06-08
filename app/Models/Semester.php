@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class YearLevel extends Model
+class Semester extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['course_id','level'];
+    protected $fillable = ['sem'];
 
-    public function course()
+    public function subjects()
     {
-        return $this->belongsTo(Course::class);
+        return $this->hasMany(Subject::class);
     }
 }

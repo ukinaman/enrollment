@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\YearLevel;
+use App\Models\Year;
 use App\Models\Course;
+use App\Models\Subject;
+use App\Models\YearLevel;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -25,7 +27,6 @@ class CourseController extends Controller
             'title' => 'required',
             'accronym' => 'required|string|max:5',
             'description' => 'required',
-            'course_duration' => 'required'
         ]);
 
         $course = Course::create([
@@ -34,14 +35,15 @@ class CourseController extends Controller
             'description' => $request->description
         ]);
 
-        for($i = 0; $i < $request->course_duration; $i++)
-        {
-            YearLevel::create([
-                'course_id' => $course->id,
-                'level' => $i+1
-            ]);
-        }
-
         return redirect()->route('courses.index');
+    }
+
+    public function show($id)
+    {
+        $subjects = Year::with(['subjects' => function ($query) use($id) {
+            $query->where('course_id','=',$id);
+        }])->get();
+        // dd($subjects);
+        return view('backend.registrar.courses.show', compact('subjects'));
     }
 }
