@@ -15,11 +15,6 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('course_id');
-            $table->foreign('course_id')->references('id')->on('courses');
-            $table->string('code');
-            $table->string('title');
-            $table->integer('units');
             $table->timestamps();
         });
     }

@@ -18,6 +18,10 @@ Breadcrumbs::for('roles.index', function (BreadcrumbTrail $trail): void {
     $trail->parent('user.index')
         ->push('Roles and Permissions', route('roles.index'));
 });
+Breadcrumbs::for('roles.create', function (BreadcrumbTrail $trail): void {
+    $trail->parent('roles.index')
+        ->push('Create Role', route('roles.create'));
+});
 Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail): void {
     $trail->push('Dashboard', route('dashboard'));
 });

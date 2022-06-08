@@ -2,15 +2,15 @@
 
 @section('content')
     @if (count($errors) > 0)
-      <div class="alert alert-danger alert-dismissible fade show">
-        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-        <ul>
-           @foreach ($errors->all() as $error)
-             <li>{{ $error }}</li>
-           @endforeach
-        </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+        <div class="alert alert-danger alert-dismissible fade show">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
 
     <div class="container" style="height: 80vh">
@@ -34,11 +34,11 @@
                     <div class="col-md-6">
                         <label for="inputState" class="form-label">Role</label>
                         <select id="inputState" class="form-select" name="roles">
-                          @foreach ($roles as $role)
+                            @foreach ($roles as $role)
                                 <option value="{{ $role }}">{{ $role }}</option>
-                          @endforeach
+                            @endforeach
                         </select>
-                      </div>
+                    </div>
                     <div class="col-md-12">
                         <label for="inputEmail4" class="form-label">Email</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">

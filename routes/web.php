@@ -28,9 +28,12 @@ Route::get('/accounting', [App\Http\Controllers\AccountingController::class, 'in
 Route::controller(CourseController::class)->group(function () {
     Route::get('/courses', 'index')->name('courses.index');
     Route::get('/courses/create', 'create')->name('courses.create');
+    Route::post('/courses/store', 'store')->name('courses.store');
 });
 
 Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
 Route::get('/user-management/create', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');
 Route::post('/user-management/store', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
 Route::get('/roles-and-permission', [App\Http\Controllers\RolesPermissionController::class, 'index'])->name('roles.index');
+Route::get('/roles-and-permission/create', [App\Http\Controllers\RolesPermissionController::class, 'create'])->name('roles.create');
+Route::post('/roles-and-permission/store', [App\Http\Controllers\RolesPermissionController::class, 'store'])->name('roles.store');

@@ -1,17 +1,24 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    <div class="container" style="height: 80vh">
-        <div class="row mb-2">
-            <h4>Courses</h4>
+    <div class="container">
+        <div class="row d-flex mb-3">
+            <div class="col-10">
+                <h4>Courses</h4>
+            </div>
+            @if (!$courses->isEmpty())
+                <div class="col-2 d-flex justify-content-end">
+                    <a href="{{ route('courses.create') }}" class="btn btn-primary" type="button">Add Course</a>
+                </div>
+            @endif
         </div>
         <div class="row">
             @forelse ($courses as $course)
-                <div class="card p-0">
-                    <h5 class="card-header">{{ $courses->accronym }}</h5>
+                <div class="card p-0 mb-3">
+                    <h5 class="card-header">{{ $course->accronym }}</h5>
                     <div class="card-body">
-                        <h5 class="card-title">{{ $courses->title }}</h5>
-                        <p class="card-text">{{ $courses->description }}</p>
+                        <h5 class="card-title">{{ $course->title }}</h5>
+                        <p class="card-text">{{ $course->description }}</p>
                         <a href="#" class="btn btn-primary">Add subjects</a>
                     </div>
                 </div>

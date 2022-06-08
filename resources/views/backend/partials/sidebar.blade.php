@@ -8,7 +8,7 @@
           Dashboard
         </a>
       </li>
-      @role('accounting')
+      @role('Accounting')
         <li class="nav-group">
           <a class="nav-link nav-group-toggle">
             <i class="nav-icon fa-solid fa-receipt"></i>
@@ -24,7 +24,7 @@
           </ul>
         </li>
       @endrole
-      @role('registrar')
+      @role('Registrar')
         <li class="nav-group">
           <a class="nav-link nav-group-toggle">
             <i class="nav-icon fa-solid fa-address-card"></i>

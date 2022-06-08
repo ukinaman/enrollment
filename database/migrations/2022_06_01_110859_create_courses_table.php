@@ -15,8 +15,6 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('year_id');
-            $table->foreign('year_id')->references('id')->on('years');
             $table->string('title');
             $table->string('accronym');
             $table->mediumText('description');
