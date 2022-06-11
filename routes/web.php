@@ -16,8 +16,12 @@ use App\Http\Controllers\SubjectController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('student.index');
 });
+
+Route::get('/enroll', function() {
+    return view('student.enroll');
+})->name('enroll');
 
 Auth::routes();
 
