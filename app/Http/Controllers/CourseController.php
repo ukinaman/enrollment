@@ -43,7 +43,6 @@ class CourseController extends Controller
         $subjects = Year::with(['subjects' => function ($query) use($id) {
             $query->where('course_id','=',$id);
         }])->get();
-        // dd($subjects);
         return view('backend.registrar.courses.show', compact('subjects'));
     }
 }
