@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 
 /*
@@ -15,13 +16,18 @@ use App\Http\Controllers\SubjectController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function(){
     return view('student.index');
-});
+})->name('welcome');
 
-Route::get('/enroll', function() {
-    return view('student.enroll');
-})->name('enroll');
+Route::controller(StudentController::class)->group(function () {
+    // Registrar Student Section
+    Route::get('/student', 'index')->name('courses.index');
+    // Student Registration Form
+    Route::get('/enroll', 'create')->name('student.create');
+    Route::post('/enroll', 'store')->name('student.store');
+    Route::get('/assessment/{id}', 'assessment')->name('student.assessment');
+});
 
 Auth::routes();
 

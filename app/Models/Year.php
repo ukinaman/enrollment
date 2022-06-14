@@ -9,10 +9,15 @@ class Year extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['level'];
+    protected $fillable = ['level','title'];
 
     public function subjects()
     {
         return $this->hasMany(Subject::class);
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
     }
 }

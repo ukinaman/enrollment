@@ -39,7 +39,7 @@
                         <tr>
                             <th>{{ $subject->name }}</th>
                             <th>{{ $subject->course->accronym }}</th>
-                            <th>{{ $subject->year->level }}</th>
+                            <th>{{ $subject->year->title }}</th>
                             <th>{{ $subject->units }}</th>
                         </tr>
                     @endforeach

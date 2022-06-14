@@ -15,17 +15,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1; $i < 5; $i++)
+        $years = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+        $semesters = ['1st Semester', '2nd Semester'];
+
+
+        foreach ($years as $key => $year)
         {
             Year::create([
-                'level' => $i
+                'level' => $key + 1,
+                'title' => $year
             ]);
         }
 
-        for($i = 1; $i < 3; $i++)
+        foreach ($semesters as $key => $sem)
         {
             Semester::create([
-                'sem' => $i
+                'sem' => $key + 1,
+                'title' => $sem
             ]);
         }
     }
