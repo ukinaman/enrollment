@@ -190,6 +190,23 @@
                                 @enderror
                             </div>
                         </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="inputState" class="form-label">Mode of Payment</label>
+                                <select id="inputState" class="form-select @error('mop') is-invalid @enderror" name="mop">
+                                    <option value="" disabled selected>Choose Mode of Payment</option>
+                                    @foreach ($mode_of_payment as $mop)
+                                        <option @error('mop') selected @enderror value="{{ $mop->id }}">{{ $mop->mode }}</option>
+                                    @endforeach
+                                </select>
+                                @error('mop')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="card-footer text-muted">

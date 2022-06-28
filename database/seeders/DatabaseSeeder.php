@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Year;
 use App\Models\Semester;
+use App\Models\ModeOfPayment;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,6 +33,15 @@ class DatabaseSeeder extends Seeder
             Semester::create([
                 'sem' => $key + 1,
                 'title' => $sem
+            ]);
+        }
+
+        $mops = ['Full Payment', 'Down Payment'];
+
+        foreach ($mops as $mop)
+        {
+            ModeOfPayment::create([
+                'mode' => $mop
             ]);
         }
     }

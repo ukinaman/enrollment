@@ -9,47 +9,31 @@
         </a>
       </li>
       @role('Accounting')
-        <li class="nav-group">
-          <a class="nav-link nav-group-toggle">
-            <i class="nav-icon fa-solid fa-receipt"></i>
-            Accounting
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('dashboard') }}">
+            <i class="nav-icon fa-solid fa-gauge"></i>
+            Dashboard
           </a>
-          <ul class="nav-group-items">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('accounting.index') }}">
-                <i class="nav-icon fas fa-vial"></i>
-                Other options here
-              </a>
-            </li>
-          </ul>
         </li>
       @endrole
       @role('Registrar')
-        <li class="nav-group">
-          <a class="nav-link nav-group-toggle">
-            <i class="nav-icon fa-solid fa-address-card"></i>
-            Registrar
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('courses.index') }}">
+            <i class="nav-icon fa-solid fa-building-columns"></i>
+            Courses
           </a>
-          <ul class="nav-group-items">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('courses.index') }}">
-                <i class="nav-icon fa-solid fa-building-columns"></i>
-                Courses
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('subject.index') }}">
-                <i class="nav-icon fa-solid fa-book"></i>
-                Subjects
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('students.index') }}">
-                <i class="nav-icon fa-solid fa-book-open-reader"></i>
-                Students
-              </a>
-            </li>
-          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('subject.index') }}">
+            <i class="nav-icon fa-solid fa-book"></i>
+            Subjects
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('students.index') }}">
+            <i class="nav-icon fa-solid fa-book-open-reader"></i>
+            Students
+          </a>
         </li>
       @endrole
       <li class="nav-group">

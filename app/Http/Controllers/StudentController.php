@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Models\Student;
 use App\Models\Semester;
 use Illuminate\Http\Request;
+use App\Models\ModeOfPayment;
+use App\Models\StudentAccountAssesment;
 
 class StudentController extends Controller
 {
@@ -21,7 +23,8 @@ class StudentController extends Controller
         $courses = Course::all();
         $years = Year::all();
         $semesters = Semester::all();
-        return view('student.enroll', compact('courses', 'years', 'semesters'));
+        $mode_of_payment = ModeOfPayment::all();
+        return view('student.enroll', compact('courses', 'years', 'semesters', 'mode_of_payment'));
     }
 
     public function store(Request $request)
@@ -42,6 +45,7 @@ class StudentController extends Controller
             'marital_status' => 'required',
             'email' => 'required|unique:students,email',
             'contact_no' => 'required',
+            'mop' => 'required'
         ]);
 
         $student = Student::create([
@@ -60,6 +64,11 @@ class StudentController extends Controller
             'marital_status' => $request->marital_status,
             'email' => $request->email,
             'contact_no' => $request->contact_no
+        ]);
+
+        StudentAccountAssesment::create([
+            'student_id' => $student->id,
+            'mop_id' => $request->mop
         ]);
 
         return redirect()->route('student.assessment', $student->id);
