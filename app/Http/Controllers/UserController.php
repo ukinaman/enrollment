@@ -2,13 +2,6 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use Illuminate\Http\Request;
-
-class UserController extends Controller
-{
-    //
-=======
 use DB;
 use Hash;
 use App\Models\User;
@@ -128,5 +121,4 @@ class UserController extends Controller
         return redirect()->route('users.index')
                         ->with('success','User deleted successfully');
     }
->>>>>>> a45eb8c1f16d324993a1dfb9bff2dbc0e146d413
 }

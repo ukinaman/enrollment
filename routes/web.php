@@ -33,17 +33,6 @@ Route::controller(StudentController::class)->group(function () {
     Route::get('/assessment/{id}', 'assessment')->name('student.assessment');
 });
 
-<<<<<<< HEAD
-Auth ::routes();
-  
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-  
-Route::group(['middleware' => ['auth']], function() {
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
-    
-});
-=======
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -70,4 +59,3 @@ Route::post('/user-management/store', [App\Http\Controllers\UserController::clas
 Route::get('/roles-and-permission', [App\Http\Controllers\RolesPermissionController::class, 'index'])->name('roles.index');
 Route::get('/roles-and-permission/create', [App\Http\Controllers\RolesPermissionController::class, 'create'])->name('roles.create');
 Route::post('/roles-and-permission/store', [App\Http\Controllers\RolesPermissionController::class, 'store'])->name('roles.store');
->>>>>>> a45eb8c1f16d324993a1dfb9bff2dbc0e146d413
