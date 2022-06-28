@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< HEAD
 
     <title>Canossa Cashier</title>
     
@@ -113,4 +114,22 @@
         @endif
 </body>
 
+=======
+    <title>Canossa Enrollment System</title>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        input{
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    @yield('student')
+
+</body>
+>>>>>>> a45eb8c1f16d324993a1dfb9bff2dbc0e146d413
 </html>
