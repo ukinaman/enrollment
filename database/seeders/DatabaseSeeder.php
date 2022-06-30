@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Year;
 use App\Models\Semester;
+use App\Models\SemestralFee;
 use App\Models\ModeOfPayment;
 use Illuminate\Database\Seeder;
 
@@ -44,5 +45,25 @@ class DatabaseSeeder extends Seeder
                 'mode' => $mop
             ]);
         }
+
+        SemestralFee::create([
+            'name' => "Tuition",
+            'total_amount' => 576,
+        ]);
+
+        SemestralFee::create([
+            'name' => "School Fees",
+            'total_amount' => 0,
+        ]);
+
+        SemestralFee::create([
+            'name' => "Special Fees",
+            'total_amount' => 0,
+        ]);
+
+        SemestralFee::create([
+            'name' => "RLE",
+            'total_amount' => 70,
+        ]);
     }
 }

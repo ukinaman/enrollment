@@ -26,6 +26,8 @@ Breadcrumbs::for('roles.create', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail): void {
     $trail->push('Dashboard', route('dashboard'));
 });
+
+// Registrar
 // Course
 Breadcrumbs::for('courses.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Courses', route('courses.index'));
@@ -52,4 +54,14 @@ Breadcrumbs::for('students.index', function (BreadcrumbTrail $trail): void {
 });
 Breadcrumbs::for('accounting.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Accounting', route('accounting.index'));
+});
+
+// Accounting
+//Semestral Fee
+Breadcrumbs::for('semfee.index', function (BreadcrumbTrail $trail): void {
+    $trail->push('Semestral Fees', route('semfee.index'));
+});
+Breadcrumbs::for('semfee.create', function (BreadcrumbTrail $trail): void {
+    $trail->parent('semfee.index')
+        ->push('Create', route('semfee.create'));
 });

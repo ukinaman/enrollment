@@ -10,9 +10,15 @@
       </li>
       @role('Accounting')
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="nav-icon fa-solid fa-gauge"></i>
-            Dashboard
+          <a class="nav-link" href="{{ route('semfee.index') }}">
+            <i class="nav-icon fa-solid fa-list"></i>
+            Semestral Fees
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('semfee.index') }}">
+            <i class="nav-icon fa-solid fa-list"></i>
+            Assessment
           </a>
         </li>
       @endrole

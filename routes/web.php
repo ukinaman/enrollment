@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\SubjectController;
-
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SemestralFeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,11 @@ Route::controller(SubjectController::class)->group(function () {
     Route::get('/subjects/create', 'create')->name('subject.create');
     Route::get('/subjects/upload-view', 'getUploadView')->name('subject.uploadBlade');
     Route::post('/subjects/upload', 'uploadSubjects')->name('subject.upload');
+});
+Route::controller(SemestralFeeController::class)->group(function () {
+    Route::get('/semestral-fee', 'index')->name('semfee.index');
+    Route::get('/semestral-fee/create', 'create')->name('semfee.create');
+    Route::post('/semestral-fee/store', 'store')->name('semfee.store');
 });
 
 Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
