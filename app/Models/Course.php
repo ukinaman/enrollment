@@ -20,4 +20,11 @@ class Course extends Model
     {
         return $this->hasMany(Student::class);
     }
+
+    public function totalUnits($year, $sem)
+    {
+        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $total_units = $subjects->sum('units');
+        return $total_units;
+    }
 }

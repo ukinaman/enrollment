@@ -17,6 +17,7 @@ class CreateSemestralFeesTable extends Migration
             $table->id();
             $table->string('name');
             $table->double('total_amount', 8, 2)->nullable();
+            $table->integer('exclusiveTo');
             $table->timestamps();
         });
     }

@@ -48,22 +48,26 @@ class DatabaseSeeder extends Seeder
 
         SemestralFee::create([
             'name' => "Tuition",
-            'total_amount' => 576,
+            'total_amount' => 0,
+            'exclusiveTo' => 0
         ]);
 
         SemestralFee::create([
             'name' => "School Fees",
             'total_amount' => 0,
+            'exclusiveTo' => 0
         ]);
 
         SemestralFee::create([
             'name' => "Special Fees",
             'total_amount' => 0,
+            'exclusiveTo' => 0
         ]);
 
         SemestralFee::create([
             'name' => "RLE",
-            'total_amount' => 70,
+            'total_amount' => 0,
+            'exclusiveTo' => 0
         ]);
     }
 }

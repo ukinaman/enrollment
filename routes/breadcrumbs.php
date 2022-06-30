@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Fee;
 use App\Models\User;
 use App\Models\Course;
 use Diglactic\Breadcrumbs\Breadcrumbs;
@@ -64,4 +65,17 @@ Breadcrumbs::for('semfee.index', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('semfee.create', function (BreadcrumbTrail $trail): void {
     $trail->parent('semfee.index')
         ->push('Create', route('semfee.create'));
+});
+Breadcrumbs::for('semfee.edit', function (BreadcrumbTrail $trail, $id): void {
+    $fee = Fee::find($id);
+    $trail->parent('semfee.index')
+        ->push('Edit', route('semfee.edit', $id));
+});
+// Assessment
+Breadcrumbs::for('assessment.index', function (BreadcrumbTrail $trail): void {
+    $trail->push('Assessment', route('assessment.index'));
+});
+Breadcrumbs::for('assessment.show', function (BreadcrumbTrail $trail): void {
+    $trail->parent('assessment.index')
+        ->push('Show', route('assessment.show'));
 });

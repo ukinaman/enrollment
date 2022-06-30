@@ -16,8 +16,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('semfee.index') }}">
-            <i class="nav-icon fa-solid fa-list"></i>
+          <a class="nav-link" href="{{ route('assessment.index') }}">
+            <i class="nav-icon fa-solid fa-file-invoice"></i>
             Assessment
           </a>
         </li>

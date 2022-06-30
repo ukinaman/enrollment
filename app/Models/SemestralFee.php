@@ -9,7 +9,7 @@ class SemestralFee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','total_amount'];
+    protected $fillable = ['name','total_amount', 'exclusiveTo'];
 
     public function fees()
     {
