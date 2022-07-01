@@ -12,7 +12,7 @@
         </div>
 
         <div class="row mb-4">
-            <x-assessment-form-component />
+            <x-assessment-form-component route="{{ route('assessment.show') }}"  course="{{ $course }}" year="{{ $year }}" sem="{{ $sem }}"/>
         </div>
 
         <div class="row">

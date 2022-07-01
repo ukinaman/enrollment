@@ -5,7 +5,6 @@
         <thead>
             <th scope="row">Semestral Fee</th>
             <th scope="row">Amount</th>
-            <th scope="row">Action</th>
         </thead>
 
         @foreach ($sem_fees as $sem_fee)
@@ -16,11 +15,16 @@
                     </tr>
                     @forelse ($sem_fee->fees as $fee)
                         <tr>
-                            <td>{{ $fee->name }}</td>
-                            <td><span>&#8369</span>{{ number_format($fee->totalAmount($course, $year, $sem, $fee->name)) }}</td>
                             <td>
-                                <a href="{{ route('semfee.edit', $fee->id) }}" class="btn btn-light">Edit</a>
+                                @if ($fee->name == 'Tuition')
+                                    {{ $fee->name.' '.'('.$fee->geTotalUnits($course, $year, $sem).' units * Php '.number_format($fee->amount, 2).')' }}
+                                @elseif($fee->name == 'RLE')
+                                    {{ $fee->name.' '.'('.$fee->geTotalLab($course, $year,$sem).' hours * Php '.number_format($fee->amount, 2).')' }}
+                                @else
+                                    {{ $fee->name }}
+                                @endif
                             </td>
+                            <td><span>&#8369</span>{{ number_format($fee->totalAmount($course, $year, $sem, $fee->name), 2) }}</td>
                         </tr>
                     @empty
                         <tr>

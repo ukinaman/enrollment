@@ -25,17 +25,41 @@ class Fee extends Model
 
     public function totalAmount($course_id, $year,$sem, $fee)
     {
+        $course = Course::where('id','=',$course_id)->first();
+        $rle = SemestralFee::where('id','=',4)->first();
+
         if($fee == "Tuition")
         {
-            $course = Course::where('id','=',$course_id)->first();
             $units = $course->totalUnits($year, $sem);
-    
             $tuition_amount = SemestralFee::where('id','=',1)->first();
             $total_amount = $tuition_amount->total_amount * $units;
-        } else {
+        }
+        elseif($this->sem_fee_id == $rle->id)
+        { 
+            $hours = $course->totalHours($year, $sem);
+            $rle_data = $this->where('sem_fee_id','=',$rle->id)->first();
+            $total_amount = $rle_data->amount * $hours;
+        }
+        else
+        {
             $total_amount = $this->amount;
         }
-
         return $total_amount;
+    }
+
+    public function geTotalUnits($course, $year,$sem)
+    {
+        $units = Subject::where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $total_units = $units->sum('units');
+
+        return $total_units;
+    }
+
+    public function geTotalLab($course, $year,$sem)
+    {
+        $lab = Subject::where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $total_lab = $lab->sum('lab');
+
+        return $total_lab;
     }
 }

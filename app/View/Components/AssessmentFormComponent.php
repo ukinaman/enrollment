@@ -14,9 +14,17 @@ class AssessmentFormComponent extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $route;
+    public $course_id;
+    public $year_id; 
+    public $sem_id;
+
+    public function __construct($route, $course, $year, $sem)
     {
-        //
+        $this->route = $route;
+        $this->course_id = $course;
+        $this->year_id = $year;
+        $this->sem_id = $sem;
     }
 
     /**
@@ -29,6 +37,7 @@ class AssessmentFormComponent extends Component
         $courses = Course::all();
         $years = Year::all();
         $semesters = Semester::all();
+
         return view('components.assessment-form-component', compact('courses', 'years', 'semesters'));
     }
 }

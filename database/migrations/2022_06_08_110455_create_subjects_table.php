@@ -21,8 +21,10 @@ class CreateSubjectsTable extends Migration
             $table->foreign('year_id')->references('id')->on('years');
             $table->unsignedBigInteger('sem_id');
             $table->foreign('sem_id')->references('id')->on('semesters');
+            $table->string('code');
             $table->string('name');
             $table->integer('units');
+            $table->integer('lab');
             $table->timestamps();
         });
     }

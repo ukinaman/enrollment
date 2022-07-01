@@ -13,38 +13,25 @@
         </div>
     @endif
     
-    <div class="container" style="height: 80vh">
+    <div class="container">
         <div class="row d-flex mb-3">
-            <div class="col-10">
+            <div class="col-7">
                 <h4>Subjects</h4>
             </div>
-            <div class="col-2 d-flex justify-content-end">
+            <div class="col-5 d-flex justify-content-end gap-2">
                 <a href="{{ route('subject.uploadBlade') }}" class="btn btn-success text-white">
                     Upload Subjects
                 </a>
+                <a onclick="document.getElementById('assessForm').submit()" class="btn btn-primary">Assess</a>
             </div>
         </div>
+
+        <div class="row mb-3">
+            <x-assessment-form-component route="{{ route('subject.show') }}" course="{{ $course }}" year="{{ $year }}" sem="{{ $sem }}"/>
+        </div>
+
         <div class="row">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">Subject</th>
-                        <th scope="col">Course</th>
-                        <th scope="col">Year Level</th>
-                        <th scope="col">Units</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    @foreach ($subjects as $subject)
-                        <tr>
-                            <th>{{ $subject->name }}</th>
-                            <th>{{ $subject->course->accronym }}</th>
-                            <th>{{ $subject->year->title }}</th>
-                            <th>{{ $subject->units }}</th>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            @yield('show-subjects')
         </div>
     </div>
 @endsection

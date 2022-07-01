@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(SubjectController::class)->group(function () {
         Route::get('/subjects', 'index')->name('subject.index');
         Route::get('/subjects/create', 'create')->name('subject.create');
+        Route::get('/subjects/show', 'show')->name('subject.show');
         Route::get('/subjects/upload-view', 'getUploadView')->name('subject.uploadBlade');
         Route::post('/subjects/upload', 'uploadSubjects')->name('subject.upload');
     });

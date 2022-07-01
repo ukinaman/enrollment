@@ -12,7 +12,10 @@ class AssessmentController extends Controller
 {
     public function index()
     {
-        return view('backend.accounting.assessment.index');
+        $course = 0;
+        $year = 0;
+        $sem = 0;
+        return view('backend.accounting.assessment.index', compact('course', 'year','sem' ));
     }
 
     public function show(Request $request)
@@ -30,6 +33,8 @@ class AssessmentController extends Controller
         $sem_fees = SemestralFee::where('exclusiveTo','=',0)->orWhere('exclusiveTo','=',$course)->with(['fees' => function ($query) use($course) {
             $query->where('exclusiveTo','=',0)->orWhere('exclusiveTo','=',$course);
         }])->get();
+
+        // dd($course, $year, $sem);
 
         return view('backend.accounting.assessment.show', compact('sem_fees', 'course', 'year', 'sem'));
     }

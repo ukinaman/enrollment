@@ -9,7 +9,7 @@ class Subject extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['course_id','year_id','sem_id','name','units'];
+    protected $fillable = ['course_id','year_id','sem_id','code','name','units','lab'];
 
     public function course()
     {
@@ -24,5 +24,21 @@ class Subject extends Model
     public function semester()
     {
         return $this->belongsTo(Semester::class);
+    }
+
+    public function getTotalUnits($course, $year, $sem)
+    {
+        $units = $this->where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $total_units = $units->sum('units');
+
+        return $total_units;
+    }
+
+    public function getTotalNoHours($course, $year, $sem)
+    {
+        $hours = $this->where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $total_hours = $hours->sum('lab');
+
+        return $total_hours;
     }
 }

@@ -21,8 +21,10 @@ class SubjectsImport implements ToModel, WithHeadingRow
             'course_id' => $row['course_id'],
             'year_id' => $row['year'],
             'sem_id' => $row['semester'],
+            'code' => $row['code'],
             'name' => $row['name'],
-            'units' => $row['units']
+            'units' => $row['units'],
+            'lab' => $row['lab'],
         ]);
     }
 }

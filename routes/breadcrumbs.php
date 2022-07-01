@@ -56,6 +56,10 @@ Breadcrumbs::for('students.index', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('accounting.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Accounting', route('accounting.index'));
 });
+Breadcrumbs::for('subject.show', function (BreadcrumbTrail $trail): void {
+    $trail->parent('subject.index')
+        ->push('Show', route('subject.show'));
+});
 
 // Accounting
 //Semestral Fee
