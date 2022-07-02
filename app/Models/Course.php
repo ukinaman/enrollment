@@ -23,7 +23,7 @@ class Course extends Model
 
     public function totalUnits($year, $sem)
     {
-        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();
         $total_units = $subjects->sum('units');
         return $total_units;
     }

@@ -17,9 +17,12 @@
                         <tr>
                             <td>
                                 @if ($fee->name == 'Tuition')
-                                    {{ $fee->name.' '.'('.$fee->geTotalUnits($course, $year, $sem).' units * Php '.number_format($fee->amount, 2).')' }}
+                                    {{ $fee->name.' '.'('.$fee->geTotalUnits($course, $year, $sem).' units * Php '.number_format($fee->amount, 2).') ' }}
+                                    @if($fee->getCourse($course) == 'BSN')
+                                        <span class="text-danger">*RLE units are not included on the computation</span>
+                                    @endif
                                 @elseif($fee->name == 'RLE')
-                                    {{ $fee->name.' '.'('.$fee->geTotalLab($course, $year,$sem).' hours * Php '.number_format($fee->amount, 2).')' }}
+                                    {{ $fee->name.' '.'('.$fee->geTotalLab($course, $year,$sem).' hours * Php '.number_format($fee->amount, 2).') ' }}
                                 @else
                                     {{ $fee->name }}
                                 @endif

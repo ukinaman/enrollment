@@ -49,7 +49,7 @@ class Fee extends Model
 
     public function geTotalUnits($course, $year,$sem)
     {
-        $units = Subject::where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $units = Subject::where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();
         $total_units = $units->sum('units');
 
         return $total_units;
@@ -61,5 +61,12 @@ class Fee extends Model
         $total_lab = $lab->sum('lab');
 
         return $total_lab;
+    }
+
+    public function getCourse($course)
+    {
+        $course_id = Course::where('id','=',$course)->first();
+
+        return $course_id->accronym;
     }
 }

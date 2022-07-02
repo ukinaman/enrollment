@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Subject;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -76,4 +77,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles-and-permission', [App\Http\Controllers\RolesPermissionController::class, 'index'])->name('roles.index');
     Route::get('/roles-and-permission/create', [App\Http\Controllers\RolesPermissionController::class, 'create'])->name('roles.create');
     Route::post('/roles-and-permission/store', [App\Http\Controllers\RolesPermissionController::class, 'store'])->name('roles.store');
+});
+
+Route::get('/rle', function()
+{
+    $subjects = Subject::where([['course_id','=',3],['year_id','=',1],['sem_id','=',1],['code','not like','%RLE%']])->get();
+    // dd($excluded_rle);
+    dd($subjects);
 });
