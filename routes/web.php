@@ -79,9 +79,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/roles-and-permission/store', [App\Http\Controllers\RolesPermissionController::class, 'store'])->name('roles.store');
 });
 
-Route::get('/rle', function()
+Route::get('/test-get-subject', function()
 {
-    $subjects = Subject::where([['course_id','=',3],['year_id','=',1],['sem_id','=',1],['code','not like','%RLE%']])->get();
-    // dd($excluded_rle);
-    dd($subjects);
+    // $not_included = ["RLE 101", "RLE 103"];
+    $subjects = Subject::where([['course_id','=',3],['year_id','=',1],['sem_id','=',1]])->get();
+    return view('test', compact('subjects'));
 });
