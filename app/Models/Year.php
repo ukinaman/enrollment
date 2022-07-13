@@ -11,6 +11,7 @@ class Year extends Model
 
     protected $fillable = ['level','title'];
 
+    // Relationship Declaration
     public function subjects()
     {
         return $this->hasMany(Subject::class);
@@ -19,5 +20,10 @@ class Year extends Model
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+        public function enrollee()
+    {
+        return $this->hasMany(Enrollment::class, 'year_id');
     }
 }

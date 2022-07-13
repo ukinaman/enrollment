@@ -17,6 +17,8 @@ class CreateDiscountsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('percentage');
+            $table->unsignedBigInteger('mop_id')->nullable();
+            $table->foreign('mop_id')->references('id')->on('mode_of_payments');
             $table->timestamps();
         });
     }

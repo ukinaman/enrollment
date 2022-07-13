@@ -11,6 +11,7 @@ class Semester extends Model
 
     protected $fillable = ['sem','title'];
 
+    // Relationship Declaration
     public function subjects()
     {
         return $this->hasMany(Subject::class);
@@ -19,5 +20,10 @@ class Semester extends Model
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function enrollee()
+    {
+        return $this->hasMany(Enrollment::class, 'sem_id');
     }
 }

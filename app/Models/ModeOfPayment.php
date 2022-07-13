@@ -10,4 +10,15 @@ class ModeOfPayment extends Model
     use HasFactory;
 
     protected $fillable = ['mode'];
+
+    // Relationship Declaration
+    public function enrollee()
+    {
+        return $this->hasMany(Enrollment::class, 'mop_id');
+    }
+
+    public function discount()
+    {
+        return $this->hasOne(Discount::class, 'mop_id');
+    }
 }

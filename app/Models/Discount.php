@@ -9,5 +9,11 @@ class Discount extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','percentage'];
+    protected $fillable = ['name','percentage','mop_id'];
+
+    // Relationship Declaration
+    public function mop()
+    {
+        return $this->belongsTo(ModeOfPayment::class, 'mop_id');
+    }
 }

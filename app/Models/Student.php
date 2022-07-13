@@ -10,9 +10,6 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id',
-        'year_id',
-        'sem_id',
         'firstname',
         'middlename',
         'lastname',
@@ -27,21 +24,13 @@ class Student extends Model
         'contact_no'
     ];
 
-    public function course()
+    // Relationship Declaration
+    public function enrollment()
     {
-        return $this->belongsTo(Course::class);
+        return $this->hasMany(Enrollment::class, 'student_id');
     }
 
-    public function year()
-    {
-        return $this->belongsTo(Year::class);
-    }
-
-    public function semester()
-    {
-        return $this->belongsTo(Semester::class);
-    }
-
+    // Data Logic
     public function current_year()
     {
         $year = Year::where('id','=',$this->year_id)->first();

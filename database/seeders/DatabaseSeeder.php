@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Year;
-use App\Models\Semester;
-use App\Models\SemestralFee;
-use App\Models\ModeOfPayment;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,7 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
-        //
+        $this->call([
+            YearSeeder::class,
+            SemesterSeeder::class,
+            SemFeeSeeder::class,
+            ModeOfPaymentSeeder::class,
+            TermSeeder::class,
+            DiscountSeeder::class
+        ]);
     }
 }

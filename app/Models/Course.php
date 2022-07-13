@@ -11,6 +11,7 @@ class Course extends Model
 
     protected $fillable = ['title','accronym','description'];
 
+    // Relationship Declaration
     public function subjects()
     {
         return $this->hasMany(Subject::class);
@@ -21,6 +22,12 @@ class Course extends Model
         return $this->hasMany(Student::class);
     }
 
+    public function enrollee()
+    {
+        return $this->hasMany(Enrollment::class, 'course_id');
+    }
+
+    // Data Logic
     public function totalUnits($year, $sem)
     {
         $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();

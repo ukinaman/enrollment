@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\SemestralFee;
 use Illuminate\Database\Seeder;
+use File;
 
 class SemFeeSeeder extends Seeder
 {
