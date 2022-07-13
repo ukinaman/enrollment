@@ -83,3 +83,15 @@ Breadcrumbs::for('assessment.show', function (BreadcrumbTrail $trail): void {
     $trail->parent('assessment.index')
         ->push('Show', route('assessment.show'));
 });
+// Discount
+Breadcrumbs::for('discount.index', function (BreadcrumbTrail $trail): void {
+    $trail->push('Discounts', route('discount.index'));
+});
+Breadcrumbs::for('discount.create', function (BreadcrumbTrail $trail): void {
+    $trail->parent('discount.index')
+        ->push('Create', route('discount.create'));
+});
+Breadcrumbs::for('discount.edit', function (BreadcrumbTrail $trail, $id): void {
+    $trail->parent('discount.index')
+        ->push('Edit', route('discount.edit', $id));
+});

@@ -16,6 +16,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{ route('discount.index') }}">
+            <i class="nav-icon fa-solid fa-percent"></i>
+            Discounts
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{{ route('assessment.index') }}">
             <i class="nav-icon fa-solid fa-file-invoice"></i>
             Assessment

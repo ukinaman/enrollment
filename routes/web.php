@@ -4,11 +4,11 @@ use App\Models\Subject;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
-
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\SemestralFeeController;
 
@@ -44,30 +44,38 @@ Route::get('/students', [App\Http\Controllers\StudentController::class, 'index']
 Route::get('/accounting', [App\Http\Controllers\AccountingController::class, 'index'])->name('accounting.index');
 
 Route::middleware('auth')->group(function () {
-    Route::controller(CourseController::class)->group(function () {
-        Route::get('/courses', 'index')->name('courses.index');
-        Route::get('/courses/create', 'create')->name('courses.create');
-        Route::post('/courses/store', 'store')->name('courses.store');
-        Route::get('/courses/show/{id}', 'show')->name('course.show');
+    Route::controller(CourseController::class)->prefix('courses')->group(function () {
+        Route::get('/', 'index')->name('courses.index');
+        Route::get('/create', 'create')->name('courses.create');
+        Route::post('/store', 'store')->name('courses.store');
+        Route::get('/show/{id}', 'show')->name('course.show');
     });
-    Route::controller(SubjectController::class)->group(function () {
-        Route::get('/subjects', 'index')->name('subject.index');
-        Route::get('/subjects/create', 'create')->name('subject.create');
-        Route::get('/subjects/show', 'show')->name('subject.show');
-        Route::get('/subjects/upload-view', 'getUploadView')->name('subject.uploadBlade');
-        Route::post('/subjects/upload', 'uploadSubjects')->name('subject.upload');
+    Route::controller(SubjectController::class)->prefix('subjects')->group(function () {
+        Route::get('/', 'index')->name('subject.index');
+        Route::get('/create', 'create')->name('subject.create');
+        Route::get('/show', 'show')->name('subject.show');
+        Route::get('/upload-view', 'getUploadView')->name('subject.uploadBlade');
+        Route::post('/upload', 'uploadSubjects')->name('subject.upload');
     });
-    Route::controller(SemestralFeeController::class)->group(function () {
-        Route::get('/semestral-fee', 'index')->name('semfee.index');
-        Route::get('/semestral-fee/create', 'create')->name('semfee.create');
-        Route::post('/semestral-fee/store', 'store')->name('semfee.store');
-        Route::get('/semestral-fee/edit/{id}', 'edit')->name('semfee.edit');
-        Route::put('/semestral-fee/update/{id}', 'update')->name('semfee.update');
-        Route::get('/semestral-fee/show/{id}', 'show')->name('assessment.show');
+    Route::controller(SemestralFeeController::class)->prefix('semestral-fee')->group(function () {
+        Route::get('/', 'index')->name('semfee.index');
+        Route::get('/create', 'create')->name('semfee.create');
+        Route::post('/store', 'store')->name('semfee.store');
+        Route::get('/edit/{id}', 'edit')->name('semfee.edit');
+        Route::put('/update/{id}', 'update')->name('semfee.update');
+        Route::get('/show/{id}', 'show')->name('assessment.show');
     });
-    Route::controller(AssessmentController::class)->group(function () {
-        Route::get('/accounting/assessment', 'index')->name('assessment.index');
-        Route::get('/accounting/assessment/show', 'show')->name('assessment.show');
+    Route::controller(AssessmentController::class)->prefix('assessment')->group(function () {
+        Route::get('/', 'index')->name('assessment.index');
+        Route::get('/show', 'show')->name('assessment.show');
+    });
+    Route::controller(DiscountController::class)->prefix('discounts')->group(function() {
+        Route::get('/', 'index')->name('discount.index');
+        Route::get('/create', 'create')->name('discount.create');
+        Route::post('/store', 'store')->name('discount.store');
+        Route::get('/edit/{id}', 'edit')->name('discount.edit');
+        Route::delete('/delete/{id}', 'destroy')->name('discount.delete');
+        Route::put('/update/{id}', 'update')->name('discount.update');
     });
 
     
@@ -77,11 +85,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles-and-permission', [App\Http\Controllers\RolesPermissionController::class, 'index'])->name('roles.index');
     Route::get('/roles-and-permission/create', [App\Http\Controllers\RolesPermissionController::class, 'create'])->name('roles.create');
     Route::post('/roles-and-permission/store', [App\Http\Controllers\RolesPermissionController::class, 'store'])->name('roles.store');
-});
-
-Route::get('/test-get-subject', function()
-{
-    // $not_included = ["RLE 101", "RLE 103"];
-    $subjects = Subject::where([['course_id','=',3],['year_id','=',1],['sem_id','=',1]])->get();
-    return view('test', compact('subjects'));
 });
