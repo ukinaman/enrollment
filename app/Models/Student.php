@@ -55,4 +55,16 @@ class Student extends Model
         $enrollment = Enrollment::where([['student_id','=',$id],['sem_id','=',$sem],['year_id','=',$year]])->first();
         return $enrollment;
     }
+
+    //Get initials of name
+    public function initials()
+    {
+        $name = $this->fullname();
+        $name_array = explode(' ',trim($name));
+    
+        $firstWord = $name_array[0];
+        $lastWord = $name_array[count($name_array)-1];
+    
+        return $firstWord[0]."".$lastWord[0];
+    }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\SemestralFeeController;
+use App\Http\Controllers\StudentAssessmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,7 @@ Route::get('/students', [App\Http\Controllers\StudentController::class, 'index']
 Route::get('/accounting', [App\Http\Controllers\AccountingController::class, 'index'])->name('accounting.index');
 
 Route::middleware('auth')->group(function () {
+    // Regsitrar
     Route::controller(CourseController::class)->prefix('courses')->group(function () {
         Route::get('/', 'index')->name('courses.index');
         Route::get('/create', 'create')->name('courses.create');
@@ -57,6 +59,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/upload-view', 'getUploadView')->name('subject.uploadBlade');
         Route::post('/upload', 'uploadSubjects')->name('subject.upload');
     });
+    Route::controller(StudentAssessmentController::class)->prefix('/registrar/student-assessment')->group(function () {
+        Route::get('/', 'index')->name('registrar.assessment.index');
+        Route::get('/show/{id}', 'show')->name('registrar.assessment.show');
+    });
+
+    // Accounting
     Route::controller(SemestralFeeController::class)->prefix('semestral-fee')->group(function () {
         Route::get('/', 'index')->name('semfee.index');
         Route::get('/create', 'create')->name('semfee.create');
@@ -77,7 +85,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/delete/{id}', 'destroy')->name('discount.delete');
         Route::put('/update/{id}', 'update')->name('discount.update');
     });
-
     
     Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
     Route::get('/user-management/create', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');

@@ -37,6 +37,17 @@ class Enrollment extends Model
     }
 
     // Data Logic
-    
-   
+    // Get Mode of Payment
+    public function getMop()
+    {
+        $mop = ModeOfPayment::where('id','=',$this->mop_id)->first();
+        return $mop->mode;
+    }
+
+    // Get Course specific course
+    public function getCourse($data)
+    {
+        $course = Course::where('id','=',$this->course_id)->first();
+        return $data == 'accronym' ? $course->accronym : $course->title;
+    }
 }

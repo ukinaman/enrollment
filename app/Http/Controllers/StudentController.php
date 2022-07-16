@@ -78,7 +78,8 @@ class StudentController extends Controller
     public function assessment($id, $year, $sem)
     {
         $student = Student::where('id','=',$id)->first();
-        $enrollment = $student->getEnrollmentData($student->id, $sem, $year);
+        $enrollment = $student->getEnrollmentData($id, $sem, $year);
+        // dd($enrollment->course_id);
         $course = Course::where('id','=',$enrollment->course_id)->with(['subjects' => function ($query) use($sem, $year) {
             $query->where([['sem_id','=',$sem], ['year_id','=',$year]]);
         }])->first();

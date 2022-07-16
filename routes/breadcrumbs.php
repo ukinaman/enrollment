@@ -36,12 +36,21 @@ Breadcrumbs::for('courses.index', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('course.show', function (BreadcrumbTrail $trail, $id): void {
     $course = Course::where('id','=',$id)->first();
     $trail->parent('courses.index')
-        ->push($course->accronym, route('course.show', $id));
+    ->push($course->accronym, route('course.show', $id));
 });
 Breadcrumbs::for('courses.create', function (BreadcrumbTrail $trail): void {
     $trail->parent('courses.index')
-        ->push('Create course', route('courses.create'));
+    ->push('Create course', route('courses.create'));
 });
+Breadcrumbs::for('registrar.assessment.index', function (BreadcrumbTrail $trail): void {
+    $trail->push('Assessment', route('registrar.assessment.index'));
+});
+Breadcrumbs::for('registrar.assessment.show', function (BreadcrumbTrail $trail, $id): void {
+    $trail->parent('registrar.assessment.index')
+        ->push('Student', route('registrar.assessment.show', $id));
+});
+
+
 // Subject
 Breadcrumbs::for('subject.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Subjects', route('subject.index'));
