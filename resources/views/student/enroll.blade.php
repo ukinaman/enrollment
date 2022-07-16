@@ -210,7 +210,7 @@
                     </form>
                 </div>
                 <div class="card-footer text-muted">
-                    <butotn class="btn btn-primary" onclick="document.getElementById('enrollForm').submit()">Enroll</butotn>
+                    <button class="btn btn-primary" onclick="document.getElementById('enrollForm').submit()">Enroll</button>
                 </div>
             </div>
         </div>

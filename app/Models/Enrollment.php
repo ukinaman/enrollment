@@ -35,4 +35,8 @@ class Enrollment extends Model
     {
         return $this->belongsTo(ModeOfPayment::class, 'mop_id');
     }
+
+    // Data Logic
+    
+   
 }

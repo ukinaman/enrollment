@@ -33,7 +33,7 @@ Route::controller(StudentController::class)->group(function () {
     // Student Registration Form
     Route::get('/enroll', 'create')->name('student.create');
     Route::post('/enroll', 'store')->name('student.store');
-    Route::get('/assessment/{id}', 'assessment')->name('student.assessment');
+    Route::get('/assessment/{id}/{year}/{sem}', 'assessment')->name('student.assessment');
 });
 
 Auth::routes();
@@ -63,9 +63,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', 'store')->name('semfee.store');
         Route::get('/edit/{id}', 'edit')->name('semfee.edit');
         Route::put('/update/{id}', 'update')->name('semfee.update');
-        Route::get('/show/{id}', 'show')->name('assessment.show');
+        Route::get('/show/{id}', 'show')->name('semfee.show');
     });
-    Route::controller(AssessmentController::class)->prefix('assessment')->group(function () {
+    Route::controller(AssessmentController::class)->prefix('/course/assessment')->group(function () {
         Route::get('/', 'index')->name('assessment.index');
         Route::get('/show', 'show')->name('assessment.show');
     });

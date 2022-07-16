@@ -15,8 +15,8 @@
                             <h5>{{ "Units allowed: 24" }}</h5>
                         </div>
                         <div class="col-md-4">
-                            <h5>{{ "Year: ".$student->current_year() }}</h5>
-                            <h5>{{ "Semester: ".$student->current_year() }}</h5>
+                            <h5>{{ "Year: ".$student->current_year($enrollment->year_id) }}</h5>
+                            <h5>{{ "Semester: ".$student->current_sem($enrollment->sem_id) }}</h5>
                             <h5>{{ "Total units: ".$course->subjects->sum('units') }}</h5>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Subject Code</th>
                                     <th scope="col">Subject Name</th>
                                     <th scope="col">Units</th>
                                 </tr>
@@ -33,7 +33,7 @@
                             <tbody>
                                 @foreach ($course->subjects as $subject)
                                     <tr>
-                                        <th scope="row">{{ $subject->id }}</th>
+                                        <th scope="row">{{ $subject->code }}</th>
                                         <td>{{ $subject->name }}</td>
                                         <td>{{ $subject->units }}</td>
                                     </tr>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-muted">
-                    <butotn class="btn btn-primary" onclick="document.getElementById('enrollForm').submit()">Enroll</butotn>
+                    <button class="btn btn-primary" onclick="document.getElementById('enrollForm').submit()">Enroll</button>
                 </div>
             </div>
         </div>

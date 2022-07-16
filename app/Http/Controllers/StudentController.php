@@ -6,6 +6,7 @@ use App\Models\Year;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\Semester;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Models\ModeOfPayment;
 use App\Models\StudentAccountAssesment;
@@ -49,9 +50,6 @@ class StudentController extends Controller
         ]);
 
         $student = Student::create([
-            'course_id' => $request->course_id,
-            'year_id' => $request->year_id,
-            'sem_id' => $request->sem_id,
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
             'lastname' => $request->lastname,
@@ -66,22 +64,24 @@ class StudentController extends Controller
             'contact_no' => $request->contact_no
         ]);
 
-        StudentAccountAssesment::create([
+        $enrollment = Enrollment::create([
             'student_id' => $student->id,
+            'course_id' => $request->course_id,
+            'year_id' => $request->year_id,
+            'sem_id' => $request->sem_id,
             'mop_id' => $request->mop
         ]);
 
-        return redirect()->route('student.assessment', $student->id);
+        return redirect()->route('student.assessment', ['id' => $enrollment->id, 'year' => $enrollment->year_id, 'sem' => $enrollment->sem_id]);
     }
 
-    public function assessment($id)
+    public function assessment($id, $year, $sem)
     {
         $student = Student::where('id','=',$id)->first();
-        $sem = $student->sem_id;
-        $year = $student->year_id;
-        $course = Course::where('id','=',$student->course_id)->with(['subjects' => function ($query) use($sem, $year) {
+        $enrollment = $student->getEnrollmentData($student->id, $sem, $year);
+        $course = Course::where('id','=',$enrollment->course_id)->with(['subjects' => function ($query) use($sem, $year) {
             $query->where([['sem_id','=',$sem], ['year_id','=',$year]]);
         }])->first();
-        return view('student.assesment', compact('student', 'course'));
+        return view('student.assesment', compact('student', 'course', 'enrollment'));
     }
 }
