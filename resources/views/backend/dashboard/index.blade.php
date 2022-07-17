@@ -7,7 +7,7 @@
         <div class="page-body">
             <div class="container">
                 <div class="row justify-content-center">
-                    <h1>Hello World!</h1>
+                    <h1>Welcome Accountant</h1>
                 </div>
             </div>
         </div>
