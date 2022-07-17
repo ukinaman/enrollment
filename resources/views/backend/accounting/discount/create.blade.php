@@ -1,18 +1,13 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center mb-3">
-            <div class="col-6">
-                <h4>Discounts</h4>
-            </div>
-            <div class="col-6 d-flex justify-content-end">
-                <a onclick="document.getElementById('discountForm').submit()" class="btn btn-success text-white">Save</a>
-            </div>
-        </div>
-
-        <div class="row">
-            <form action="{{ route('discount.store') }}" method="POST" class="row" id="discountForm">
+<div class="page-wrapper">
+        <x-page-header title="Create" buttonType="save" buttonTitle="" routeName="discountForm"  />
+        
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                <form action="{{ route('discount.store') }}" method="POST" class="row" id="discountForm">
                 @csrf
                 <div class="col-md-6">
                     <label for="discName" class="form-label">Discount Name</label>
@@ -36,6 +31,8 @@
                     @enderror
                 </div>
             </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
