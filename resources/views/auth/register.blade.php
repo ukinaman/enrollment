@@ -11,7 +11,8 @@
             <div class="text-center mb-4">
                 <a href="." class="navbar-brand navbar-brand-autodark"><img src="./static/logo.svg" height="36" alt=""></a>
             </div>
-            <form class="card card-md" action="." method="get">
+            <form class="card card-md" action="{{ route('register') }}" method="POST">
+                @csrf
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Create new account</h2>
                     <div class="mb-3">
