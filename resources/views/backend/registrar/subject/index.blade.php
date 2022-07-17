@@ -1,22 +1,15 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    @if (count($errors) > 0)
-        <div class="alert alert-danger alert-dismissible fade show">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    
-    <div class="container">
-        <div class="row d-flex mb-3">
+<div class="page-wrapper">
+        <x-page-header title="Subjects" buttonType="" buttonTitle="" routeName=""  />
+        
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                <div class="row d-flex mb-3">
             <div class="col-7">
-                <h4>Subjects</h4>
+                <h4></h4>
             </div>
             <div class="col-5 d-flex justify-content-end gap-2">
                 <a href="{{ route('subject.uploadBlade') }}" class="btn btn-success text-white">
@@ -32,6 +25,9 @@
 
         <div class="row">
             @yield('show-subjects')
+        </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

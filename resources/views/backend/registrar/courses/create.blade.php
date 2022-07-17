@@ -1,32 +1,13 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    @if (count($errors) > 0)
-        <div class="alert alert-danger alert-dismissible fade show">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    
-    <div class="container" style="height: 80vh">
-        <div class="row d-flex mb-3">
-            <div class="col-10">
-                <h4>Courses</h4>
-            </div>
-            <div class="col-2 d-flex justify-content-end">
-                <button class="btn btn-success text-white" type="button" onclick="document.getElementById('courseForm').submit()">
-                    <i class="fa-solid fa-floppy-disk mr-2"></i>
-                    Save
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <form action="{{ route('courses.store') }}" method="POST" id="courseForm">
+<div class="page-wrapper">
+        <x-page-header title="Courses" buttonType="save" buttonTitle="" routeName="courseForm"  />
+        
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                <form action="{{ route('courses.store') }}" method="POST" id="courseForm">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-8">
@@ -58,6 +39,8 @@
                     @enderror
                 </div>
             </form>
+                </div>
+            </div>
         </div>
-    </div>
+    </div> 
 @endsection
