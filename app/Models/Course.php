@@ -41,4 +41,10 @@ class Course extends Model
         $total_hours = $subjects->sum('lab');
         return $total_hours;
     }
+
+    public function getSubjects($year, $sem)
+    {
+        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();
+        return $subjects;
+    }
 }

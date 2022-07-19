@@ -44,7 +44,7 @@ class Student extends Model
         return $sem->title;
     }
 
-    public function fullname()
+    public function getFullNameAttribute()
     {
         return $this->firstname." ".$this->middlename." ".$this->lastname;
     }
@@ -57,9 +57,9 @@ class Student extends Model
     }
 
     //Get initials of name
-    public function initials()
+    public function getInitialsAttribute()
     {
-        $name = $this->fullname();
+        $name = $this->full_name;
         $name_array = explode(' ',trim($name));
     
         $firstWord = $name_array[0];

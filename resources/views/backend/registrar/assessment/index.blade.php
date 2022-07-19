@@ -36,10 +36,10 @@
                                     @forelse ($enrollments as $enrollment)
                                         <tr>
                                             <td class="w-1">
-                                                <span class="avatar avatar-sm">{{ $enrollment->student->initials() }}</span>
+                                                <span class="avatar avatar-sm">{{ $enrollment->student->initials }}</span>
                                             </td>
                                             <td>
-                                                {{ $enrollment->student->fullname() }}
+                                                {{ $enrollment->student->full_name }}
                                             </td>
                                             <td>
                                                 {{ $enrollment->getCourse('title') }}

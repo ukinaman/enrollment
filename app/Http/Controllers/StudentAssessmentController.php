@@ -16,6 +16,7 @@ class StudentAssessmentController extends Controller
 
     public function show($id)
     {
-        return view('backend.registrar.assessment.show');
+        $enrollment = Enrollment::find($id);
+        return view('backend.registrar.assessment.show', compact('enrollment'));
     }
 }

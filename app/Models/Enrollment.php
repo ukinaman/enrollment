@@ -28,7 +28,7 @@ class Enrollment extends Model
 
     public function sem()
     {
-        return $this->belongsTo(Sem::class, 'sem_id');
+        return $this->belongsTo(Semester::class, 'sem_id');
     }
 
     public function mop()
@@ -45,9 +45,23 @@ class Enrollment extends Model
     }
 
     // Get Course specific course
-    public function getCourse($data)
+    public function getCourse($course_id)
     {
-        $course = Course::where('id','=',$this->course_id)->first();
-        return $data == 'accronym' ? $course->accronym : $course->title;
+        $course = $this->course()->where('id','=',$this->course_id)->first();
+        return $course_id == 'accronym' ? $course->accronym : $course->title;
+    }
+
+    // Get current year
+    public function getYear($year_id)
+    {
+        $year = $this->year()->where('id','=',$year_id)->first();
+        return $year->title;
+    }
+
+    // Get semester
+    public function getSemester($sem_id)
+    {
+        $semester = $this->sem()->where('id','=',$sem_id)->first();
+        return $semester->title;
     }
 }
