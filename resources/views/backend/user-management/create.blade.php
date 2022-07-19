@@ -1,26 +1,13 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    @if (count($errors) > 0)
-        <div class="alert alert-danger alert-dismissible fade show">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    <div class="container" style="height: 80vh">
-        <div class="row justify-content-center">
-            <div class="container d-flex justify-content-between align-items-center my-4">
-                <h3>Add User</h3>
-                <a type="button" class="btn btn-primary" onclick="document.getElementById('userform').submit()">Submit</a>
-            </div>
+<div class="page-wrapper">
+        <x-page-header title="Add User" buttonType="save" buttonTitle="" routeName="userform"/>
+        
+        <div class="page-body">
             <div class="container">
-                <form class="row g-3" action="{{ route('user.store') }}" method="POST" id="userform">
+                <div class="row justify-content-center">
+                    <form class="row g-3" action="{{ route('user.store') }}" method="POST" id="userform">
                     @csrf
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Name</label>
@@ -62,7 +49,20 @@
                         <input id="confirm-password" type="password" class="form-control" name="confirm-password" required autocomplete="new-password">
                     </div>
                 </form>
+                </div>
             </div>
         </div>
-    </div>
+        @if (count($errors) > 0)
+        <div class="alert alert-danger alert-dismissible fade show">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 @endsection
+    </div>
+    

@@ -1,20 +1,12 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    <div class="container" style="height: 80vh">
-        <div class="row d-flex mb-3">
-            <div class="col-10">
-                <h4>Roles</h4>
-            </div>
-            <div class="col-2 d-flex justify-content-end">
-                <button class="btn btn-success text-white" type="button" onclick="document.getElementById('roleForm').submit()">
-                    <i class="fa-solid fa-floppy-disk mr-2"></i>
-                    Save
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <form action="{{ route('roles.store') }}" method="POST" id="roleForm">
+<div class="page-wrapper">
+        <x-page-header title="Add Role" buttonType="save" buttonTitle="" routeName="roleform"/> 
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                <form action="{{ route('roles.store') }}" method="POST" id="roleForm">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-12">
@@ -28,6 +20,8 @@
                     </div>
                 </div>
             </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
