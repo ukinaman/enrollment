@@ -1,14 +1,13 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    <div class="container" style="height: 80vh">
-        <div class="row justify-content-center">
-            <div class="container d-flex justify-content-between align-items-center my-4">
-                <h3>Registered Users</h3>
-                <a href="{{ route('user.create') }}" class="btn btn-primary">Add User</a>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered">
+<div class="page-wrapper">
+        <x-page-header title="Registered Users" buttonType="add" buttonTitle="User" routeName="user.create"/>
+        
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -38,6 +37,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     </div>
