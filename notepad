@@ -1,0 +1,7 @@
+$table->unsignedBigInteger('year_id');
+$table->foreign('year_id')->references('id')->on('years');
+$table->string('title');
+$table->string('accronym');
+$table->mediumText('description');
+
+$table->string('year_level');
