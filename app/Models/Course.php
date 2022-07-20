@@ -35,6 +35,14 @@ class Course extends Model
         return $total_units;
     }
 
+    public function totalUnitsOfEnrollee($enrollment_id)
+    {
+        $enrollee = $this->enrollee()->where('id','=',$enrollment_id)->first();
+        $subjects = $enrollee->getSubjects($enrollment_id);
+        $total_units = $subjects->sum('units');
+        return $total_units;
+    }
+
     public function totalHours($year, $sem)
     {
         $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();

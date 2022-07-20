@@ -6,13 +6,14 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use Illuminate\View\Component;
 
-class StudentSubjects extends Component
+class CourseSubjects extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
+
     public $id;
 
     public function __construct($enrollmentId)
@@ -29,6 +30,6 @@ class StudentSubjects extends Component
     {
         $enrollment = Enrollment::find($this->id);
         $course = Course::find($enrollment->course_id);
-        return view('components.student-subjects', compact('enrollment', 'course'));
+        return view('components.course-subjects', compact('enrollment', 'course'));
     }
 }

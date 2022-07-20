@@ -13,7 +13,7 @@
             </div>
             <div class="col-md-6 d-flex flex-column align-items-end">
                 <div class="subheader">Total units</div>
-                <p class="h3" id="total"> {{ $course->totalUnitsOfEnrollee($enrollment->id) }}</p> 
+                <p class="h3" id="total"> {{ $course->totalUnits($enrollment->year_id, $enrollment->sem_id) }}</p> 
             </div>
         </div>
         <div class="row">
@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($enrollment->getSubjects($enrollment->id) as $subject)
+                    @forelse ($enrollment->getCourseSubjects() as $subject)
                         <tr>
                             <td>
                                 <input type="checkbox" name="unabled_subject[]" value="{{ $subject->id }}" class="check-subject">

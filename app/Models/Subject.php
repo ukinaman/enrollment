@@ -26,6 +26,11 @@ class Subject extends Model
         return $this->belongsTo(Semester::class);
     }
 
+    public function unabled()
+    {
+        return $this->hasOne(UnabledSubject::class, 'subject_id');
+    }
+
     public function getTotalUnits($course, $year, $sem)
     {
         $units = $this->where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();

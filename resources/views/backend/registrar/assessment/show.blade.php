@@ -5,8 +5,14 @@
     <x-page-header title="Student Assessment" buttonType="" buttonTitle="" routeName=""  />
     <div class="page-body">
         <div class="container-xl">
-          <x-student-information enrollmentId="{{ $enrollment->id }}"/>
-          <x-student-subjects enrollmentId="{{ $enrollment->id }}" />
+          {{-- @if ($enrollment) --}}
+            <x-student-information enrollmentId="{{ $enrollment->id }}"/>
+            @if ($enrollment->assessed == 0)
+              <x-course-subjects enrollmentId="{{ $enrollment->id }}" />
+            @else
+              <x-student-subjects enrollmentId="{{ $enrollment->id }}" />
+            @endif
+          {{-- @endif --}}
         </div>
       </div>
     </div>
