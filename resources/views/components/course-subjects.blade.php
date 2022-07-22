@@ -38,7 +38,7 @@
                     @forelse ($enrollment->getCourseSubjects() as $subject)
                         <tr>
                             <td>
-                                <input type="checkbox" name="unabled_subject[]" value="{{ $subject->id }}" class="check-subject">
+                                <input type="checkbox" name="unabled_subject[]" value="{{ $subject->id }}" class="check-subject"  data-bs-toggle="tooltip" data-bs-placement="right" title="Exclude subject">
                             </td>
                             <td>
                                 {{ $subject->code }}
@@ -56,5 +56,8 @@
                 </tbody>
             </table>
         </form>
+    </div>
+    <div class="card-footer">
+        <h3 class="card-title">Subjects</h3>
     </div>
 </div>

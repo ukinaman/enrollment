@@ -27,7 +27,7 @@
                 <thead>
                     <tr>
                         <th>
-                            <input type="checkbox" id="checkAll">
+                            <input type="checkbox" id="checkAll" data-bs-trigger="hover" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">
                         </th>
                         <th>Subejct Code</th>
                         <th>Title</th>
@@ -38,7 +38,7 @@
                     @forelse ($enrollment->getSubjects($enrollment->id) as $subject)
                         <tr>
                             <td>
-                                <input type="checkbox" name="unabled_subject[]" value="{{ $subject->id }}" class="check-subject">
+                                <input type="checkbox" name="unabled_subject[]" value="{{ $subject->id }}" class="check-subject" data-bs-toggle="tooltip" data-bs-placement="right" title="Exclude subject">
                             </td>
                             <td>
                                 {{ $subject->code }}
@@ -56,5 +56,7 @@
                 </tbody>
             </table>
         </form>
+    </div>
+    <div class="card-footer">
     </div>
 </div>

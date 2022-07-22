@@ -30,7 +30,7 @@ class Course extends Model
     // Data Logic
     public function totalUnits($year, $sem)
     {
-        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();
+        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();
         $total_units = $subjects->sum('units');
         return $total_units;
     }

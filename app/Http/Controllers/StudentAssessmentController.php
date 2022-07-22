@@ -11,7 +11,7 @@ class StudentAssessmentController extends Controller
 {
     public function index()
     {
-        $enrollments = Enrollment::with('student')->paginate(10);
+        $enrollments = Enrollment::with('student')->orderBy('created_at', 'DESC')->paginate(10);
         // dd($enrollments);
         return view('backend.registrar.assessment.index', compact('enrollments'));
     }

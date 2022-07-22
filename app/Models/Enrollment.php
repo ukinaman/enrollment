@@ -43,6 +43,12 @@ class Enrollment extends Model
     }
 
     // Data Logic
+    public function enrolledDate()
+    {
+        $date = \Carbon\Carbon::parse($this->created_at)->format('F d, Y');
+        return $date;
+    }
+    
     // Get Mode of Payment
     public function getMop()
     {
