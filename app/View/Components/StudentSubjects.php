@@ -2,18 +2,19 @@
 
 namespace App\View\Components;
 
+use App\Models\Course;
 use App\Models\Enrollment;
 use Illuminate\View\Component;
 
-class StudentInformation extends Component
+class StudentSubjects extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-
     public $id;
+
     public function __construct($enrollmentId)
     {
         $this->id = $enrollmentId;
@@ -27,6 +28,7 @@ class StudentInformation extends Component
     public function render()
     {
         $enrollment = Enrollment::find($this->id);
-        return view('components.student-information', compact('enrollment'));
+        $course = Course::find($enrollment->course_id);
+        return view('components.student-subjects', compact('enrollment', 'course'));
     }
 }

@@ -30,7 +30,15 @@ class Course extends Model
     // Data Logic
     public function totalUnits($year, $sem)
     {
-        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();
+        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();
+        $total_units = $subjects->sum('units');
+        return $total_units;
+    }
+
+    public function totalUnitsOfEnrollee($enrollment_id)
+    {
+        $enrollee = $this->enrollee()->where('id','=',$enrollment_id)->first();
+        $subjects = $enrollee->getSubjects($enrollment_id);
         $total_units = $subjects->sum('units');
         return $total_units;
     }
@@ -40,5 +48,11 @@ class Course extends Model
         $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();
         $total_hours = $subjects->sum('lab');
         return $total_hours;
+    }
+
+    public function getSubjects($year, $sem)
+    {
+        $subjects = $this->subjects()->where([['year_id','=',$year],['sem_id','=',$sem]])->get();
+        return $subjects;
     }
 }

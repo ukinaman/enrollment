@@ -3,11 +3,12 @@
 @section('content')
     <div class="page-wrapper">
         <x-page-header title="Dashboard" buttonType="" buttonTitle="" routeName=""  />
-        
         <div class="page-body">
             <div class="container">
-                <div class="row justify-content-center">
-                    <h1>Welcome Accountant</h1>
+                <div class="row">
+                    <div class="col-md-8">
+                        <x-to-acomodate-enrollees />
+                    </div>
                 </div>
             </div>
         </div>

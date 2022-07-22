@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <h5>{{ "Name: ".$student->fullname() }}</h5>
+                            <h5>{{ "Name: ".$student->fullname }}</h5>
                             <h5>{{ "Course: ".$course->title." "."(".$course->accronym.")" }}</h5>
                             <h5>{{ "Units allowed: 24" }}</h5>
                         </div>

@@ -5,18 +5,16 @@ namespace App\View\Components;
 use App\Models\Enrollment;
 use Illuminate\View\Component;
 
-class StudentInformation extends Component
+class ToAcomodateEnrollees extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-
-    public $id;
-    public function __construct($enrollmentId)
+    public function __construct()
     {
-        $this->id = $enrollmentId;
+        //
     }
 
     /**
@@ -26,7 +24,7 @@ class StudentInformation extends Component
      */
     public function render()
     {
-        $enrollment = Enrollment::find($this->id);
-        return view('components.student-information', compact('enrollment'));
+        $enrollees = Enrollment::where('assessed','=',0)->with('student')->orderBy('created_at', 'DESC')->get();
+        return view('components.to-acomodate-enrollees', compact('enrollees'));
     }
 }

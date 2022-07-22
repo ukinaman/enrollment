@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(StudentAssessmentController::class)->prefix('/registrar/student-assessment')->group(function () {
         Route::get('/', 'index')->name('registrar.assessment.index');
         Route::get('/show/{id}', 'show')->name('registrar.assessment.show');
+        Route::post('/assess/{id}', 'store')->name('registrar.assessment.store');
     });
 
     // Accounting
