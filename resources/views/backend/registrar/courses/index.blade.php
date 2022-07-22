@@ -1,18 +1,13 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row d-flex mb-3">
-            <div class="col-10">
-                <h4>Courses</h4>
-            </div>
-            @if (!$courses->isEmpty())
-                <div class="col-2 d-flex justify-content-end">
-                    <a href="{{ route('courses.create') }}" class="btn btn-primary" type="button">Add Course</a>
-                </div>
-            @endif
-        </div>
-        <div class="row">
+<div class="page-wrapper">
+        <x-page-header title="Courses" buttonType="add" buttonTitle="Courses" routeName="courses.create"  />
+        
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                <div class="row">
             @forelse ($courses as $course)
                 <div class="card p-0 mb-3">
                     <h5 class="card-header">{{ $course->accronym }}</h5>
@@ -34,5 +29,8 @@
                 </div>
             @endforelse
         </div>
-    </div>
+                </div>
+            </div>
+        </div>
+</div>
 @endsection
