@@ -1,31 +1,13 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    @if (count($errors) > 0)
-        <div class="alert alert-danger alert-dismissible fade show">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    
-    <div class="container" style="height: 80vh">
-        <div class="row d-flex mb-3">
-            <div class="col-10">
-                <h4>Subjects</h4>
-            </div>
-            <div class="col-2 d-flex justify-content-end">
-                <button class="btn btn-success text-white" type="button" onclick="document.getElementById('uploadForm').submit()">
-                    <i class="fa-solid fa-floppy-disk mr-2"></i>
-                    Upload
-                </button>
-            </div>
-        </div>
-        <div class="row">
+<div class="page-wrapper">
+        <x-page-header title="Subject" buttonType="save" buttonTitle="Subject" routeName="uploadForm"  />
+        
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                <div class="row">
             <div class="card px-0">
                 <div class="card-header">
                     Upload Subject
@@ -40,6 +22,21 @@
                     </form>
                 </div>
             </div>
+        </div> 
+                </div>
+            </div>
         </div>
     </div>
+    @if (count($errors) > 0)
+        <div class="alert alert-danger alert-dismissible fade show">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    
 @endsection

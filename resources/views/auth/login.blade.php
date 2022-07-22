@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('main')
-<div class=" border-top-wide border-primary d-flex flex-column">
+<div class=" border-top-wide border-primary d-flex flex-column text-white">
     <div class="page page-center">
         <div class="container-tight py-4">
             <div class="text-center mb-4">

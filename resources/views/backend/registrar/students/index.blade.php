@@ -1,14 +1,13 @@
 @extends('backend.layouts.app')
 
 @section('content')
-<div class="container" style="height: 80vh">
-    <div class="row d-flex mb-3">
-        <div class="col-10">
-            <h4>Students</h4>
-        </div>
-    </div>
-    <div class="row">
-        <table class="table table-bordered">
+<div class="page-wrapper">
+        <x-page-header title="Students" buttonType="" buttonTitle="" routeName=""  />
+        
+        <div class="page-body">
+            <div class="container">
+                <div class="row justify-content-center">
+                <table class="table table-bordered">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -32,6 +31,8 @@
                 @endforeach
             </tbody>
         </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 @endsection
