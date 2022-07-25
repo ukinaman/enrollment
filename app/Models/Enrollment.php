@@ -92,4 +92,33 @@ class Enrollment extends Model
         $subjects = $this->getCourseSubjects()->except($unabled_subjects);
         return $subjects;
     }
+
+    
+    public function getTotalUnits($enrollment_id)
+    {
+        $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
+        $subjects = $this->getCourseSubjects()->except($unabled_subjects);
+        $total_units = $subjects->sum('units');
+        
+        return $total_units;
+    }
+
+    public function geTotalUnitsExcludeRLE($enrollment_id)
+    {
+        $enrollee = $this->where('id','=',$enrollment_id)->first();
+        $units = Subject::where([['course_id','=',$enrollee->course_id],['year_id','=',$enrollee->year_id],['sem_id','=',$enrollee->sem_id],['code','not like','%RLE%']])->get();
+        $total_units = $units->sum('units');
+
+        return $total_units;
+    }
+
+    public function getTotalHours($enrollment_id)
+    {
+        $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
+        $subjects = $this->getCourseSubjects()->except($unabled_subjects);
+        $total_hours = $subjects->sum('lab');
+
+        return $total_hours;
+    }
+
 }

@@ -30,6 +30,10 @@
                             </svg>
                             Save
                         </a>
+                    @elseif($buttonType == 'assess')
+                        <a onclick="document.getElementById('{{ $routeName }}').submit()" class="btn btn-primary d-none d-sm-inline-block">
+                            Assess
+                        </a>
                     @else
 
                     @endif

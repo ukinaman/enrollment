@@ -35,6 +35,14 @@ class Course extends Model
         return $total_units;
     }
 
+    public function geTotalUnitsExcludeRLE($course, $year,$sem)
+    {
+        $units = Subject::where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();
+        $total_units = $units->sum('units');
+
+        return $total_units;
+    }
+
     public function totalUnitsOfEnrollee($enrollment_id)
     {
         $enrollee = $this->enrollee()->where('id','=',$enrollment_id)->first();

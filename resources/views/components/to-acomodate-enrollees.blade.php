@@ -6,7 +6,7 @@
         <div class="divide-y">
             @forelse ($enrollees as $enrollee)
                 <div data-bs-toggle="tooltip" data-bs-placement="right" title="Assess">
-                    <a href="{{ route('registrar.assessment.show', $enrollee->id) }}" class="text-black">
+                    <a href="{{ route('registrar.assessment.show', $enrollee->id) }}" style="color: inherit; text-decoration: inherit;">
                         <div class="row">
                             <div class="col-auto">
                                 <span class="avatar">{{ $enrollee->student->initials }}</span>

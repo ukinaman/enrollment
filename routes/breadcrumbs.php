@@ -92,6 +92,14 @@ Breadcrumbs::for('assessment.show', function (BreadcrumbTrail $trail): void {
     $trail->parent('assessment.index')
         ->push('Show', route('assessment.show'));
 });
+// Enrollee Assessment
+Breadcrumbs::for('enrollee.index', function (BreadcrumbTrail $trail): void {
+    $trail->push('Enrollee Assessment', route('enrollee.index'));
+});
+Breadcrumbs::for('enrollee.show', function (BreadcrumbTrail $trail, $id): void {
+    $trail->parent('enrollee.index')
+        ->push('Enrollee', route('enrollee.show', $id));
+});
 // Discount
 Breadcrumbs::for('discount.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Discounts', route('discount.index'));

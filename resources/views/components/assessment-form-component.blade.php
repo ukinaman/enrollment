@@ -1,4 +1,19 @@
 <form action="{{ $route }}" method="GET" id="assessForm">
+    @if ($model == "enrollment")
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="formGroupExampleInput" class="form-label">Name</label>
+                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" id="formGroupExampleInput">
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+    @else
+        
+    @endif
     <div class="row">
         <div class="col-md-4">
             <label for="inputState" class="form-label">Course</label>

@@ -12,6 +12,7 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\SemestralFeeController;
 use App\Http\Controllers\StudentAssessmentController;
+use App\Http\Controllers\EnrolleeAssessmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,10 +75,16 @@ Route::middleware('auth')->group(function () {
         Route::put('/update/{id}', 'update')->name('semfee.update');
         Route::get('/show/{id}', 'show')->name('semfee.show');
     });
+    // Assessment
     Route::controller(AssessmentController::class)->prefix('/course/assessment')->group(function () {
         Route::get('/', 'index')->name('assessment.index');
         Route::get('/show', 'show')->name('assessment.show');
     });
+    Route::controller(EnrolleeAssessmentController::class)->prefix('/enrollee/assessment')->group(function () {
+        Route::get('/', 'index')->name('enrollee.index');
+        Route::get('/show/{id}', 'show')->name('enrollee.show');
+    });
+
     Route::controller(DiscountController::class)->prefix('discounts')->group(function() {
         Route::get('/', 'index')->name('discount.index');
         Route::get('/create', 'create')->name('discount.create');
