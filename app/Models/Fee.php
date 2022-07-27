@@ -93,4 +93,39 @@ class Fee extends Model
         }
         return $total_amount;
     }
+
+    public function getSchoolFeeTotal($sem_fee_id, $course_id)
+    {
+      $school_fees_total = $this->where('sem_fee_id','=',2)->sum('amount');
+      dd($school_fees_total);
+    }
+
+    public function getSpecialFeeTotal($sem_fee_id, $course_id)
+    {
+      $special_fees_total = $this->where('sem_fee_id','=',3)->sum('amount');
+      dd($special_fees_total);
+    }
+
+    public function getEnrolleeSumary($sem_fee_id, $course_id, $fee, $enrollee_id)
+    {
+      $total_amount = 0;
+      if($sem_fee_id == 1)
+      {
+        $total_amount = $this->enrolleeTotalAmount($enrollee_id, $fee);
+        
+      }
+      elseif($sem_fee_id == 2) 
+      {
+        $total_amount = $this->where('sem_fee_id','=',2)->sum('amount');
+      }
+      elseif($sem_fee_id == 3)
+      {
+        $total_amount = $this->where('sem_fee_id','=',3)->sum('amount');
+      }
+      elseif($sem_fee_id == 4)
+      {
+        $total_amount = $this->enrolleeTotalAmount($enrollee_id, $fee);
+      }
+      return $total_amount;
+    }
 }

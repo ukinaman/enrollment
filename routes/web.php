@@ -9,6 +9,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\SemestralFeeController;
 use App\Http\Controllers\StudentAssessmentController;
@@ -84,6 +85,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('enrollee.index');
         Route::get('/show/{id}', 'show')->name('enrollee.show');
     });
+    // Payment
+    Route::controller(PaymentsController::class)->prefix('/enrollee/payment')->group(function () {
+      Route::get('/{id}', 'index')->name('payment.index');
+  });
 
     Route::controller(DiscountController::class)->prefix('discounts')->group(function() {
         Route::get('/', 'index')->name('discount.index');

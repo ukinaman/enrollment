@@ -3,7 +3,9 @@
 @section('content')
 <div class="page-wrapper">
     <div class="container">
-        <x-page-header title="Semestral Fees" buttonType="assess" buttonTitle="Assess" routeName="assessForm"  />
+        <x-page-header title="Semestral Fees" buttonType="payment" buttonTitle="" routeName="payment.index">
+          {{ $enrollee->id }}
+        </x-page-header>
         <div class="page-body">
             <div class="container">
                 <x-student-information enrollmentId="{{ $enrollee->id }}"/>

@@ -31,4 +31,30 @@ class SemestralFee extends Model
                 return number_format($this->total_amount);
         }
     }
+
+        public function getEnrolleeSumary($sem_fee_id, $course_id, $fee, $enrollee_id)
+    {
+      $total_amount = 0;
+      // dd($fee);
+      if($sem_fee_id == 1)
+      {
+        $enrolee = Fee::where('sem_fee_id','=',1)->first();
+        $total_amount = $enrolee->enrolleeTotalAmount($enrollee_id, $fee);
+        
+      }
+      elseif($sem_fee_id == 2) 
+      {
+        $total_amount = Fee::where('sem_fee_id','=',2)->sum('amount');
+      }
+      elseif($sem_fee_id == 3)
+      {
+        $total_amount = Fee::where('sem_fee_id','=',3)->sum('amount');
+      }
+      elseif($sem_fee_id == 4)
+      {
+        $enrolee = Fee::where('sem_fee_id','=',4)->first();
+        $total_amount = $enrolee->enrolleeTotalAmount($enrollee_id, $fee);
+      }
+      return $total_amount;
+    }
 }

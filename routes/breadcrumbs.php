@@ -100,6 +100,11 @@ Breadcrumbs::for('enrollee.show', function (BreadcrumbTrail $trail, $id): void {
     $trail->parent('enrollee.index')
         ->push('Enrollee', route('enrollee.show', $id));
 });
+// Payment
+Breadcrumbs::for('payment.index', function (BreadcrumbTrail $trail, $id): void {
+  $trail->parent('enrollee.index')
+      ->push('Payment', route('payment.index', $id));
+});
 // Discount
 Breadcrumbs::for('discount.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Discounts', route('discount.index'));
