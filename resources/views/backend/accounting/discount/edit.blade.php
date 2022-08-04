@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-wrapper">
-        <x-page-header title="Discount" buttonType="save" buttonTitle="" routeName="discountForm"/>
+        <x-page-header title="Discount" buttonType="save" buttonTitle="" routeName="discountForm" enrollee="0" />
         
         <div class="page-body">
             <div class="container">

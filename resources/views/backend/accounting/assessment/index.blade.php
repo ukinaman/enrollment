@@ -1,10 +1,9 @@
 @extends('backend.layouts.app')
 
 @section('content')
-<div class="page-wrapper">
-
+  <div class="page-wrapper">
     <div class="container">
-        <x-page-header title="Semestral Fees" buttonType="assess" buttonTitle="Assess" routeName="assessForm"  />
+        <x-page-header title="Semestral Fees" buttonType="assess" buttonTitle="Assess" routeName="assessForm" enrollee="0" />
         <div class="page-body">
             <div class="container">
                 <div class="row justify-content-center">
@@ -22,4 +21,5 @@
             </div>
         </div>
     </div>
+  </div>
 @endsection

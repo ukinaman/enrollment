@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-wrapper">
-        <x-page-header title="Subject" buttonType="save" buttonTitle="Subject" routeName="uploadForm"  />
+        <x-page-header title="Subject" buttonType="save" buttonTitle="Subject" routeName="uploadForm" enrollee="0" />
         
         <div class="page-body">
             <div class="container">

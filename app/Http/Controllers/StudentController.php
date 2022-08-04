@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Year;
 use App\Models\Course;
 use App\Models\Student;
+use App\Models\Discount;
 use App\Models\Semester;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Models\ModeOfPayment;
+use App\Models\StudentDiscount;
 use App\Models\StudentAccountAssesment;
 
 class StudentController extends Controller
@@ -49,27 +51,30 @@ class StudentController extends Controller
             'mop' => 'required'
         ]);
 
-        $student = Student::create([
-            'firstname' => $request->firstname,
-            'middlename' => $request->middlename,
-            'lastname' => $request->lastname,
-            'birthplace' => $request->birthplace,
-            'age' => $request->age,
-            'birthday' => $request->birthday,
-            'gender' => $request->gender,
-            'address' => $request->address,
-            'citizenship' => $request->citizenship,
-            'marital_status' => $request->marital_status,
-            'email' => $request->email,
-            'contact_no' => $request->contact_no
-        ]);
+        $discount = Discount::where('mop_id','=',$request->mop)->first();
 
+        $student = Student::create([
+          'firstname' => $request->firstname,
+          'middlename' => $request->middlename,
+          'lastname' => $request->lastname,
+          'birthplace' => $request->birthplace,
+          'age' => $request->age,
+          'birthday' => $request->birthday,
+          'gender' => $request->gender,
+          'address' => $request->address,
+          'citizenship' => $request->citizenship,
+          'marital_status' => $request->marital_status,
+          'email' => $request->email,
+          'contact_no' => $request->contact_no
+        ]);
+        
         $enrollment = Enrollment::create([
-            'student_id' => $student->id,
-            'course_id' => $request->course_id,
-            'year_id' => $request->year_id,
-            'sem_id' => $request->sem_id,
-            'mop_id' => $request->mop
+          'student_id' => $student->id,
+          'course_id' => $request->course_id,
+          'year_id' => $request->year_id,
+          'sem_id' => $request->sem_id,
+          'mop_id' => $request->mop,
+          'discount' =>  $discount ? $discount->percentage : 0
         ]);
 
         return redirect()->route('student.assessment', ['id' => $enrollment->id, 'year' => $enrollment->year_id, 'sem' => $enrollment->sem_id]);
@@ -78,8 +83,8 @@ class StudentController extends Controller
     public function assessment($id, $year, $sem)
     {
         $student = Student::where('id','=',$id)->first();
-        $enrollment = $student->getEnrollmentData($id, $sem, $year);
-        // dd($enrollment->course_id);
+        $enrollment = Enrollment::find($id);
+        // dd($enrollment);
         $course = Course::where('id','=',$enrollment->course_id)->with(['subjects' => function ($query) use($sem, $year) {
             $query->where([['sem_id','=',$sem], ['year_id','=',$year]]);
         }])->first();

@@ -9,13 +9,20 @@ class Enrollment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id','course_id','year_id','sem_id','mop_id','assessed'];
+    protected $fillable = ['student_id','course_id','year_id','sem_id','mop_id','discount','assessed'];
 
     // Enrolled Student
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');
     }
+
+    // Has Many Discount
+    public function discounts()
+    {
+      return $this->hasMany(StudentDiscount::class, 'enrollment_id');
+    }
+
     // Course Enrolled by the student
     public function course()
     {
@@ -119,6 +126,13 @@ class Enrollment extends Model
         $total_hours = $subjects->sum('lab');
 
         return $total_hours;
+    }
+
+    //Get student discount
+    public function getDiscount($enrollment_id)
+    {
+      $discount = $this->where('id','=',$enrollment_id)->pluck('discount')->first();
+      return $discount;
     }
 
 }

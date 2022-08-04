@@ -15,7 +15,7 @@ class DiscountSeeder extends Seeder
     public function run()
     {
         Discount::create([
-            'name' => "Full Paymen,t",
+            'name' => "Full Payment",
             'percentage' => 5,
             'mop_id' => 1
         ]);

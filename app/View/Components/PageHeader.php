@@ -16,13 +16,15 @@ class PageHeader extends Component
     public $buttonType; 
     public $buttonTitle;
     public $routeName;
+    public $enrollee;
     
-    public function __construct($title, $buttonType, $buttonTitle, $routeName)
+    public function __construct($title, $buttonType, $buttonTitle, $routeName, $enrollee)
     {
         $this->title = $title;
         $this->buttonType = $buttonType;
         $this->buttonTitle = $buttonTitle;
         $this->routeName = $routeName;
+        $this->enrollee = $enrollee;
     }
 
     /**

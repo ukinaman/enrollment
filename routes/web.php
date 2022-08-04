@@ -12,6 +12,7 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\SemestralFeeController;
+use App\Http\Controllers\StudentDiscountController;
 use App\Http\Controllers\StudentAssessmentController;
 use App\Http\Controllers\EnrolleeAssessmentController;
 
@@ -88,8 +89,8 @@ Route::middleware('auth')->group(function () {
     // Payment
     Route::controller(PaymentsController::class)->prefix('/enrollee/payment')->group(function () {
       Route::get('/{id}', 'index')->name('payment.index');
-  });
-
+    });
+    //Handles Discounts
     Route::controller(DiscountController::class)->prefix('discounts')->group(function() {
         Route::get('/', 'index')->name('discount.index');
         Route::get('/create', 'create')->name('discount.create');
@@ -97,6 +98,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{id}', 'edit')->name('discount.edit');
         Route::delete('/delete/{id}', 'destroy')->name('discount.delete');
         Route::put('/update/{id}', 'update')->name('discount.update');
+    });
+    //Handles Student Discounts
+    Route::controller(StudentDiscountController::class)->prefix('/enrollee/discounts')->group(function () {
+      Route::post('/add-discount/{id}', 'addDiscount')->name('stdDiscount.addDiscount');
     });
     
     Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');

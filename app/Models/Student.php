@@ -31,40 +31,47 @@ class Student extends Model
         return $this->hasMany(Enrollment::class, 'student_id');
     }
 
-    // Data Logic
-    public function current_year($year)
-    {
-        $year = Year::where('id','=',$year)->first();
-        return $year->title;
-    }
+  // Has Many Discount
+  public function discounts()
+  {
+    return $this->hasMany(StudentDiscount::class, 'student_id');
+  }
 
-    public function current_sem($sem)
-    {
-        $sem = Semester::where('id','=',$sem)->first();
-        return $sem->title;
-    }
+  // Data Logic
+  public function current_year($year)
+  {
+    $year = Year::where('id','=',$year)->first();
+    return $year->title;
+  }
 
-    public function getFullNameAttribute()
-    {
-        return $this->firstname." ".$this->middlename." ".$this->lastname;
-    }
+  public function current_sem($sem)
+  {
+    $sem = Semester::where('id','=',$sem)->first();
+    return $sem->title;
+  }
 
-    // Gets specific data of enrollment based on year and sem
-    public function getEnrollmentData($id, $sem, $year)
-    {
-        $enrollment = Enrollment::where([['student_id','=',$id],['sem_id','=',$sem],['year_id','=',$year]])->first();
-        return $enrollment;
-    }
+  public function getFullNameAttribute()
+  {
+    return $this->firstname." ".$this->middlename." ".$this->lastname;
+  }
 
-    //Get initials of name
-    public function getInitialsAttribute()
-    {
-        $name = $this->full_name;
-        $name_array = explode(' ',trim($name));
-    
-        $firstWord = $name_array[0];
-        $lastWord = $name_array[count($name_array)-1];
-    
-        return $firstWord[0]."".$lastWord[0];
-    }
+  // Gets specific data of enrollment based on year and sem
+  public function getEnrollmentData($id, $sem, $year)
+  {
+    $enrollment = Enrollment::where([['student_id','=',$id],['sem_id','=',$sem],['year_id','=',$year]])->first();
+    return $enrollment;
+  }
+
+  //Get initials of name
+  public function getInitialsAttribute()
+  {
+    $name = $this->full_name;
+    $name_array = explode(' ',trim($name));
+  
+    $firstWord = $name_array[0];
+    $lastWord = $name_array[count($name_array)-1];
+  
+    return $firstWord[0]."".$lastWord[0];
+  }
+
 }

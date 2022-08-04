@@ -4,7 +4,7 @@
 <div class="page-wrapper">
 
     <div class="container">
-        <x-page-header title="Enrollees" buttonType="" buttonTitle="" routeName=""  />
+        <x-page-header title="Enrollees" buttonType="" buttonTitle="" routeName="" enrollee="0"  />
         <div class="page-body">
           <div class="container">
             <div class="row justify-content-center">

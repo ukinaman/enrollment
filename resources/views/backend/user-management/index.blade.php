@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-wrapper">
-        <x-page-header title="Registered Users" buttonType="add" buttonTitle="User" routeName="user.create"/>
+        <x-page-header title="Registered Users" buttonType="add" buttonTitle="User" routeName="user.create" enrollee="0"/>
         
         <div class="page-body">
             <div class="container">

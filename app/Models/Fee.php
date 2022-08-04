@@ -109,9 +109,16 @@ class Fee extends Model
     public function getEnrolleeSumary($sem_fee_id, $course_id, $fee, $enrollee_id)
     {
       $total_amount = 0;
+      $enrollee = Enrollment::where('id','=',$id)->first();
       if($sem_fee_id == 1)
       {
-        $total_amount = $this->enrolleeTotalAmount($enrollee_id, $fee);
+        $discount = $enrollee->getDiscount($enrollee_id);
+        $enrolleTuition = $this->enrolleeTotalAmount($enrollee_id, $fee);
+
+        $discountAmount = $enrolleTuition * $discount;
+        $total_amount = $discountAmount / 100;
+
+        dd($total_amount);
         
       }
       elseif($sem_fee_id == 2) 
@@ -126,6 +133,7 @@ class Fee extends Model
       {
         $total_amount = $this->enrolleeTotalAmount($enrollee_id, $fee);
       }
+
       return $total_amount;
     }
 }
