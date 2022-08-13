@@ -17,8 +17,8 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with('course')->get();
-        return view('backend.registrar.students.index', compact('students'));
+        $enrollees = Enrollment::with('student', 'course')->get();
+        return view('backend.registrar.students.index', compact('enrollees'));
     }
 
     public function create()

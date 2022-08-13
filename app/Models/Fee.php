@@ -31,8 +31,10 @@ class Fee extends Model
         if($fee == "Tuition")
         {
             $units = $course->geTotalUnitsExcludeRLE($course_id, $year,$sem);
-            $tuition_amount = SemestralFee::where('id','=',1)->first();
-            $total_amount = $tuition_amount->total_amount * $units;
+            $tuition_amount = SemestralFee::where('id','=',1)->with(['fees' => function ($query) use($course_id) {
+              $query->where('exclusiveTo','=',$course_id);
+            }])->first();
+            $total_amount = $tuition_amount->fees[0]->amount * $units;
         }
         elseif($this->sem_fee_id == $rle->id)
         { 
@@ -44,6 +46,7 @@ class Fee extends Model
         {
             $total_amount = $this->amount;
         }
+
         return $total_amount;
     }
 
@@ -78,8 +81,10 @@ class Fee extends Model
         if($fee == "Tuition")
         {
             $units = $enrollee->geTotalUnitsExcludeRLE($id);
-            $tuition_amount = SemestralFee::where('id','=',1)->first();
-            $total_amount = $tuition_amount->total_amount * $units;
+            $tuition_amount = SemestralFee::where('id','=',1)->with(['fees' => function ($query) use($enrollee) {
+              $query->where('exclusiveTo','=',$enrollee->course_id);
+            }])->first();
+            $total_amount = $tuition_amount->fees[0]->amount * $units;
         }
         elseif($this->sem_fee_id == $rle->id)
         { 
@@ -91,7 +96,20 @@ class Fee extends Model
         {
             $total_amount = $this->amount;
         }
+        
         return $total_amount;
+    }
+
+    public function getRLE($id)
+    {
+      $enrollee = Enrollment::where('id','=',$id)->first();
+      $rle = SemestralFee::where('id','=',4)->first();
+
+      $hours = $enrollee->getTotalHours($id);
+      $rle_data = $this->where('sem_fee_id','=',$rle->id)->first();
+      $total_amount = $rle_data->amount * $hours;
+
+      return $total_amount;
     }
 
     public function getSchoolFeeTotal($sem_fee_id, $course_id)

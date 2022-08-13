@@ -12,7 +12,8 @@ class SemestralFeeController extends Controller
     public function index()
     {
         $sem_fees = SemestralFee::with('fees')->get();
-        return view('backend.accounting.semestral-fee.index', compact('sem_fees'));
+        $courses = Course::all();
+        return view('backend.accounting.semestral-fee.index', compact('sem_fees', 'courses'));
     }
 
     public function create()
@@ -83,24 +84,11 @@ class SemestralFeeController extends Controller
         return redirect()->route('semfee.index')->with('success', 'Data updated successfully!');
     }
 
-    public function show($val)
+    public function show($id)
     {
-        // $sem_fees = SemestralFee::where('exclusiveTo','=',0)->get();
-        // $sem_fees = SemestralFee::where('exclusiveTo','=',0)->orWhere('exclusiveTo','=',$val)->with(['fees' => function ($query) use($val) {
-        //     $query->where('exclusiveTo','=',0)->orWhere('exclusiveTo','=',$val);
-        // }])->get();
-
-        $fees = Fee::where('exclusiveTo','=',0)->orWhere('exclusiveTo','=',$val)->get();
-        
-        // dd($fees);
-
-        foreach($fees as $fee)
-        {
-            dd($fee->totalTuition($val, 1, 1));
-        }
-
-        // $course = Course::where('id','=',$val)->first();
-        // dd($course->totalUnits(1,1));
-        return view('backend.accounting.assessment.index', compact('sem_fees', 'courses'));
+        $sem_fees = SemestralFee::with(['fees' => function($query) use($id){
+          $query->where('exclusiveTo','=',$id);
+        }])->get();
+        return view('backend.accounting.semestral-fee.show', compact('sem_fees'));
     }
 }

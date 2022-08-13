@@ -16,16 +16,16 @@
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
-                            @foreach ($students as $student)
+                            @foreach ($enrollees as $enrollee)
                                 <tr>
-                                    <th>{{ $student->fullname() }}</th>
-                                    <th>{{ $student->course->title }}</th>
-                                    <th>{{ $student->current_year() }}</th>
-                                    <th>
+                                    <td>{{ $enrollee->student->getFullNameAttribute() }}</td>
+                                    <td>{{ $enrollee->course->title }}</td>
+                                    <td>{{ $enrollee->getYear($enrollee->year_id) }}</td>
+                                    <td>
                                         <a href="" class="btn btn-primary">
                                             Assess
                                         </a>
-                                    </th>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

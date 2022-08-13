@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\SemestralFee;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Enrollment extends Model
 {
@@ -135,4 +136,70 @@ class Enrollment extends Model
       return $discount;
     }
 
+    // Get Sem Fee
+    public function getSemFee($id)
+    {
+      $sem_fee = SemestralFee::where('id','=',$id)->first();
+      return $sem_fee;
+    }
+
+    // Get Special Fee of Enrollee
+    public function getSpecialFee($enrollee_id)
+    {
+      $sem_fee_sf = $this->getSemFee(3);
+      $sf = $sem_fee_sf->getStudentSpecialFee($enrollee_id, $sem_fee_sf->id);
+
+      return $sf;
+    }
+
+    public function getTotalDiscount($enrollee_id)
+    {
+      $sem_fee = $this->getSemFee(1); // 1 = Tuition
+      $total_discount = $sem_fee->getTotalDiscount($enrollee_id, $sem_fee->id);
+
+      return $total_discount;
+    }
+
+    // Get Total without discount
+    public function getTotal($enrollee_id)
+    {
+      // Tuition
+      $sem_fee_tf = $this->getSemFee(1);
+      $tf = $sem_fee_tf->getStudentTuition($enrollee_id, $sem_fee_tf->id);
+
+      // School Fee
+      $sem_fee_scf = $this->getSemFee(2);
+      $scf = $sem_fee_scf->getStudentSchoolFee($enrollee_id, $sem_fee_scf->id);
+
+      // RLE
+      $sem_fee_rle = $this->getSemFee(4);
+      $rle = $sem_fee_rle->getStudentRLE($enrollee_id, $sem_fee_rle->id);
+
+      // Total
+      $total = $tf + $scf + $rle;
+
+      return $total;
+    }
+
+    // Get Total With Discount
+    public function getTotalWithDiscount($enrollee_id)
+    {
+      $discountAmount = $this->getTotalDiscount($enrollee_id);
+      $totalAmount = $this->getTotal($enrollee_id);
+
+      $total = $totalAmount - $discountAmount;
+
+      return $total;
+    }
+
+    //Get Overall Total
+    public function getOverallTotal($enrollee_id)
+    {
+      $specialFee = $this->getSpecialFee($enrollee_id);
+      $totalWithDiscount = $this->getTotalWithDiscount($enrollee_id);
+
+      $total = $totalWithDiscount + $specialFee;
+
+      return $total;
+    }
 }

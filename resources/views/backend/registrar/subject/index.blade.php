@@ -20,7 +20,7 @@
         </div>
 
         <div class="row mb-3">
-            <x-assessment-form-component route="{{ route('subject.show') }}" course="{{ $course }}" year="{{ $year }}" sem="{{ $sem }}"/>
+            <x-assessment-form-component route="{{ route('subject.show') }}" course="{{ $course }}" year="{{ $year }}" sem="{{ $sem }}" model=""/>
         </div>
 
         <div class="row">

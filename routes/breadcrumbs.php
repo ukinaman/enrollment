@@ -84,6 +84,11 @@ Breadcrumbs::for('semfee.edit', function (BreadcrumbTrail $trail, $id): void {
     $trail->parent('semfee.index')
         ->push('Edit', route('semfee.edit', $id));
 });
+Breadcrumbs::for('semfee.show', function (BreadcrumbTrail $trail, $id): void {
+    $fee = Fee::find($id);
+    $trail->parent('semfee.index')
+        ->push('Show', route('semfee.show', $id));
+});
 // Assessment
 Breadcrumbs::for('assessment.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Assessment', route('assessment.index'));

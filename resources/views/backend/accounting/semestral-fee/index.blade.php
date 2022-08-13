@@ -2,53 +2,27 @@
 
 @section('content')
 <div class="page-wrapper">
-    <x-page-header title="Semestral Fees" buttonType="add" buttonTitle="Semestral Fee" routeName="semfee.create" enrollee="0" />
+    <x-page-header title="Semestral Fees" buttonType="" buttonTitle="" routeName="" enrollee="0" />
     
     <div class="page-body">
         <div class="container">
             <div class="row justify-content-center">
-                <table class="table table-bordered">
-                    <thead>
-                        <th scope="row">Semestral Fee</th>
-                        <th scope="row">Amount</th>
-                        <th scope="row">Action</th>
-                    </thead>
-                    @foreach ($sem_fees as $sem_fee)
-                        <tbody>
-                                <tr>
-                                    <td class="font-weight-bold" colspan="3"><strong>{{ $sem_fee->name }}</strong></td>
-                                    {{-- <td class="font-weight-bold"><strong><span>&#8369</span>{{ $sem_fee->amount($sem_fee->name) }}</strong></td> --}}
-                                </tr>
-                                @forelse ($sem_fee->fees as $fee)
-                                    <tr>
-                                        <td>{{ $fee->name }}</td>
-                                        <td><span>&#8369</span>{{ number_format($fee->amount ) }}</td>
-                                        <td>
-                                            <a href="{{ route('semfee.edit', $fee->id) }}" class="btn btn-light">Edit</a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td class="text-center" colspan="3">No Data</td>
-                                    </tr>
-                                @endforelse
-                        </tbody>
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Courses</h3>
+                  </div>
+                  <div class="list-group list-group-flush">
+                    @foreach ($courses as $course)
+                      <a href="{{ route('semfee.show', $course->id) }}" class="list-group-item list-group-item-action">
+                        <h4>{{ $course->title }} ({{ $course->accronym }})</h4>
+                      </a>
                     @endforeach
-                </table>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
     </div>
 </div>
-    {{-- <div class="container">
-        <div class="row justify-content-center mb-3">
-            <div class="col-6">
-                <h4>Semestral Fees</h4>
-            </div>
-            <div class="col-6 d-flex justify-content-end">
-                <a href="{{ route('semfee.create') }}" class="btn btn-primary">Add</a>
-            </div>
-        </div>
-
-        
-    </div> --}}
 @endsection
