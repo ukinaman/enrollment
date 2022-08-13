@@ -1,22 +1,18 @@
 [
     {
         "name": "Tuition",
-        "total_amount": 0,
         "exclusiveTo": 0
     },
     {
         "name": "School Fees",
-        "total_amount": 0,
         "exclusiveTo": 0
     },
     {
         "name": "Special Fees",
-        "total_amount": 0,
         "exclusiveTo": 0
     },
     {
         "name": "RLE",
-        "total_amount": 0,
         "exclusiveTo": 0
     }
 ]

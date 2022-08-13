@@ -16,10 +16,15 @@ class CreateFeesTable extends Migration
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sem_fee_id');
-            $table->foreign('sem_fee_id')->references('id')->on('semestral_fees');
+            $table->foreign('sem_fee_id')->references('id')->on('semestral_fees'); 
+            $table->unsignedBigInteger('course_id');
+            $table->foreign('course_id')->references('id')->on('courses');
+            $table->unsignedBigInteger('year_id');
+            $table->foreign('year_id')->references('id')->on('years');
+            $table->unsignedBigInteger('sem_id');
+            $table->foreign('sem_id')->references('id')->on('semesters');
             $table->string('name');
             $table->double('amount', 8, 2);
-            $table->integer('exclusiveTo')->nullable();
             $table->timestamps();
         });
     }

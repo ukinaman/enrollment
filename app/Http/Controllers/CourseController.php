@@ -40,9 +40,23 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        $subjects = Year::with(['subjects' => function ($query) use($id) {
-            $query->where('course_id','=',$id);
-        }])->get();
-        return view('backend.registrar.courses.show', compact('subjects'));
+      $data = Course::where('id','=',$id)->first();
+
+      $course = $data->id;
+      $year = 0;
+      $sem = 0;
+
+      return view('backend.registrar.courses.show', compact('course', 'year', 'sem'));
+    }
+
+    public function getSubject(Request $request)
+    {
+      $subjects = Subject::where([['course_id','=',$request->course],['year_id','=',$request->year],['sem_id','=',$request->sem]])->get();
+
+      $course = $request->course;
+      $year = $request->year;
+      $sem = $request->sem;
+
+      return view('backend.registrar.subject.show', compact('subjects', 'course', 'year', 'sem'));
     }
 }

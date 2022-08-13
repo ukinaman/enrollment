@@ -22,7 +22,6 @@ class SemFeeSeeder extends Seeder
         {
             SemestralFee::create([
                 'name' => $fee->name,
-                'total_amount' => $fee->total_amount,
                 'exclusiveTo' => $fee->exclusiveTo
             ]);
         }   

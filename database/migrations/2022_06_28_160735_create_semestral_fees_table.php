@@ -16,7 +16,6 @@ class CreateSemestralFeesTable extends Migration
         Schema::create('semestral_fees', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->double('total_amount', 8, 2)->nullable();
             $table->integer('exclusiveTo');
             $table->timestamps();
         });
