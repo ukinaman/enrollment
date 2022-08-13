@@ -79,14 +79,23 @@ Breadcrumbs::for('subject.show', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('semfee.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Semestral Fees', route('semfee.index'));
 });
-Breadcrumbs::for('semfee.create', function (BreadcrumbTrail $trail): void {
+Breadcrumbs::for('semfee.create', function (BreadcrumbTrail $trail, $course, $year, $sem): void {
     $trail->parent('semfee.index')
-        ->push('Create', route('semfee.create'));
+        ->push('Create', route('semfee.create', ['course' => $course, 'year' => $year, 'sem' => $sem]));
 });
 Breadcrumbs::for('semfee.edit', function (BreadcrumbTrail $trail, $id): void {
     $fee = Fee::find($id);
     $trail->parent('semfee.index')
         ->push('Edit', route('semfee.edit', $id));
+});
+Breadcrumbs::for('semfee.show', function (BreadcrumbTrail $trail, $id): void {
+    $fee = Fee::find($id);
+    $trail->parent('semfee.index')
+        ->push('Show', route('semfee.show', $id));
+});
+Breadcrumbs::for('semfee.fees', function (BreadcrumbTrail $trail): void {
+    $trail->parent('semfee.index')
+        ->push('Show', route('semfee.fees'));
 });
 // Assessment
 Breadcrumbs::for('assessment.index', function (BreadcrumbTrail $trail): void {
@@ -94,7 +103,20 @@ Breadcrumbs::for('assessment.index', function (BreadcrumbTrail $trail): void {
 });
 Breadcrumbs::for('assessment.show', function (BreadcrumbTrail $trail): void {
     $trail->parent('assessment.index')
-        ->push('Show', route('assessment.show'));
+        ->push('Fees', route('assessment.show'));
+});
+// Enrollee Assessment
+Breadcrumbs::for('enrollee.index', function (BreadcrumbTrail $trail): void {
+    $trail->push('Enrollee Assessment', route('enrollee.index'));
+});
+Breadcrumbs::for('enrollee.show', function (BreadcrumbTrail $trail, $id): void {
+    $trail->parent('enrollee.index')
+        ->push('Enrollee', route('enrollee.show', $id));
+});
+// Payment
+Breadcrumbs::for('payment.index', function (BreadcrumbTrail $trail, $id): void {
+  $trail->parent('enrollee.index')
+      ->push('Payment', route('payment.index', $id));
 });
 // Discount
 Breadcrumbs::for('discount.index', function (BreadcrumbTrail $trail): void {

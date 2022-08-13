@@ -18,13 +18,15 @@ class AssessmentFormComponent extends Component
     public $course_id;
     public $year_id; 
     public $sem_id;
+    public $model;
 
-    public function __construct($route, $course, $year, $sem)
+    public function __construct($route, $course, $year, $sem, $model)
     {
         $this->route = $route;
         $this->course_id = $course;
         $this->year_id = $year;
         $this->sem_id = $sem;
+        $this->model = $model;
     }
 
     /**

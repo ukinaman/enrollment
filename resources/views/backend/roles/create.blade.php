@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-wrapper">
-        <x-page-header title="Add Role" buttonType="save" buttonTitle="" routeName="roleform"/> 
+        <x-page-header title="Add Role" buttonType="save" buttonTitle="" routeName="roleform" enrollee="0"/> 
         <div class="page-body">
             <div class="container">
                 <div class="row justify-content-center">

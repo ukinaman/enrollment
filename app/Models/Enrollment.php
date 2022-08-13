@@ -2,20 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\SemestralFee;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Enrollment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id','course_id','year_id','sem_id','mop_id','assessed'];
+    protected $fillable = ['student_id','course_id','year_id','sem_id','mop_id','discount','assessed'];
 
     // Enrolled Student
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');
     }
+
+    // Has Many Discount
+    public function discounts()
+    {
+      return $this->hasMany(StudentDiscount::class, 'enrollment_id');
+    }
+
     // Course Enrolled by the student
     public function course()
     {
@@ -91,5 +99,107 @@ class Enrollment extends Model
         $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
         $subjects = $this->getCourseSubjects()->except($unabled_subjects);
         return $subjects;
+    }
+
+    
+    public function getTotalUnits($enrollment_id)
+    {
+        $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
+        $subjects = $this->getCourseSubjects()->except($unabled_subjects);
+        $total_units = $subjects->sum('units');
+        
+        return $total_units;
+    }
+
+    public function geTotalUnitsExcludeRLE($enrollment_id)
+    {
+        $enrollee = $this->where('id','=',$enrollment_id)->first();
+        $units = Subject::where([['course_id','=',$enrollee->course_id],['year_id','=',$enrollee->year_id],['sem_id','=',$enrollee->sem_id],['code','not like','%RLE%']])->get();
+        $total_units = $units->sum('units');
+
+        return $total_units;
+    }
+
+    public function getTotalHours($enrollment_id)
+    {
+        $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
+        $subjects = $this->getCourseSubjects()->except($unabled_subjects);
+        $total_hours = $subjects->sum('lab');
+
+        return $total_hours;
+    }
+
+    //Get student discount
+    public function getDiscount($enrollment_id)
+    {
+      $discount = $this->where('id','=',$enrollment_id)->pluck('discount')->first();
+      return $discount;
+    }
+
+    // Get Sem Fee
+    public function getSemFee($id)
+    {
+      $sem_fee = SemestralFee::where('id','=',$id)->first();
+      return $sem_fee;
+    }
+
+    // Get Special Fee of Enrollee
+    public function getSpecialFee($enrollee_id)
+    {
+      $sem_fee_sf = $this->getSemFee(3);
+      $sf = $sem_fee_sf->getStudentSpecialFee($enrollee_id, $sem_fee_sf->id);
+
+      return $sf;
+    }
+
+    public function getTotalDiscount($enrollee_id)
+    {
+      $sem_fee = $this->getSemFee(1); // 1 = Tuition
+      $total_discount = $sem_fee->getTotalDiscount($enrollee_id, $sem_fee->id);
+
+      return $total_discount;
+    }
+
+    // Get Total without discount
+    public function getTotal($enrollee_id)
+    {
+      // Tuition
+      $sem_fee_tf = $this->getSemFee(1);
+      $tf = $sem_fee_tf->getStudentTuition($enrollee_id, $sem_fee_tf->id);
+
+      // School Fee
+      $sem_fee_scf = $this->getSemFee(2);
+      $scf = $sem_fee_scf->getStudentSchoolFee($enrollee_id, $sem_fee_scf->id);
+
+      // RLE
+      $sem_fee_rle = $this->getSemFee(4);
+      $rle = $sem_fee_rle->getStudentRLE($enrollee_id, $sem_fee_rle->id);
+
+      // Total
+      $total = $tf + $scf + $rle;
+
+      return $total;
+    }
+
+    // Get Total With Discount
+    public function getTotalWithDiscount($enrollee_id)
+    {
+      $discountAmount = $this->getTotalDiscount($enrollee_id);
+      $totalAmount = $this->getTotal($enrollee_id);
+
+      $total = $totalAmount - $discountAmount;
+
+      return $total;
+    }
+
+    //Get Overall Total
+    public function getOverallTotal($enrollee_id)
+    {
+      $specialFee = $this->getSpecialFee($enrollee_id);
+      $totalWithDiscount = $this->getTotalWithDiscount($enrollee_id);
+
+      $total = $totalWithDiscount + $specialFee;
+
+      return $total;
     }
 }

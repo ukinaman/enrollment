@@ -31,12 +31,19 @@ class StudentAssessmentController extends Controller
      */
     public function store(Request $request, $id)
     {
-        foreach ($request->unabled_subject as $item => $key) {
-            UnabledSubject::create([
-                'enrollment_id' => $id,
-                'subject_id' => $request->unabled_subject[$item],
-                'updated_at' => Carbon::now(),
-                'created_at' => Carbon::now()
+        
+        if($request->unabled_subject){
+            foreach ($request->unabled_subject as $item => $key) {
+                UnabledSubject::create([
+                    'enrollment_id' => $id,
+                    'subject_id' => $request->unabled_subject[$item],
+                    'updated_at' => Carbon::now(),
+                    'created_at' => Carbon::now()
+                ]);
+            }
+    
+            Enrollment::find($id)->update([
+                'assessed' => 1
             ]);
         }
 
@@ -44,6 +51,6 @@ class StudentAssessmentController extends Controller
             'assessed' => 1
         ]);
 
-        return redirect()->back()->with('success', 'Data saved successfully!');
+        return redirect()->route('registrar.assessment.index')->with('success', 'Data saved successfully!');
     }
 }

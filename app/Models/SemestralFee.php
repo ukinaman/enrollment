@@ -13,6 +13,6 @@ class SemestralFee extends Model
 
     public function fees()
     {
-        return $this->hasMany(Fee::class, 'sem_fee_id');
+      return $this->hasMany(Fee::class, 'sem_fee_id');
     }
 }

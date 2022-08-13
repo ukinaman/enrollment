@@ -16,4 +16,10 @@ class Discount extends Model
     {
         return $this->belongsTo(ModeOfPayment::class, 'mop_id');
     }
+
+    // Has Many Discount
+    public function studentDiscounts()
+    {
+      return $this->hasMany(StudentDiscount::class, 'discount_id');
+    }
 }

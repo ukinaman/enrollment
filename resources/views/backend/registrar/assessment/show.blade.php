@@ -2,7 +2,7 @@
 
 @section('content')
   <div class="page-wrapper">
-    <x-page-header title="Student Assessment" buttonType="" buttonTitle="" routeName=""  />
+    <x-page-header title="Student Assessment" buttonType="" buttonTitle="" routeName="" enrollee="0" />
     <div class="page-body">
         <div class="container-xl">
           {{-- @if ($enrollment) --}}
