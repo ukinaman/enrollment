@@ -76,8 +76,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', 'store')->name('semfee.store');
         Route::get('/edit/{id}', 'edit')->name('semfee.edit');
         Route::put('/update/{id}', 'update')->name('semfee.update');
+        Route::delete('/delete/{id}', 'delete')->name('semfee.delete');
         Route::get('/show/{id}', 'show')->name('semfee.show');
         Route::get('/fees', 'fees')->name('semfee.fees');
+        Route::get('/fees/{course}/{year}/{sem}', 'goToFees')->name('semfee.show.fees');
+        Route::get('/print/{course}/{year}/{sem}', 'print')->name('semfee.print');
+        Route::get('/dowload/{course}/{year}/{sem}', 'download')->name('semfee.download');
     });
     // Assessment
     Route::controller(AssessmentController::class)->prefix('/course/assessment')->group(function () {

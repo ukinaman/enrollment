@@ -20,7 +20,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="inputState" class="form-label">Category</label>
                             <select id="inputState" class="form-select @error('sem_fee_id') is-invalid @enderror" name="sem_fee_id">
                                 <option value="" disabled selected>Choose Category</option>
@@ -34,22 +34,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="col-md-2">
-                            <label for="inputState" class="form-label">Course</label>
-                            <select id="inputState" class="form-select @error('exclusiveTo') is-invalid @enderror" name="exclusiveTo">
-                                <option value="" disabled selected>Choose Course</option>
-                                <option value="0" {{ $fee->exclusiveTo == 0 ? 'selected' : '' }}>All</option>
-                                @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}" {{ $fee->exclusiveTo == $course->id ? 'selected' : '' }}>{{ $course->accronym }}</option>
-                                @endforeach
-                            </select>
-                            @error('exclusiveTo')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="formGroupExampleInput" class="form-label">Amount</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">&#8369</span>

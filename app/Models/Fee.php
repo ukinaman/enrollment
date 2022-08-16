@@ -15,4 +15,6 @@ class Fee extends Model
   {
       return $this->belongsTo(SemestralFee::class, 'sem_fee_id');
   }
+
+
 }

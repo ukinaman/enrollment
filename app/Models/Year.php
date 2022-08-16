@@ -22,8 +22,14 @@ class Year extends Model
         return $this->hasMany(Student::class);
     }
 
-        public function enrollee()
+    public function enrollee()
     {
         return $this->hasMany(Enrollment::class, 'year_id');
+    }
+
+    public function getSchoolYear()
+    {
+      $current_year = \Carbon\Carbon::now()->format('Y');
+      dd($current_year);
     }
 }

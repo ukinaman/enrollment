@@ -95,7 +95,19 @@ Breadcrumbs::for('semfee.show', function (BreadcrumbTrail $trail, $id): void {
 });
 Breadcrumbs::for('semfee.fees', function (BreadcrumbTrail $trail): void {
     $trail->parent('semfee.index')
-        ->push('Show', route('semfee.fees'));
+        ->push('Fees', route('semfee.fees'));
+});
+Breadcrumbs::for('semfee.show.fees', function (BreadcrumbTrail $trail, $course, $year, $sem): void {
+    $trail->parent('semfee.index')
+        ->push('Fees', route('semfee.show.fees', ['course' => $course, 'year' => $year, 'sem' => $sem]));
+});
+Breadcrumbs::for('semfee.print', function (BreadcrumbTrail $trail, $course, $year, $sem): void {
+    $trail->parent('semfee.index')
+        ->push('Print', route('semfee.print', ['course' => $course, 'year' => $year, 'sem' => $sem]));
+});
+Breadcrumbs::for('semfee.download', function (BreadcrumbTrail $trail, $course, $year, $sem): void {
+    $trail->parent('semfee.index')
+        ->push('Download', route('semfee.download', ['course' => $course, 'year' => $year, 'sem' => $sem]));
 });
 // Assessment
 Breadcrumbs::for('assessment.index', function (BreadcrumbTrail $trail): void {

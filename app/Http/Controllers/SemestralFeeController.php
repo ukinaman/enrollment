@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Fee;
 use App\Models\Year;
 use App\Models\Course;
+use App\Models\Subject;
 use App\Models\Semester;
 use App\Models\SemestralFee;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Session;
+
 
 class SemestralFeeController extends Controller
 {
@@ -22,10 +25,28 @@ class SemestralFeeController extends Controller
     public function create($course, $year, $sem)
     {
         $paramCourse = $course;
+
+        $year = !empty(Session::get('data')['year']) ? Session::get('data')['year'] : 0;
+        $sem = !empty(Session::get('data')['semester']) ? Session::get('data')['semester'] : 0;
+
         $courses = Course::all();
-        $years = Year::All();
+        $years = Year::all();
         $semesters = Semester::all();
         $sem_fees = SemestralFee::all();
+
+        $course_accronym = Course::where('id','=',$course)->pluck('accronym')->first();
+        $year_title = Year::where('id','=',$year)->pluck('title')->first();
+        $semester_title = Semester::where('id','=',$sem)->pluck('title')->first();
+
+        Session::put('data', [
+          'course' => $course, 
+          'year' => $year, 
+          'semester' => $sem,
+          'course_name' => $course_accronym,
+          'year_name' => $year_title,
+          'semester_name' => $semester_title
+        ]);
+
         return view('backend.accounting.semestral-fee.create', compact('courses', 'years','semesters','sem_fees', 'paramCourse'));
     }
 
@@ -62,6 +83,7 @@ class SemestralFeeController extends Controller
           'semester_name' => $semester->title
         ]);
 
+        // return view('backend.accounting.semestral-fee.create')->with('success', 'Data saved successfully!');
         return redirect()->back()->with('success', 'Data saved successfully!');
     }
 
@@ -80,27 +102,18 @@ class SemestralFeeController extends Controller
         $request->validate([
             'name' => 'required',
             'sem_fee_id' => 'required',
-            'exclusiveTo' => 'required',
             'amount' => 'numeric'
         ]);
 
         $fee = Fee::find($id);
-        $semfee = SemestralFee::find($fee->sem_fee_id);
-
-        $semfee->total_amount -= $fee->amount;
-        $semfee->update();
 
         $fee->update([
             'name' => $request->name,
             'sem_fee_id' => $request->sem_fee_id,
-            'exclusiveTo' => $request->exclusiveTo,
             'amount' => $request->amount,
         ]);
 
-        $semfee->total_amount += $request->amount;
-        $semfee->update();
-
-        return redirect()->route('semfee.index')->with('success', 'Data updated successfully!');
+        return redirect()->route('semfee.show.fees', ['course' => $fee->course_id, 'year' => $fee->year_id, 'sem' => $fee->sem_id])->with('success', 'Data updated successfully!');
     }
 
     public function show($id)
@@ -122,6 +135,57 @@ class SemestralFeeController extends Controller
       $sem_fees = SemestralFee::with(['fees' => function($query) use($course, $year, $sem){
         $query->where([['course_id','=',$course], ['year_id','=',$year], ['sem_id','=',$sem]]);
       }])->get();
+
       return view('backend.accounting.semestral-fee.table', compact('sem_fees','courses', 'years','semesters','course','year','sem'));
+    }
+
+    public function goToFees($course, $year, $sem)
+    {
+      $courses = Course::all();
+      $years = Year::all();
+      $semesters = Semester::all();
+
+      $sem_fees = SemestralFee::with(['fees' => function($query) use($course, $year, $sem){
+        $query->where([['course_id','=',$course], ['year_id','=',$year], ['sem_id','=',$sem]]);
+      }])->get();
+
+      $course = $course;
+      $year = $year;
+      $sem = $sem;
+
+      return view('backend.accounting.semestral-fee.table', compact('sem_fees','courses', 'years','semesters','course','year','sem'));
+    }
+
+    public function delete($id)
+    {
+      $fee = Fee::find($id);
+      $fee->delete();
+
+      return redirect()->route('semfee.show.fees', ['course' => $fee->course_id, 'year' => $fee->year_id, 'sem' => $fee->sem_id])->with('success', 'Data updated successfully!');
+    }
+
+    public function print($course, $year, $sem)
+    {
+      return view('backend.accounting.semestral-fee.print', compact('course', 'year', 'sem'));
+    }
+
+    public function download(Request $request, $course, $year, $sem)
+    {
+      $subjects = Subject::where([['course_id','=',$course], ['year_id','=',$year], ['sem_id','=',$sem]])->get();
+      $sem_fees = SemestralFee::with(['fees' => function($query) use($course, $year, $sem){
+        $query->where([['course_id','=',$course], ['year_id','=',$year], ['sem_id','=',$sem]]);
+      }])->get();
+
+      $school_year = $request->school_year;
+      $course_name = Course::where('id','=',$course)->pluck('title')->first();
+      $year_name = Year::where('id','=',$year)->pluck('title')->first();
+      $sem_name = Semester::where('id','=',$sem)->pluck('title')->first();
+
+      $year_sem = $year_name.'-'.$sem_name;
+
+      $pdf = Pdf::loadView('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees', 'school_year', 'course_name', 'year_sem'))->setOptions(['defaultFont' => 'sans-serif', 'dpi' => 150])->setPaper('a4', 'portrait');
+      return $pdf->download('invoice.pdf');
+
+      // return view('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees'));
     }
 }

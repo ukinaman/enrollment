@@ -20,14 +20,20 @@
             <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
             <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2l4 -4"></path></svg>
             <h3>Fee addedd successfully!</h3>
-            <div class="text-muted">Do you want to add fee for {{ Session::get('data')['course_name'].' '.Session::get('data')['year_name'].' '.'-'.' '.Session::get('data')['semester_name'] }}?</div>
+              <div class="text-muted">Do you want to add fee for {{ Session::get('data')['course_name'].' '.Session::get('data')['year_name'].' '.'-'.' '.Session::get('data')['semester_name'] }}?</div>
+              <form action="{{ route('semfee.fees') }}" method="GET" id="redirectToFees" hidden>
+                @csrf
+                <input type="text" name="course" value="{{ Session::get('data')['course'] }}">
+                <input type="text" name="year" value="{{ Session::get('data')['year'] }}">
+                <input type="text" name="sem" value="{{ Session::get('data')['semester'] }}">
+              </form>
           </div>
           <div class="modal-footer">
             <div class="w-100">
               <div class="row">
                 <div class="col">
-                  <a href="#" class="btn w-100">
-                    Go to dashboard
+                  <a href="#" class="btn w-100" onclick="document.getElementById('redirectToFees').submit()">
+                    Go to Fees
                   </a>
                 </div>
                 <div class="col"><a href="#" class="btn btn-success w-100" data-bs-dismiss="modal">
@@ -39,6 +45,7 @@
         </div>
       </div>
     </div>
+
     <div class="page-body">
         <div class="container">
             <div class="row justify-content-center">
@@ -90,8 +97,22 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label for="formGroupExampleInput" class="form-label">Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" id="formGroupExampleInput">
+                            <label for="feeName" class="form-label">Name</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" id="feeName">
+                            <datalist id="feeName">
+                              <option value="Tuition">Tuition</option>
+                              <option value="Registration">Registration</option>
+                              <option value="E-Library">E-Library</option>
+                              <option value="Guidance">Guidance</option>
+                              <option value="Development Fee">Development Fee</option>
+                              <option value="Energy Fee">Energy Fee</option>
+                              <option value="Nursing Skills Laboratory Fee">Nursing Skills Laboratory Fee</option>
+                              <option value="Clinical Form">Clinical Form</option>
+                              <option value="School Fee">School Fee</option>
+                              <option value="SAP">SAP</option>
+                              <option value="E-Learning">E-Learning</option>
+                              <option value="RLE">RLE</option>
+                            </datalist>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

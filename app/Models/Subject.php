@@ -33,7 +33,7 @@ class Subject extends Model
 
     public function getTotalUnits($course, $year, $sem)
     {
-        $units = $this->where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem],['code','not like','%RLE%']])->get();
+        $units = $this->where([['course_id','=',$course],['year_id','=',$year],['sem_id','=',$sem]])->get();
         $total_units = $units->sum('units');
 
         return $total_units;

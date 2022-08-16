@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="row mb-3">
-            <x-assessment-form-component route="{{ route('semfee.fees') }}"  course="{{ $course }}" year="{{ 0 }}" sem="{{ 0 }}" model="course"/>
+            <x-assessment-form-component route="{{ route('semfee.fees') }}"  course="{{ $course }}" year="{{ !empty($year) ? $year : 0 }}" sem="{{ !empty($sem) ? $sem : 0 }}" model="course"/>
           </div>
           @yield('semfee-table')
         </div>
