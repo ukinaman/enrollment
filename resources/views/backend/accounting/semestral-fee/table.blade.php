@@ -12,7 +12,7 @@
       <div class="modal-body text-center py-4">
         <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
         <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2l4 -4"></path></svg>
-        <h3>Fee addedd successfully!</h3>
+        <h3>Download Assessment?</h3>
           <div class="text-muted mb-3">Do you want to download {{ Session::get('data')['course_name'].' '.Session::get('data')['year_name'].' '.'-'.' '.Session::get('data')['semester_name'] }} assessment?</div>
           <form action="{{ route('semfee.download', ['course' => $course, 'year' => $year, 'sem' => $sem]) }}" method="GET" id="downloadForm">
             @csrf
@@ -39,7 +39,7 @@
     </div>
   </div>
 </div>
-
+<h3 class="page-title my-3">ASSESSMENT</h2>
 <div class="card">
   <div class="table-responsive">
     <table class="table table-vcenter card-table">
@@ -89,6 +89,10 @@
     </table>
   </div>
 </div>
+<hr>
+<x-full-payment-sumarry course="{{ $course }}" year="{{ $year }}" sem="{{ $sem }}" />
+<hr>
+<x-down-payment-sumarry course="{{ $course }}" year="{{ $year }}" sem="{{ $sem }}" />
 
 <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" style="display: none;" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">

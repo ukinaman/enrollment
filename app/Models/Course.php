@@ -27,6 +27,11 @@ class Course extends Model
         return $this->hasMany(Enrollment::class, 'course_id');
     }
 
+    public function downpayment()
+    {
+      return $this->hasOne(Downpayment::class);
+    }
+
     // Data Logic
     public function getAllYear()
     {

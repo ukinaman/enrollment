@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Downpayment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SemestralFee extends Model
 {
@@ -114,7 +115,7 @@ class SemestralFee extends Model
   }
 
   // SET Fullpayment Discount
-  public function getFullPaymentDiscountPercentage()
+  public function getDiscountPercentage()
   {
     $discount = 5;
     return $discount;
@@ -180,5 +181,156 @@ class SemestralFee extends Model
       $overall_total_discounted = $tf + $scf + $sf + $rle;
 
       return $overall_total_discounted;
+    }
+
+    // GET tuition downpayment
+    public function getTuitionDownpayment($fee, $course, $year, $sem)
+    {
+      $tuition = $this->where('id','=',1)->first();
+      $school_fee= $this->where('id','=',2)->first();
+      $special_fee = $this->where('id','=',3)->first();
+
+      $scf = $this->getTotalSchoolFee($school_fee->id, $course, $year, $sem);
+      $sf = $this->getTotalSpecialFee($special_fee->id, $course, $year, $sem);
+
+      $course_downpayment = Downpayment::where('course_id','=',$course)->pluck('amount')->first();
+      $scf_sf = $scf + $sf;
+
+      $tuition_downpayment = 0;
+
+      if ($scf_sf < $course_downpayment)
+      {
+        $tuition_downpayment = $course_downpayment - $scf_sf;
+      }
+      else
+      {
+        $tuition_downpayment = $scf_sf - $course_downpayment;
+      }
+
+      return $tuition_downpayment;
+    }
+
+    // GET Total downpayment
+    public function getTotalDownpayment($fee, $course, $year, $sem)
+    {
+      $tuition = $this->where('id','=',1)->first();
+      $school_fee= $this->where('id','=',2)->first();
+      $special_fee = $this->where('id','=',3)->first();
+
+      $tf_downpayment = $this->getTuitionDownpayment($tuition->id, $course, $year, $sem);
+      $scf = $this->getTotalSchoolFee($school_fee->id, $course, $year, $sem);
+      $sf = $this->getTotalSpecialFee($special_fee->id, $course, $year, $sem);
+
+      $total_downpayment = $tf_downpayment + $scf + $sf;
+
+      if($this->isLessThan5K($tuition->id, $course, $year, $sem))
+      {
+        $scf_sf = $scf + $sf;
+        $total_downpayment =  $scf_sf - $tf_downpayment;
+      }
+
+      return $total_downpayment;
+    }
+
+    //SET values for downpayment
+    public function downpaymentSumarry($fee, $course, $year, $sem)
+    {
+      $tuition = $this->where('id','=',1)->first();
+      $school_fee= $this->where('id','=',2)->first();
+      $special_fee = $this->where('id','=',3)->first();
+      $rle = $this->where('id','=',4)->first();
+  
+      switch ($fee) {
+        case $tuition->id:
+          if($this->isLessThan5K($fee, $course, $year, $sem))
+          {
+            return '('.number_format($this->getTuitionDownpayment($tuition->id, $course, $year, $sem), 2).')';
+          }
+          return number_format($this->getTuitionDownpayment($tuition->id, $course, $year, $sem), 2);
+          break;
+        case $school_fee->id:
+          return number_format($this->getTotalSchoolFee($school_fee->id, $course, $year, $sem), 2);
+          break;
+        case $special_fee->id:
+          return number_format($this->getTotalSpecialFee($special_fee->id, $course, $year, $sem), 2);
+          break;
+        case $rle->id:
+          return '-';
+          break;
+        default:
+          return 0.00;
+      }
+    }
+    // SET overall downpayment sumarry
+    public function getDownpaymentOverallTotal($fee, $course, $year, $sem)
+    {
+      $tuition = $this->where('id','=',1)->first();
+      $school_fee= $this->where('id','=',2)->first();
+      $special_fee = $this->where('id','=',3)->first();
+      $rle = $this->where('id','=',4)->first();
+
+      $total_tuition_less_downpayment = $this->getTotalTuition($tuition->id, $course, $year, $sem) - $this->getTuitionDownpayment($tuition->id, $course, $year, $sem);
+
+      $total_tuition_add_downpayment = $this->getTotalTuition($tuition->id, $course, $year, $sem) + $this->getTuitionDownpayment($tuition->id, $course, $year, $sem);
+
+      switch ($fee) {
+        case $tuition->id:
+          if($this->isLessThan5K($fee, $course, $year, $sem))
+          {
+            return number_format($total_tuition_add_downpayment, 2);
+          }
+          return number_format($total_tuition_less_downpayment, 2);
+          break;
+        case $school_fee->id:
+          return '-';
+          break;
+        case $special_fee->id:
+          return '-';
+          break;
+        case $rle->id:
+          return number_format($this->getTotalRLE($rle->id, $course, $year, $sem), 2);
+          break;
+        default:
+          return 0.00;
+      }
+    }
+    // GET overall downpayment sumrry
+    public function getDownpaymentOverallAmount($course, $year, $sem)
+    {
+      $tuition = $this->where('id','=',1)->first();
+      $rle = $this->where('id','=',4)->first();
+
+      $total_tuition_less_downpayment = $this->getTotalTuition($tuition->id, $course, $year, $sem) - $this->getTuitionDownpayment($tuition->id, $course, $year, $sem);
+
+      if($this->isLessThan5K($tuition->id, $course, $year, $sem))
+      {
+        $total_tuition_less_downpayment = $this->getTotalTuition($tuition->id, $course, $year, $sem) + $this->getTuitionDownpayment($tuition->id, $course, $year, $sem);
+      }
+
+      $rle = $this->getTotalRLE($rle->id, $course, $year, $sem);
+
+      $total_amount = $rle + $total_tuition_less_downpayment;
+
+      return $total_amount;
+    }
+    // GET per-term amount
+    public function getPerTermAmount($course, $year, $sem)
+    {
+      $per_term_amount = $this->getDownpaymentOverallAmount($course, $year, $sem) / 3;
+
+      return $per_term_amount;
+    }
+    // Check tuition amount if less than 5000
+    public function isLessThan5K($fee, $course, $year, $sem)
+    {
+      $tuition = $this->getTotalTuition($fee, $course, $year, $sem);
+      
+      if($tuition <= 5000)
+      {
+        return true;
+      }
+      else{
+        return false;
+      }
     }
 }

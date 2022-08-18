@@ -71,6 +71,7 @@
       <p class="info">{{ 'S.Y.'.' '.$school_year }}</p>
     </div>
     <div class="table-container">
+      {{-- Subjects --}}
       <table class="subjects-table table-1">
         <thead>
           <tr>
@@ -96,7 +97,7 @@
           @endforeach
         </tbody>
       </table>
-
+      {{-- Semestral Fees --}}
       <table class="subjects-table table-2">
         <thead>
           <tr>
@@ -125,7 +126,7 @@
           @endforeach
         </tbody>
       </table>
-
+      {{-- Full Payment --}}
       <table class="subjects-table table-3">
         <thead>
           <tr>
@@ -139,24 +140,25 @@
             <tr>
               <td>{{ $sem_fee->name }}</td>
               <td>{{ $sem_fee->total($sem_fee->id, $course, $year, $sem) }}</td>
-              <td>{{ $sem_fee->id == 1 ? $sem_fee->getFullPaymentDiscountPercentage().'%' : '' }}</td>
-              <td>{{ $sem_fee->id == 1 ? number_format($sem_fee->getTotalDiscount($sem_fee->getFullPaymentDiscountPercentage(), $sem_fee->id, $course, $year, $sem), 2) : '' }}</td>
-              <td class="amount-td">{{ $sem_fee->overallAmount($sem_fee->getFullPaymentDiscountPercentage(), $sem_fee->id, $course, $year, $sem) }}</td>
+              <td>{{ $sem_fee->id == 1 ? $sem_fee->getDiscountPercentage().'%' : '' }}</td>
+              <td>{{ $sem_fee->id == 1 ? number_format($sem_fee->getTotalDiscount($sem_fee->getDiscountPercentage(), $sem_fee->id, $course, $year, $sem), 2) : '' }}</td>
+              <td class="amount-td">{{ $sem_fee->overallAmount($sem_fee->getDiscountPercentage(), $sem_fee->id, $course, $year, $sem) }}</td>
             </tr>
             @if($loop->last)
               <tr>
                 <th colspan="4">TOTAL TF, SF, & EF FOR FULL PAYMENT</th>
-                <th class="amount-td">{{ number_format($sem_fee->getOverAllTotalWithDiscount($sem_fee->getFullPaymentDiscountPercentage(), $sem_fee->id, $course, $year, $sem), 2) }}</th>
+                <th class="amount-td">{{ number_format($sem_fee->getOverAllTotalWithDiscount($sem_fee->getDiscountPercentage(), $sem_fee->id, $course, $year, $sem), 2) }}</th>
               </tr>
             @endif
           @endforeach
         </tbody>
       </table>
+      {{-- Downpayment --}}
       <table class="subjects-table table-3">
         <thead>
           <tr>
-            <th colspan="2">FULL PAYMENT</th>
-            <th colspan="2">CASH DISCOUNT</th>
+            <th colspan="2">FOR INSTALLMENT BASIS</th>
+            <th colspan="2">DOWN PAYMENT</th>
             <th class="amount-td">AMOUNT</th>
           </tr>
         </thead>
@@ -165,14 +167,24 @@
             <tr>
               <td>{{ $sem_fee->name }}</td>
               <td>{{ $sem_fee->total($sem_fee->id, $course, $year, $sem) }}</td>
-              <td>{{ $sem_fee->id == 1 ? $sem_fee->getFullPaymentDiscountPercentage().'%' : '' }}</td>
-              <td>{{ $sem_fee->id == 1 ? number_format($sem_fee->getTotalDiscount($sem_fee->getFullPaymentDiscountPercentage(), $sem_fee->id, $course, $year, $sem), 2) : '' }}</td>
-              <td class="amount-td">{{ $sem_fee->overallAmount($sem_fee->getFullPaymentDiscountPercentage(), $sem_fee->id, $course, $year, $sem) }}</td>
+              <td colspan="2">{{ $sem_fee->downpaymentSumarry($sem_fee->id, $course, $year, $sem) }}</td>
+              <td class="amount-td">{{ $sem_fee->getDownpaymentOverallTotal($sem_fee->id, $course, $year, $sem) }}</td>
+              {{-- <td class="amount-td">{{ $sem_fee->isLessThan5K($sem_fee->id, $course, $year, $sem) }}</td> --}}
             </tr>
             @if($loop->last)
               <tr>
-                <th colspan="4">TOTAL TF, SF, & EF FOR FULL PAYMENT</th>
-                <th class="amount-td">{{ number_format($sem_fee->getOverAllTotalWithDiscount($sem_fee->getFullPaymentDiscountPercentage(), $sem_fee->id, $course, $year, $sem), 2) }}</th>
+                <th>TOTAL</th>
+                <th>{{ number_format($sem_fee->getOverallTotal($course, $year, $sem), 2) }}</th>
+                <th colspan="2">{{ number_format($sem_fee->getTotalDownpayment($sem_fee->id, $course, $year, $sem), 2) }}</th>
+                <th class="amount-td">{{ number_format($sem_fee->getDownpaymentOverallAmount($course, $year, $sem), 2) }}</th>
+              </tr>
+              <tr>
+                <th colspan="4">DIVIDED BY 3 TERMS</th>
+                <th class="amount-td">/3</th>
+              </tr>
+              <tr>  
+                <th colspan="4">PER TERM (before every exam period)</th>
+                <th class="amount-td">{{ number_format($sem_fee->getPerTermAmount($course, $year, $sem), 2) }}</th>
               </tr>
             @endif
           @endforeach

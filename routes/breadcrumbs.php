@@ -142,3 +142,15 @@ Breadcrumbs::for('discount.edit', function (BreadcrumbTrail $trail, $id): void {
     $trail->parent('discount.index')
         ->push('Edit', route('discount.edit', $id));
 });
+// Downpayment
+Breadcrumbs::for('downpayment.index', function (BreadcrumbTrail $trail): void {
+  $trail->push('Down Payment', route('downpayment.index'));
+});
+Breadcrumbs::for('downpayment.create', function (BreadcrumbTrail $trail): void {
+  $trail->parent('downpayment.index')
+        ->push('Add', route('downpayment.create'));
+});
+Breadcrumbs::for('downpayment.edit', function (BreadcrumbTrail $trail, $id): void {
+  $trail->parent('downpayment.index')
+        ->push('Edit', route('downpayment.edit', $id));
+});

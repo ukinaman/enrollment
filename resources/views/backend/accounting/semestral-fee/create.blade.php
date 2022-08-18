@@ -134,7 +134,7 @@
                             @enderror
                         </div>
                         <div class="col-md-4">
-                            <label for="formGroupExampleInput" class="form-label">Amounts</label>
+                            <label for="formGroupExampleInput" class="form-label">Amount</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">&#8369</span>
                                 <input type="text" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" aria-label="Amount (to the nearest dollar)">

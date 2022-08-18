@@ -136,6 +136,16 @@ class SemestralFeeController extends Controller
         $query->where([['course_id','=',$course], ['year_id','=',$year], ['sem_id','=',$sem]]);
       }])->get();
 
+      $course_name = $courses->where('id','=',$course)->pluck('title')->first();
+      $year_name = $years->where('id','=',$year)->pluck('title')->first();
+      $sem_name = $semesters->where('id','=',$sem)->pluck('title')->first();
+
+      Session::put('data', [
+        'course_name' => $course_name,
+        'year_name' => $year_name,
+        'semester_name' => $sem_name
+      ]);
+
       return view('backend.accounting.semestral-fee.table', compact('sem_fees','courses', 'years','semesters','course','year','sem'));
     }
 
@@ -152,6 +162,16 @@ class SemestralFeeController extends Controller
       $course = $course;
       $year = $year;
       $sem = $sem;
+
+      $course_name = $courses->where('id','=',$course)->pluck('title')->first();
+      $year_name = $years->where('id','=',$year)->pluck('title')->first();
+      $sem_name = $semesters->where('id','=',$sem)->pluck('title')->first();
+
+      Session::put('data', [
+        'course_name' => $course_name,
+        'year_name' => $year_name,
+        'semester_name' => $sem_name
+      ]);
 
       return view('backend.accounting.semestral-fee.table', compact('sem_fees','courses', 'years','semesters','course','year','sem'));
     }
@@ -178,14 +198,17 @@ class SemestralFeeController extends Controller
 
       $school_year = $request->school_year;
       $course_name = Course::where('id','=',$course)->pluck('title')->first();
+      $course_accronym = Course::where('id','=',$course)->pluck('accronym')->first();
       $year_name = Year::where('id','=',$year)->pluck('title')->first();
       $sem_name = Semester::where('id','=',$sem)->pluck('title')->first();
 
       $year_sem = $year_name.'-'.$sem_name;
 
-      $pdf = Pdf::loadView('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees', 'school_year', 'course_name', 'year_sem'))->setOptions(['defaultFont' => 'sans-serif', 'dpi' => 150])->setPaper('a4', 'portrait');
-      return $pdf->download('invoice.pdf');
+      $filename = $course_accronym.'-'.$year_sem.'-'.$school_year.'-'.'assessment.pdf';
 
-      // return view('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees'));
+      $pdf = Pdf::loadView('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees', 'school_year', 'course_name', 'year_sem'))->setOptions(['defaultFont' => 'sans-serif', 'dpi' => 150])->setPaper('a4', 'portrait');
+      return $pdf->download($filename);
+
+      // return view('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees', 'school_year', 'course_name', 'year_sem'));
     }
 }

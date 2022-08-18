@@ -16,6 +16,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{ route('downpayment.index') }}">
+            <i class="nav-icon fa-solid fa-list"></i>
+            Manage Down Payment
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{{ route('discount.index') }}">
             <i class="nav-icon fa-solid fa-percent"></i>
             Discounts

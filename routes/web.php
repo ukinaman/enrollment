@@ -11,6 +11,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\AssessmentController;
+use App\Http\Controllers\DownpaymentController;
 use App\Http\Controllers\SemestralFeeController;
 use App\Http\Controllers\StudentDiscountController;
 use App\Http\Controllers\StudentAssessmentController;
@@ -108,6 +109,15 @@ Route::middleware('auth')->group(function () {
     //Handles Student Discounts
     Route::controller(StudentDiscountController::class)->prefix('/enrollee/discounts')->group(function () {
       Route::post('/add-discount/{id}', 'addDiscount')->name('stdDiscount.addDiscount');
+    });
+    // Downpayment
+    Route::controller(DownpaymentController::class)->prefix('/downpayments')->group(function () {
+      Route::get('/', 'index')->name('downpayment.index');
+      Route::get('/create', 'create')->name('downpayment.create');
+      Route::post('/store', 'store')->name('downpayment.store');
+      Route::get('/edit/{id}', 'edit')->name('downpayment.edit');
+      Route::put('/update/{id}', 'update')->name('downpayment.update');
+      Route::delete('/delete/{id}', 'delete')->name('downpayment.delete');
     });
     
     Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');

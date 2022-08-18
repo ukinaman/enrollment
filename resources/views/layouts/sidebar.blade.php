@@ -38,6 +38,22 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                      <a class="nav-link" href="{{ route('downpayment.index') }}" >
+                          <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash-banknote" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00abfb" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                              <circle cx="12" cy="12" r="3" />
+                              <rect x="3" y="6" width="18" height="12" rx="2" />
+                              <line x1="18" y1="12" x2="18.01" y2="12" />
+                              <line x1="6" y1="12" x2="6.01" y2="12" />
+                            </svg>
+                          </span>
+                          <span class="nav-link-title">
+                              Manage Down Payments
+                          </span>
+                      </a>
+                  </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('discount.index') }}" >
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-tax" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00abfb" fill="none" stroke-linecap="round" stroke-linejoin="round">
