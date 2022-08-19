@@ -32,12 +32,16 @@ Route::get('/', function(){
     return view('student.index');
 })->name('welcome');
 
-Route::controller(StudentController::class)->group(function () {
+Route::controller(StudentController::class)->prefix('student')->group(function () {
     // Registrar Student Section
-    Route::get('/student', 'index')->name('courses.index');
+    Route::get('/', 'index')->name('courses.index');
     // Student Registration Form
     Route::get('/enroll', 'create')->name('student.create');
-    Route::post('/enroll', 'store')->name('student.store');
+    Route::post('/enroll/course', 'storeCourse')->name('student.course');
+    Route::get('/enroll/register/{enrollment_id}', 'createResgister')->name('student.register.create');
+    Route::post('/enroll/register/store/{enrollment_id}', 'storeStudent')->name('student.register');
+    Route::get('/enroll/mop/{enrollment_id}', 'createMop')->name('student.mop.create');
+    Route::post('/enroll/mode-of-payment/{enrollment_id}', 'storeMop')->name('student.mop');
     Route::get('/assessment/{id}/{year}/{sem}', 'assessment')->name('student.assessment');
 });
 

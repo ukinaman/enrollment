@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Discount;
 use App\Models\Semester;
 use App\Models\Enrollment;
+use App\Models\Downpayment;
 use Illuminate\Http\Request;
 use App\Models\ModeOfPayment;
 use App\Models\StudentDiscount;
@@ -26,16 +27,37 @@ class StudentController extends Controller
         $courses = Course::all();
         $years = Year::all();
         $semesters = Semester::all();
-        $mode_of_payment = ModeOfPayment::all();
-        return view('student.enroll', compact('courses', 'years', 'semesters', 'mode_of_payment'));
+        return view('student.pick-course', compact('courses', 'years', 'semesters'));
     }
 
-    public function store(Request $request)
+    public function storeCourse(Request $request)
+    {
+      $request->validate([
+          'course' => 'required',
+          'year' => 'required',
+          'sem' => 'required',
+      ]);
+
+      $enrollment = Enrollment::create([
+        'course_id' => $request->course,
+        'year_id' => $request->year,
+        'sem_id' => $request->sem,
+        'discount' => 0
+      ]);
+
+      return redirect()->route('student.register.create', [
+        'enrollment_id' => $enrollment->id,
+      ])->with('success', 'Data saved successfuly!');
+    }
+
+    public function createResgister($enrollment_id)
+    {
+      return view('student.register', compact('enrollment_id'));
+    }
+
+    public function storeStudent(Request $request, $enrollment_id)
     {
         $request->validate([
-            'course_id' => 'required',
-            'year_id' => 'required',
-            'sem_id' => 'required',
             'firstname' => 'required',
             'middlename' => 'required',
             'lastname' => 'required',
@@ -48,10 +70,7 @@ class StudentController extends Controller
             'marital_status' => 'required',
             'email' => 'required|unique:students,email',
             'contact_no' => 'required',
-            'mop' => 'required'
         ]);
-
-        $discount = Discount::where('mop_id','=',$request->mop)->first();
 
         $student = Student::create([
           'firstname' => $request->firstname,
@@ -67,17 +86,32 @@ class StudentController extends Controller
           'email' => $request->email,
           'contact_no' => $request->contact_no
         ]);
-        
-        $enrollment = Enrollment::create([
+
+        $enrollment = Enrollment::where('id','=',$enrollment_id)->update([
           'student_id' => $student->id,
-          'course_id' => $request->course_id,
-          'year_id' => $request->year_id,
-          'sem_id' => $request->sem_id,
-          'mop_id' => $request->mop,
-          'discount' =>  $discount ? $discount->percentage : 0
+          'discount' => 0
         ]);
 
-        return redirect()->route('student.assessment', ['id' => $enrollment->id, 'year' => $enrollment->year_id, 'sem' => $enrollment->sem_id]);
+        return redirect()->route('student.mop.create', ['enrollment_id' => $enrollment_id]);
+    }
+
+    public function createMop($enrollment_id)
+    {
+      $enrollee = Enrollment::find($enrollment_id)->with('course')->first();
+      $mop = ModeOfPayment::all();
+      $downpayment = Downpayment::where('course_id','=',$enrollee->course_id)->first();
+      return view('student.mop', compact('enrollment_id', 'mop', 'downpayment', 'enrollee'));
+    }
+
+    public function storeMop(Request $request, $enrollment_id)
+    {
+      $discount = Discount::where('mop_id','=',$request->mode)->first();
+      $enrollment = Enrollment::where('id','=',$enrollment_id)->update([
+        'mop_id' => $request->mode,
+        'discount' => $discount ? $discount->percentage : 0
+      ]);
+
+      return redirect()->back()->with('success', 'Your enrollment is being processed.');
     }
 
     public function assessment($id, $year, $sem)
