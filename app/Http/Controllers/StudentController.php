@@ -111,17 +111,27 @@ class StudentController extends Controller
         'discount' => $discount ? $discount->percentage : 0
       ]);
 
-      return redirect()->back()->with('success', 'Your enrollment is being processed.');
+      return redirect()->route('student.assessment', ['enrollment_id' => $enrollment_id, 'table' => 'subjects'])->with('success', 'Your enrollment is being processed.');
     }
 
-    public function assessment($id, $year, $sem)
+    public function assessment($enrollment_id, $table)
     {
-        $student = Student::where('id','=',$id)->first();
-        $enrollment = Enrollment::find($id);
-        // dd($enrollment);
-        $course = Course::where('id','=',$enrollment->course_id)->with(['subjects' => function ($query) use($sem, $year) {
-            $query->where([['sem_id','=',$sem], ['year_id','=',$year]]);
-        }])->first();
-        return view('student.assesment', compact('student', 'course', 'enrollment'));
+      $enrollment = Enrollment::find($enrollment_id);
+      $student = Student::where('id','=',$enrollment->student_id)->first();
+      $sem = $enrollment->sem_id;
+      $year = $enrollment->year_id;
+      $course = Course::where('id','=',$enrollment->course_id)->with(['subjects' => function ($query) use($sem, $year) {
+          $query->where([['sem_id','=',$sem], ['year_id','=',$year]]);
+      }])->first();
+
+      if($table == 'subjects')
+      {
+        return view('student.subjects', compact('student', 'course', 'enrollment', 'table'));
+      }
+      else if($table == 'semestral-fee')
+      {
+        return view('student.semestralfees', compact('student', 'course', 'enrollment', 'table'));
+      }
+      
     }
 }

@@ -1,51 +1,49 @@
 @extends('welcome')
 
 @section('student')
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; width: 100%; background-image: url({{ asset('images/school.jpg') }}); background-size: cover;">
-        <div class="container">
-            <div class="card">
-                <div class="card-header">
-                    Assesment
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h5>{{ "Name: ".$student->fullname }}</h5>
-                            <h5>{{ "Course: ".$course->title." "."(".$course->accronym.")" }}</h5>
-                            <h5>{{ "Units allowed: 24" }}</h5>
-                        </div>
-                        <div class="col-md-4">
-                            <h5>{{ "Year: ".$student->current_year($enrollment->year_id) }}</h5>
-                            <h5>{{ "Semester: ".$student->current_sem($enrollment->sem_id) }}</h5>
-                            <h5>{{ "Total units: ".$course->subjects->sum('units') }}</h5>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Subject Code</th>
-                                    <th scope="col">Subject Name</th>
-                                    <th scope="col">Units</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($course->subjects as $subject)
-                                    <tr>
-                                        <th scope="row">{{ $subject->code }}</th>
-                                        <td>{{ $subject->name }}</td>
-                                        <td>{{ $subject->units }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card-footer text-muted">
-                    <button class="btn btn-primary" onclick="document.getElementById('enrollForm').submit()">Enroll</button>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid d-flex flex-column align-items-center pt-5" style="height: {{ $table == 'subjects' ? '100vh' : 'auto' }}; width: 100%; background-image: url({{ asset('images/white-background.jpg') }}); background-size: contain; background-position: start center;">
+  <div class="row w-50">
+    <div class="container d-flex align-items-center mb-3">
+      <img class="mb-3" src="{{ asset('images/circle-logo.png') }}" alt="logo" height="90" width="90">
+      <div class="container">
+        <h2>Canossa College San Pablo</h2>
+        <p>Lakeside Park Subdivision</p>
+        <p>San Pablo City, Laguna 4000</p>
+      </div>
     </div>
+    <div class="row d-flex w-100 mb-3">
+      <div class="col-md-6">
+        <h3 style="text-transform: uppercase; font-weight: bold;">{{ $enrollment->getFullName($enrollment->id, 2) }}</h3>
+      </div>
+      <div class="col-md-2">
+        <h3 style="font-weight: bold;">A.Y. {{ $enrollment->getCurrentAcademicYear() }}</h3>
+      </div>
+      <div class="col-md-4 d-flex justify-content-end">
+        <h3 style="font-weight: bold;">TERM: Second Semester</h3>
+      </div>
+    </div>
+    <table class="table table-bordered">
+      <tr>
+        <th colspan="3" style="text-transform: uppercase">PROGRAM DESCRIPTION: {{ $enrollment->getCourse($enrollment->course_id, 'full') }}</th>
+        <th colspan="1" style="text-transform: uppercase">PROGRAM CODE: {{ $enrollment->getCourse($enrollment->course_id, 'acc') }}</th>
+        <th colspan="1" style="text-transform: uppercase">YEAR LEVEL: {{ $enrollment->getYear($enrollment->year_id) }}</th>
+      </tr>
+    </table>
+  </div>
+
+  @yield('assesment-table')
+  
+  <div class="row w-50 mt-3">
+    <div class="container d-flex justify-content-end gap-2 mb-3">
+      <a href="{{ $table == 'subjects' ? route('student.assessment', ['enrollment_id' => $enrollment->id, 'table' => 'semestral-fee']) : route('student.assessment',  ['enrollment_id' => $enrollment->id, 'table' => 'subjects']) }}" class="btn btn-primary">Show {{ $table == 'subjects' ? 'Fees' : 'Subjects' }}</a>
+      <a href="{{ route('welcome') }}" class="btn btn-success">Exit</a>
+    </div>
+    <h5 class="text-center text-danger">Must Read!!</h5>
+    <p class="text-center">
+      Number of subjects may change after the assessment of the registrar. You may proceed to the registrar to confirm your registration.
+      <br>
+      Thank you!
+    </p>
+  </div>
+</div>
 @endsection

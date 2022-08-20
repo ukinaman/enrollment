@@ -42,7 +42,7 @@ Route::controller(StudentController::class)->prefix('student')->group(function (
     Route::post('/enroll/register/store/{enrollment_id}', 'storeStudent')->name('student.register');
     Route::get('/enroll/mop/{enrollment_id}', 'createMop')->name('student.mop.create');
     Route::post('/enroll/mode-of-payment/{enrollment_id}', 'storeMop')->name('student.mop');
-    Route::get('/assessment/{id}/{year}/{sem}', 'assessment')->name('student.assessment');
+    Route::get('/assessment/{enrollment_id}/{table}', 'assessment')->name('student.assessment');
 });
 
 Auth::routes();

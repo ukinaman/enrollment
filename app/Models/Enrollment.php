@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\SemestralFee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,10 +52,40 @@ class Enrollment extends Model
     }
 
     // Data Logic
+    public function getCurrentAcademicYear()
+    {
+      $year_now = Carbon::now()->format('Y');
+      $year_next = Carbon::now()->addYear()->format('Y');
+      $academic_year = $year_now.'-'.$year_next;
+
+      return $academic_year;
+    }
+
     public function enrolledDate()
     {
         $date = \Carbon\Carbon::parse($this->created_at)->format('F d, Y');
         return $date;
+    }
+    /**
+     * GET full name
+     * 1 = Firstname Middlename Lastname
+     * 2 = Lastname Firstname Middlename
+     */
+    public function getFullName($enrollment_id, $type)
+    {
+      $enrollee = $this->where('id','=',$enrollment_id)->with('student')->first();
+      $middle_initial = substr($enrollee->student->middlename, 0, 1);
+
+      if($type == 1)
+      {
+        $fullname = $enrollee->student->firstname.' '.$middle_initial.'.'.' '.$enrollee->student->lastname;
+      }
+      else if($type == 2)
+      {
+        $fullname = $enrollee->student->lastname.','.' '.$enrollee->student->firstname.','.' '.$middle_initial.'.';
+      }
+
+      return $fullname;
     }
     
     // Get Mode of Payment
@@ -65,10 +96,19 @@ class Enrollment extends Model
     }
 
     // Get Course specific course
-    public function getCourse($course_id)
+    public function getCourse($course_id, $type)
     {
-        $course = $this->course()->where('id','=',$this->course_id)->first();
-        return $course_id == 'accronym' ? $course->accronym : $course->title;
+      $data = $this->course()->where('id','=',$course_id)->first();
+      if($type == 'acc')
+      {
+        $course = $data->accronym;
+      }
+      else if($type == 'full')
+      {
+        $course = $data->title;
+      }
+
+      return $course;
     }
 
     // Get current year
@@ -86,10 +126,11 @@ class Enrollment extends Model
     }
 
     // Get Subject icluding on the course
-    public function getCourseSubjects()
+    public function getCourseSubjects($enrollment_id)
     {
-        $subjects = Subject::where([['course_id','=',$this->course_id],['year_id','=',$this->year_id],['sem_id','=',$this->sem_id]])->get();
-        return $subjects;
+      $enrollee = $this->where('id','=',$enrollment_id)->first();
+      $subjects = Subject::where([['course_id','=',$enrollee->course_id],['year_id','=',$enrollee->year_id],['sem_id','=',$enrollee->sem_id]])->get();
+      return $subjects;
     }
 
     // Get subjects excluding the unable to take subjects
@@ -136,70 +177,5 @@ class Enrollment extends Model
       return $discount;
     }
 
-    // Get Sem Fee
-    public function getSemFee($id)
-    {
-      $sem_fee = SemestralFee::where('id','=',$id)->first();
-      return $sem_fee;
-    }
 
-    // Get Special Fee of Enrollee
-    public function getSpecialFee($enrollee_id)
-    {
-      $sem_fee_sf = $this->getSemFee(3);
-      $sf = $sem_fee_sf->getStudentSpecialFee($enrollee_id, $sem_fee_sf->id);
-
-      return $sf;
-    }
-
-    public function getTotalDiscount($enrollee_id)
-    {
-      $sem_fee = $this->getSemFee(1); // 1 = Tuition
-      $total_discount = $sem_fee->getTotalDiscount($enrollee_id, $sem_fee->id);
-
-      return $total_discount;
-    }
-
-    // Get Total without discount
-    public function getTotal($enrollee_id)
-    {
-      // Tuition
-      $sem_fee_tf = $this->getSemFee(1);
-      $tf = $sem_fee_tf->getStudentTuition($enrollee_id, $sem_fee_tf->id);
-
-      // School Fee
-      $sem_fee_scf = $this->getSemFee(2);
-      $scf = $sem_fee_scf->getStudentSchoolFee($enrollee_id, $sem_fee_scf->id);
-
-      // RLE
-      $sem_fee_rle = $this->getSemFee(4);
-      $rle = $sem_fee_rle->getStudentRLE($enrollee_id, $sem_fee_rle->id);
-
-      // Total
-      $total = $tf + $scf + $rle;
-
-      return $total;
-    }
-
-    // Get Total With Discount
-    public function getTotalWithDiscount($enrollee_id)
-    {
-      $discountAmount = $this->getTotalDiscount($enrollee_id);
-      $totalAmount = $this->getTotal($enrollee_id);
-
-      $total = $totalAmount - $discountAmount;
-
-      return $total;
-    }
-
-    //Get Overall Total
-    public function getOverallTotal($enrollee_id)
-    {
-      $specialFee = $this->getSpecialFee($enrollee_id);
-      $totalWithDiscount = $this->getTotalWithDiscount($enrollee_id);
-
-      $total = $totalWithDiscount + $specialFee;
-
-      return $total;
-    }
 }
