@@ -106,10 +106,21 @@ class StudentController extends Controller
     public function storeMop(Request $request, $enrollment_id)
     {
       $discount = Discount::where('mop_id','=',$request->mode)->first();
-      $enrollment = Enrollment::where('id','=',$enrollment_id)->update([
+      $enrollee = Enrollment::where('id','=',$enrollment_id)->first();
+
+      $enrollee->update([
         'mop_id' => $request->mode,
         'discount' => $discount ? $discount->percentage : 0
       ]);
+      
+      if($request->mode == 1)
+      {
+        StudentDiscount::create([
+          'student_id' => $enrollee->student_id,
+          'enrollment_id' => $enrollee->id,
+          'discount_id' => $discount->id
+        ]);
+      }
 
       return redirect()->route('student.assessment', ['enrollment_id' => $enrollment_id, 'table' => 'subjects'])->with('success', 'Your enrollment is being processed.');
     }

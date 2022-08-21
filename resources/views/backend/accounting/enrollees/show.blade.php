@@ -10,42 +10,40 @@
             <div class="container">
                 <x-student-information enrollmentId="{{ $enrollee->id }}"/>
                 <div class="card mb-3">
-                    <table class="table table-bordered">
-                        <thead>
-                            <th scope="row">Semestral Fee</th>
-                            <th scope="row">Amount</th>
-                        </thead>
-                    
-                        @foreach ($sem_fees as $sem_fee)
-                            <tbody>
-                                    <tr>
-                                        <td class="font-weight-bold" colspan="3"><strong>{{ $sem_fee->name }}</strong></td>
-                                        {{-- <td class="font-weight-bold"><strong><span>&#8369</span>{{ $sem_fee->amount($sem_fee->name) }}</strong></td> --}}
-                                    </tr>
-                                    @forelse ($sem_fee->fees as $fee)
-                                        <tr>
-                                            <td>
-                                                @if ($fee->name == 'Tuition')
-                                                    {{ $fee->name.' '.'('.$enrollee->geTotalUnitsExcludeRLE($enrollee->id).' units * Php '.number_format($fee->amount, 2).') ' }}
-                                                    @if($fee->getCourse($enrollee->course_id) == 'BSN')
-                                                        <span class="text-danger">*RLE units are not included on the computation</span>
-                                                    @endif
-                                                @elseif($fee->name == 'RLE')
-                                                    {{ $fee->name.' '.'('.$enrollee->getTotalHours($enrollee->id).' hours * Php '.number_format($fee->amount, 2).') ' }}
-                                                @else
-                                                    {{ $fee->name }}
-                                                @endif
-                                            </td>
-                                            <td><span>&#8369</span>{{ number_format($fee->enrolleeTotalAmount($enrollee->id, $fee->name), 2) }}</td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td class="text-center" colspan="3">No Data</td>
-                                        </tr>
-                                    @endforelse
-                            </tbody>
-                        @endforeach
-                    </table>
+                    <div class="col-md-12">
+                      <div class="card">
+                        <ul class="nav nav-tabs" data-bs-toggle="tabs" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <a href="#tabs-subjects-7" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab">Subjects</a>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <a href="#tabs-assessment-7" class="nav-link" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Semestral Fees</a>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <a href="#tabs-discount-7" class="nav-link" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Discount</a>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <a href="#tabs-summary-7" class="nav-link" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Summary</a>
+                          </li>
+                        </ul>
+                        <div class="card-body">
+                          <div class="tab-content">
+                            <div class="tab-pane active show" id="tabs-subjects-7" role="tabpanel">
+                              <div>Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies fringilla at sed facilisis lacus pellentesque purus nibh</div>
+                            </div>
+                            <div class="tab-pane" id="tabs-assessment-7" role="tabpanel">
+                              <x-enrollee-semestral-fee-summary course="{{ $enrollee->course_id }}" year="{{ $enrollee->year_id }}" sem="{{ $enrollee->sem_id }}" enrollee="{{ $enrollee->id }}" />
+                            </div>
+                            <div class="tab-pane" id="tabs-discount-7" role="tabpanel">
+                              <x-manage-discount-form enrollee="{{ $enrollee->id }}"/>
+                            </div>
+                            <div class="tab-pane" id="tabs-summary-7" role="tabpanel">
+                              <x-enrollee-full-payment-summary course="{{ $enrollee->course_id }}" year="{{ $enrollee->year_id }}" sem="{{ $enrollee->sem_id }}" enrollee="{{ $enrollee->id }}" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>

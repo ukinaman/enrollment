@@ -12,9 +12,10 @@ class ToAcomodateEnrollees extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $role;
+    public function __construct($role)
     {
-        //
+      $this->role = $role;
     }
 
     /**
@@ -24,7 +25,13 @@ class ToAcomodateEnrollees extends Component
      */
     public function render()
     {
+      if($this->role == 'Accounting')
+      {
+        $enrollees = Enrollment::where('assessed','=',1)->with('student')->orderBy('created_at', 'DESC')->get();
+      } else {
         $enrollees = Enrollment::where('assessed','=',0)->with('student')->orderBy('created_at', 'DESC')->get();
-        return view('components.to-acomodate-enrollees', compact('enrollees'));
+      }
+      
+      return view('components.to-acomodate-enrollees', compact('enrollees'));
     }
 }

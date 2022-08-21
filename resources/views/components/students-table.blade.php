@@ -34,7 +34,7 @@
                             {{ $enrollment->student->full_name }}
                         </td>
                         <td>
-                            {{ $enrollment->getCourse('title') }}
+                            {{ $enrollment->getCourse($enrollment->course_id, 'full') }}
                         </td>
                         <td class="text-nowrap text-muted">
                             <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->

@@ -22,9 +22,6 @@ class EnrolleeAssessmentController extends Controller
     public function show($id)
     {
         $enrollee = Enrollment::where('id','=',$id)->with('course')->first();
-        $sem_fees = SemestralFee::where('exclusiveTo','=',0)->orWhere('exclusiveTo','=',$enrollee->course_id)->with(['fees' => function ($query) use($enrollee) {
-            $query->where('exclusiveTo','=',0)->orWhere('exclusiveTo','=',$enrollee->course_id);
-        }])->get();
-        return view('backend.accounting.enrollees.show', compact('sem_fees', 'enrollee'));
+        return view('backend.accounting.enrollees.show', compact('enrollee'));
     }
 }

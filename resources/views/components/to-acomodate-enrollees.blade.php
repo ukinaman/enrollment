@@ -13,7 +13,7 @@
                             </div>
                             <div class="col">
                                 <div class="text-truncate">
-                                    <strong>{{ $enrollee->student->full_name }}</strong> enroll in <strong>{{ $enrollee->getCourse('accronym') }}</strong> {{ $enrollee->student->current_year($enrollee->year_id).' '.$enrollee->student->current_sem($enrollee->sem_id) }}.
+                                    <strong>{{ $enrollee->student->full_name }}</strong> enroll in <strong>{{ $enrollee->getCourse($enrollee->course_id, 'acc') }}</strong> {{ $enrollee->student->current_year($enrollee->year_id).' '.$enrollee->student->current_sem($enrollee->sem_id) }}.
                                 </div>
                                 <div class="text-muted">{{ $enrollee->created_at->diffForHumans() }}</div>
                             </div>

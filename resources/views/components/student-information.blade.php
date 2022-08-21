@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="subheader">Course</div>
-                        <div class="h3 mb-3">{{ $enrollment->getCourse($enrollment->course_id) }}</div>
+                        <div class="h3 mb-3">{{ $enrollment->getCourse($enrollment->course_id, 'full') }}</div>
                     </div>
                     <div class="col-md-6">
                         <div class="subeader">Year</div>

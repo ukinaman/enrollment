@@ -7,7 +7,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8">
-                        <x-to-acomodate-enrollees />
+                      @role('Accounting')
+                        <x-to-acomodate-enrollees role="Accounting"/>
+                      @endrole
+
+                      @role('Registrar')
+                        <x-to-acomodate-enrollees role="Registrar"/>
+                      @endrole
                     </div>
                 </div>
             </div>
