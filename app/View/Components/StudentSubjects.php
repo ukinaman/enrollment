@@ -14,10 +14,12 @@ class StudentSubjects extends Component
      * @return void
      */
     public $id;
+    public $user;
 
-    public function __construct($enrollmentId)
+    public function __construct($enrollmentId, $user)
     {
         $this->id = $enrollmentId;
+        $this->user = $user;
     }
 
     /**

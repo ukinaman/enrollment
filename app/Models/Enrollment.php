@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\SemestralFee;
 use App\Models\UnabledSubject;
+use App\Models\StudentDiscount;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -182,17 +183,28 @@ class Enrollment extends Model
     //Get student discount percentage
     public function getEnrolleeDiscountPercentage($enrollment_id)
     {
-      $percentage = $this->where('id','=',$enrollment_id)->pluck('discount')->first();
+      $std_discount = StudentDiscount::where('enrollment_id','=',$enrollment_id)->first();
+
+      if($std_discount)
+      {
+        $percentage = $std_discount->getPercentage($enrollment_id);
+      } else {
+        return 0;
+      }
+
       return $percentage;
     }
+
     // GET student total discount
     public function getEnrolleeDiscountTotal($enrollment_id)
     {
-      $percentage = $this->where('id','=',$enrollment_id)->pluck('discount')->first();
+      $percentage = $this->getEnrolleeDiscountPercentage($enrollment_id);
       $tuition = $this->getEnrolleeTuition($enrollment_id);
       $discount_total = ($tuition * $percentage) / 100;
+      // dd($discount_total);
       return $discount_total;
     }
+
     //GET Tuition total minus total discount
     public function getEnrolleeTuitionTotal($enrollment_id)
     {
@@ -323,4 +335,169 @@ class Enrollment extends Model
       
       return $overall_total;
     }
+
+    // GET Enrollee tuition downpayment
+    public function getEnrolleeTuitionDownpayment($enrollment_id)
+    {
+      $tuition = SemestralFee::where('id','=',1)->first();
+      $school_fee= SemestralFee::where('id','=',2)->first();
+      $special_fee = SemestralFee::where('id','=',3)->first();
+
+      $enrollee = $this->where('id','=',$enrollment_id)->first();
+
+      $scf = $this->getEnrolleeSchoolFee($enrollment_id);
+      $sf = $this->getEnrolleeSpecialFee($enrollment_id);
+
+      $course_downpayment = Downpayment::where('course_id','=',$enrollee->course_id)->pluck('amount')->first();
+      $scf_sf = $scf + $sf;
+
+      $tuition_downpayment = 0;
+
+      if ($scf_sf < $course_downpayment)
+      {
+        $tuition_downpayment = $course_downpayment - $scf_sf;
+      }
+      else
+      {
+        $tuition_downpayment = $scf_sf - $course_downpayment;
+      }
+
+      return $tuition_downpayment;
+    }
+
+    //SET values for downpayment
+    public function enrolleeDownpaymentSumarry($fee, $enrollment_id)
+    {
+      $sem_fee = SemestralFee::all();
+      $tuition = $sem_fee->where('id','=',1)->first();
+      $school_fee= $sem_fee->where('id','=',2)->first();
+      $special_fee = $sem_fee->where('id','=',3)->first();
+      $rle = $sem_fee->where('id','=',4)->first();
+
+      $enrollee = $this->where('id','=',$enrollment_id)->first();
+  
+      switch ($fee) {
+        case $tuition->id:
+          if($this->isLessThan5K($enrollment_id))
+          {
+            return '('.number_format($this->getEnrolleeTuitionDownpayment($enrollment_id), 2).')';
+          }
+          return number_format($this->getEnrolleeTuitionDownpayment($enrollment_id), 2);
+          break;
+        case $school_fee->id:
+          return number_format($this->getEnrolleeSchoolFee($enrollment_id), 2);
+          break;
+        case $special_fee->id:
+          return number_format($this->getEnrolleeSpecialFee($enrollment_id), 2);
+          break;
+        case $rle->id:
+          return '-';
+          break;
+        default:
+          return 0.00;
+      }
+    }
+
+    // Check tuition amount if less than 5000
+    public function isLessThan5K($enrollment_id)
+    {
+      $enrollee = $this->where('id','=',$enrollment_id)->first();
+
+      $tuition = $this->getEnrolleeTuitionTotal($enrollment_id);
+      
+      if($tuition <= 5000)
+      {
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+
+    // SET overall enrollee downpayment sumarry
+    public function getEnrolleeDownpaymentOverallTotal($fee, $enrollment_id)
+    {
+      $sem_fee = SemestralFee::all();
+      $tuition = $sem_fee->where('id','=',1)->first();
+      $school_fee= $sem_fee->where('id','=',2)->first();
+      $special_fee = $sem_fee->where('id','=',3)->first();
+      $rle = $sem_fee->where('id','=',4)->first();
+
+      $total_tuition_less_downpayment = $this->getEnrolleeTuitionTotal($enrollment_id) - $this->getEnrolleeTuitionDownpayment($enrollment_id);
+
+      $total_tuition_add_downpayment = $this->getEnrolleeTuitionTotal($enrollment_id) + $this->getEnrolleeTuitionDownpayment($enrollment_id);
+
+      switch ($fee) {
+        case $tuition->id:
+          if($this->isLessThan5K($enrollment_id))
+          {
+            return number_format($total_tuition_add_downpayment, 2);
+          }
+          return number_format($total_tuition_less_downpayment, 2);
+          break;
+        case $school_fee->id:
+          return '-';
+          break;
+        case $special_fee->id:
+          return '-';
+          break;
+        case $rle->id:
+          return number_format($this->getEnrolleeRLE($enrollment_id), 2);
+          break;
+        default:
+          return 0.00;
+      }
+    }
+
+    // GET Total downpayment
+    public function getEnrolleeTotalDownpayment($enrollment_id)
+    {
+      $sem_fee = SemestralFee::all();
+      $tuition = $sem_fee->where('id','=',1)->first();
+      $school_fee= $sem_fee->where('id','=',2)->first();
+      $special_fee = $sem_fee->where('id','=',3)->first();
+
+      $tf_downpayment = $this->getEnrolleeTuitionDownpayment($enrollment_id);
+      $scf = $this->getEnrolleeSchoolFee($enrollment_id);
+      $sf = $this->getEnrolleeSpecialFee($enrollment_id);
+
+      $total_downpayment = $tf_downpayment + $scf + $sf;
+
+      if($this->isLessThan5K($enrollment_id))
+      {
+        $scf_sf = $scf + $sf;
+        $total_downpayment =  $scf_sf - $tf_downpayment;
+      }
+      return $total_downpayment;
+    }
+
+    // Enrollee Installment/Downpayment Total Amount
+    public function getEnrolleeDownpaymentOverallAmount($enrollment_id)
+    {
+      $sem_fee = SemestralFee::all();
+      $tuition = $sem_fee->where('id','=',1)->first();
+      $rle = $sem_fee->where('id','=',4)->first();
+
+      $total_tuition_less_downpayment = $this->getEnrolleeTuitionTotal($enrollment_id) - $this->getEnrolleeTuitionDownpayment($enrollment_id);
+
+      if($this->isLessThan5K($enrollment_id))
+      {
+        $total_tuition_less_downpayment = $this->getEnrolleeTuitionTotal($enrollment_id) + $this->getEnrolleeTuitionDownpayment($enrollment_id);
+      }
+
+      $rle = $this->getEnrolleeRLE($enrollment_id);
+
+      $total_amount = $rle + $total_tuition_less_downpayment;
+
+      return $total_amount;
+    }
+
+    // Enrollee Get Per Term Amount
+    public function getPerTermAmount($enrollment_id)
+    {
+      $per_term_amount = $this->getEnrolleeDownpaymentOverallAmount($enrollment_id) / 3;
+
+      return $per_term_amount;
+    }
 }
+;

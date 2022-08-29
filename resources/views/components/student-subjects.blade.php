@@ -1,8 +1,10 @@
 <div class="card mb-3">
-    <div class="card-header d-flex justify-content-between">
+    @if ($user == 'Registrar')
+      <div class="card-header d-flex justify-content-between">
         <h3 class="card-title">Subjects</h3>
         <button class="btn btn-success" onclick="document.getElementById('assessSubjects').submit()">Assess</button>
-    </div>
+      </div>
+    @endif
     <div class="card-body border-bottom py-3">
         <div class="d-flex justify-content-between">
             <div class="col-md-6">
@@ -26,9 +28,11 @@
             <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                     <tr>
-                        <th>
+                        @if ($user == 'Registrar')
+                          <th>
                             <input type="checkbox" id="checkAll" data-bs-trigger="hover" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">
-                        </th>
+                          </th>
+                        @endif
                         <th>Subejct Code</th>
                         <th>Title</th>
                         <th id="units">Units</th>
@@ -37,9 +41,11 @@
                 <tbody>
                     @forelse ($enrollment->getSubjects($enrollment->id) as $subject)
                         <tr>
-                            <td>
-                                <input type="checkbox" name="unabled_subject[]" value="{{ $subject->id }}" class="check-subject" data-bs-toggle="tooltip" data-bs-placement="right" title="Exclude subject">
-                            </td>
+                            @if ($user == 'Registrar')
+                              <td>
+                                  <input type="checkbox" name="unabled_subject[]" value="{{ $subject->id }}" class="check-subject" data-bs-toggle="tooltip" data-bs-placement="right" title="Exclude subject">
+                              </td>
+                            @endif
                             <td>
                                 {{ $subject->code }}
                             </td>

@@ -22,4 +22,12 @@ class Discount extends Model
     {
       return $this->hasMany(StudentDiscount::class, 'discount_id');
     }
+
+    public function getTotalDiscount($discount_id)
+    {
+      $discounts = $this->where('id','=',$discount_id)->get();
+      $percentage_total = $discounts->sum('percentage');
+      // dd($percentage_total);
+      return $percentage_total;
+    }
 }

@@ -113,6 +113,7 @@ Route::middleware('auth')->group(function () {
     //Handles Student Discounts
     Route::controller(StudentDiscountController::class)->prefix('/enrollee/discounts')->group(function () {
       Route::post('/add-discount/{id}', 'addDiscount')->name('stdDiscount.addDiscount');
+      Route::delete('/delete-discount/{id}', 'deleteDiscount')->name('stdDiscount.deleteDiscount');
     });
     // Downpayment
     Route::controller(DownpaymentController::class)->prefix('/downpayments')->group(function () {

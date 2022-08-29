@@ -1,4 +1,4 @@
-<h3 class="page-title my-3">FOR FULLPAYMENT</h2>
+<h3 class="page-title my-3">FULLPAYMENT</h2>
   <div class="card">
     <div class="table-responsive">
       <table class="table table-vcenter card-table">

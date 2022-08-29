@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Discount;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StudentDiscount extends Model
 {
@@ -28,11 +29,15 @@ class StudentDiscount extends Model
 
   public function getPercentage($enrollment_id)
   {
-    // $total = $this->discount()->sum('percentage');
-    // dd($total);
-    $total = $this->where('enrollment_id','=',$enrollment_id)->with(['discount', function($query) {
-      $query->sum('percentage');
-    }])->get();
-    return $total;
+    $percentage_total = 0;
+    $std_discounts = $this->where('enrollment_id','=',$enrollment_id)->get();
+
+    foreach($std_discounts as $std_discount){
+      $discount_percentage = Discount::where('id','=',$std_discount->discount_id)->pluck('percentage')->first();
+      $percentage_total += $discount_percentage;
+    }
+    
+    return $percentage_total;
   }
 }
+;

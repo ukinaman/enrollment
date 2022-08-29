@@ -24,6 +24,13 @@ class StudentDiscountController extends Controller
 
         $discount = Discount::where('id','=',$request->discount[$item])->pluck('percentage')->first();
 
+        if($request->discount[$item] == 1)
+        {
+          $enrollee->update([
+            'mop_id' => $request->discount[$item]
+          ]);
+        }
+
         $discountTotal += $discount;
       }
 
@@ -35,5 +42,17 @@ class StudentDiscountController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Data saved successfully!');
+    }
+
+    public function deleteDiscount(Request $request, $id)
+    {
+      $enrollee = Enrollment::find($id);
+
+      foreach ($request->discount as $item => $key) {
+        $discount = StudentDiscount::where('id','=',$request->discount[$item])->first();
+        $discount->delete();
+      }
+
+      return redirect()->back()->with('delete', 'Discount removed successfully!');
     }
 }
