@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\DiscountController;
@@ -123,6 +124,10 @@ Route::middleware('auth')->group(function () {
       Route::get('/edit/{id}', 'edit')->name('downpayment.edit');
       Route::put('/update/{id}', 'update')->name('downpayment.update');
       Route::delete('/delete/{id}', 'delete')->name('downpayment.delete');
+    });
+    // Payment
+    Route::controller(PaymentController::class)->prefix('/payment')->group(function(){
+      Route::post('/{id}', 'pay')->name('payment.pay');
     });
     
     Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');

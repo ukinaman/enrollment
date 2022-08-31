@@ -3,9 +3,7 @@
 @section('content')
 <div class="page-wrapper">
     <div class="container">
-        <x-page-header title="Semestral Fees" buttonType="payment" buttonTitle="" routeName="payment.index" enrollee="{{ $enrollee->id }}">
-          {{ $enrollee->id }}
-        </x-page-header>
+        <x-page-header title="Semestral Fees" buttonType="" buttonTitle="" routeName="" enrollee="" />
         <div class="page-body">
             <div class="container">
                 <x-student-information enrollmentId="{{ $enrollee->id }}"/>
@@ -48,7 +46,7 @@
                               @endif
                             </div>
                             <div class="tab-pane" id="tabs-payments-7" role="tabpanel">
-                              <div>Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies fringilla at sed facilisis lacus pellentesque purus nibh</div>
+                              <x-student-payment-component enrolleeId="{{ $enrollee->id }}" />
                             </div>
                           </div>
                         </div>

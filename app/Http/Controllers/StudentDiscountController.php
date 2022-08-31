@@ -49,8 +49,18 @@ class StudentDiscountController extends Controller
       $enrollee = Enrollment::find($id);
 
       foreach ($request->discount as $item => $key) {
+
         $discount = StudentDiscount::where('id','=',$request->discount[$item])->first();
+
+        if($discount->discount_id == 1)
+        {
+          $enrollee->update([
+            'mop_id' => 2
+          ]);
+        }
+
         $discount->delete();
+
       }
 
       return redirect()->back()->with('delete', 'Discount removed successfully!');

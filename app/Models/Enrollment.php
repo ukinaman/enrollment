@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use App\Models\SemestralFee;
+use App\Models\StudentPayment;
 use App\Models\UnabledSubject;
 use App\Models\StudentDiscount;
 use Illuminate\Database\Eloquent\Model;
@@ -52,6 +54,11 @@ class Enrollment extends Model
     {
         return $this->hasMany(UnabledSubject::class, 'enrollment_id');
     }
+    // Student Payments
+    public function payments()
+    {
+      return $this->hasMany(StudentPayment::class, 'enrollment_id');
+    }
 
     // Data Logic
     public function getCurrentAcademicYear()
@@ -95,6 +102,12 @@ class Enrollment extends Model
     {
         $mop = ModeOfPayment::where('id','=',$this->mop_id)->first();
         return $mop->mode;
+    }
+
+    // Get Mode of payment by param
+    public function isFullOfPayment($mop)
+    {
+      return $mop == 1 ? true : false;
     }
 
     // Get Course specific course
@@ -499,5 +512,37 @@ class Enrollment extends Model
 
       return $per_term_amount;
     }
+
+    // Generate OR Number
+    public function getORNumber()
+    {
+      $count = StudentPayment::max('id') + 1;
+      $random = str_pad($count, 6, "0", STR_PAD_LEFT);
+      return $random;
+    }
+
+    // Get Balance
+    public function getBalance($enrollment_id)
+    {
+      $payment = StudentPayment::where('enrollment_id','=',$enrollment_id)->orderBy('created_at', 'DESC')->first();
+
+      $balance = $this->enrolleeOverallTotalWithDiscount($enrollment_id);
+
+      return !$payment ? $balance : $payment->balance;
+    }
+
+    // return true if downpayment is paid
+    public function downpaymentIsPaid($enrollment_id)
+    {
+      $paid = StudentPayment::where([['enrollment_id','=',$enrollment_id], ['term','LIKE',"%Downpayment%"]])->first();
+      return $paid ? true : false;
+    }
+
+    // return true if enrolle is paid
+    public function isPaid($enrollment_id)
+    {
+      $balance = $this->getBalance($enrollment_id);
+
+      return $balance == 0 ? true : false;
+    }
 }
-;
