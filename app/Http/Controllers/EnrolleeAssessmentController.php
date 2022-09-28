@@ -19,6 +19,12 @@ class EnrolleeAssessmentController extends Controller
         return view('backend.accounting.enrollees.index', compact('enrollees', 'course', 'year','sem'));
     }
 
+    public function select($id)
+    {
+      $enrollments = Enrollment::where('student_id','=',$id)->with('student')->orderBy('created_at', 'DESC')->get();
+      return view('backend.accounting.enrollees.select', compact('enrollments'));
+    }
+
     public function show($id)
     {
         $enrollee = Enrollment::where('id','=',$id)->with('course')->first();

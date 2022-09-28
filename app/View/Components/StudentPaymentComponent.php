@@ -26,7 +26,7 @@ class StudentPaymentComponent extends Component
      */
     public function render()
     {
-      $enrollee = Enrollment::where('id','=',$this->enrolleeId)->first();
+      $enrollee = Enrollment::where('id','=',$this->enrolleeId)->with('student')->first();
       $student_payments = StudentPayment::where('enrollment_id','=',$this->enrolleeId)->get();
       return view('components.student-payment-component', compact('enrollee', 'student_payments'));
     }

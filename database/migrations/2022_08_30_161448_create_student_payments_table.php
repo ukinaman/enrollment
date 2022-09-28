@@ -17,6 +17,8 @@ class CreateStudentPaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('enrollment_id');
             $table->foreign('enrollment_id')->references('id')->on('enrollments');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('id')->on('students');
             $table->string('term');
             $table->string('payment_method');
             $table->string('or_number');

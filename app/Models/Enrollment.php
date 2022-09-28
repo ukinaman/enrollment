@@ -15,7 +15,7 @@ class Enrollment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id','course_id','year_id','sem_id','mop_id','discount','assessed'];
+    protected $fillable = ['student_id','course_id','year_id','sem_id','units','rle','mop_id','discount'];
 
     // Enrolled Student
     public function student()
@@ -160,10 +160,10 @@ class Enrollment extends Model
     
     public function getTotalUnits($enrollment_id)
     {
-        $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
-        $subjects = $this->getCourseSubjects($enrollment_id)->except($unabled_subjects);
-        $total_units = $subjects->sum('units') - $this->getTotalRLEUnits($enrollment_id);
-        
+        // $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
+        // $subjects = $this->getCourseSubjects($enrollment_id)->except($unabled_subjects);
+        // $total_units = $subjects->sum('units') - $this->getTotalRLEUnits($enrollment_id);
+        $total_units = $this->where('id','=',$enrollment_id)->pluck('units')->first();
         return $total_units;
     }
 
@@ -186,10 +186,10 @@ class Enrollment extends Model
 
     public function getTotalHours($enrollment_id)
     {
-        $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
-        $subjects = $this->getCourseSubjects($enrollment_id)->except($unabled_subjects);
-        $total_hours = $subjects->sum('lab');
-
+        // $unabled_subjects = $this->unabledSubjects()->where('enrollment_id','=',$enrollment_id)->pluck('subject_id')->toArray();
+        // $subjects = $this->getCourseSubjects($enrollment_id)->except($unabled_subjects);
+        // $total_hours = $subjects->sum('lab');
+        $total_hours = $this->where('id','=',$enrollment_id)->pluck('rle')->first();
         return $total_hours;
     }
 
@@ -208,16 +208,6 @@ class Enrollment extends Model
       return $percentage;
     }
 
-    // GET student total discount
-    public function getEnrolleeDiscountTotal($enrollment_id)
-    {
-      $percentage = $this->getEnrolleeDiscountPercentage($enrollment_id);
-      $tuition = $this->getEnrolleeTuition($enrollment_id);
-      $discount_total = ($tuition * $percentage) / 100;
-      // dd($discount_total);
-      return $discount_total;
-    }
-
     //GET Tuition total minus total discount
     public function getEnrolleeTuitionTotal($enrollment_id)
     {
@@ -227,6 +217,17 @@ class Enrollment extends Model
       $total_tuition = $tuition - $discount;
 
       return $total_tuition;
+    }
+
+    
+    // GET student total discount
+    public function getEnrolleeDiscountTotal($enrollment_id)
+    {
+      $percentage = $this->getEnrolleeDiscountPercentage($enrollment_id);
+      $tuition = $this->getEnrolleeTuition($enrollment_id);
+      $discount_total = ($tuition * $percentage) / 100;
+      // dd($discount_total);
+      return $discount_total;
     }
 
     //GET Enrollee Tuition
@@ -268,10 +269,9 @@ class Enrollment extends Model
     {
       $enrollee = $this->where('id','=',$enrollment_id)->first();
       $sem_fee = SemestralFee::where('id','=',4)->first();
+      $enrolle_rle = $sem_fee->studentTotalRLE($sem_fee->id, $enrollment_id);
 
-      $enrolle_special_fee = $sem_fee->getTotalRLE($sem_fee->id, $enrollee->course_id, $enrollee->year_id, $enrollee->sem_id);
-
-      return $enrolle_special_fee;
+      return $enrolle_rle;
     }
     // SET Values without discount
     public function enrolleeFeesAmount($fee, $enrollment_id)
@@ -525,9 +525,7 @@ class Enrollment extends Model
     public function getBalance($enrollment_id)
     {
       $payment = StudentPayment::where('enrollment_id','=',$enrollment_id)->orderBy('created_at', 'DESC')->first();
-
       $balance = $this->enrolleeOverallTotalWithDiscount($enrollment_id);
-
       return !$payment ? $balance : $payment->balance;
     }
 
@@ -541,8 +539,30 @@ class Enrollment extends Model
     // return true if enrolle is paid
     public function isPaid($enrollment_id)
     {
-      $balance = $this->getBalance($enrollment_id);
+      // $balance = $this->getBalance($enrollment_id);
+      $paid = StudentPayment::where('enrollment_id','=',$enrollment_id)->first();
+      return $paid ? true : false;
+    }
 
-      return $balance == 0 ? true : false;
+    public function enrollmentSummary($enrollment_id)
+    {
+      $enrollee = $this->where('id','=',$enrollment_id)->first();
+      $summary = $enrollee->getCourse($enrollee->course_id, 'acc').' '.'-'.' ('.$enrollee->getYear($enrollee->year_id).'-'.$enrollee->getSemester($enrollee->sem_id).')';
+      
+      return $summary;
+    }
+
+    // is Latest enrollment
+    public function isLatestEnrollment($student_id, $enrollment)
+    {
+      $enrollee = $this->where('student_id','=',$student_id)->orderBy('created_at', 'DESC')->first();
+      return $enrollee->id == $enrollment ? true : false;
+    }
+
+    // Creaated at mutator
+    public function parseDate($date)
+    {
+      $dt = Carbon::parse($date);
+      return $dt->toDayDateTimeString();  
     }
 }

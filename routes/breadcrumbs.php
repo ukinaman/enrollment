@@ -3,6 +3,7 @@
 use App\Models\Fee;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Enrollment;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
@@ -121,8 +122,13 @@ Breadcrumbs::for('assessment.show', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('enrollee.index', function (BreadcrumbTrail $trail): void {
     $trail->push('Enrollee Assessment', route('enrollee.index'));
 });
-Breadcrumbs::for('enrollee.show', function (BreadcrumbTrail $trail, $id): void {
+Breadcrumbs::for('enrollee.select', function (BreadcrumbTrail $trail, $id): void {
     $trail->parent('enrollee.index')
+        ->push('Select', route('enrollee.select', $id));
+});
+Breadcrumbs::for('enrollee.show', function (BreadcrumbTrail $trail, $id): void {
+    $enrollee = Enrollment::where('id','=',$id)->first();
+    $trail->parent('enrollee.select', $enrollee->student_id)
         ->push('Enrollee', route('enrollee.show', $id));
 });
 // Payment
@@ -148,9 +154,25 @@ Breadcrumbs::for('downpayment.index', function (BreadcrumbTrail $trail): void {
 });
 Breadcrumbs::for('downpayment.create', function (BreadcrumbTrail $trail): void {
   $trail->parent('downpayment.index')
-        ->push('Add', route('downpayment.create'));
+  ->push('Add', route('downpayment.create'));
 });
 Breadcrumbs::for('downpayment.edit', function (BreadcrumbTrail $trail, $id): void {
   $trail->parent('downpayment.index')
-        ->push('Edit', route('downpayment.edit', $id));
+  ->push('Edit', route('downpayment.edit', $id));
+});
+// Accounting Dashboard
+Breadcrumbs::for('accounting.dashboard.select', function (BreadcrumbTrail $trail): void {
+  $trail->push('Dashboard', route('accounting.dashboard.select'));
+});
+Breadcrumbs::for('accounting.dashboard.new', function (BreadcrumbTrail $trail): void {
+  $trail->parent('accounting.dashboard.select')
+  ->push('New Student', route('accounting.dashboard.new'));
+});
+Breadcrumbs::for('accounting.dashboard.existing', function (BreadcrumbTrail $trail): void {
+  $trail->parent('accounting.dashboard.select')
+  ->push('Existing Student', route('accounting.dashboard.existing'));
+});
+Breadcrumbs::for('accounting.dashboard.existing.enroll', function (BreadcrumbTrail $trail, $id): void {
+  $trail->parent('accounting.dashboard.select')
+  ->push('Enroll', route('accounting.dashboard.existing.enroll', $id));
 });

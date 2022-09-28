@@ -1,0 +1,82 @@
+[
+    {
+        "sem_fee_id": 1,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "Tuition",
+        "amount": 524.0
+    },
+    {
+        "sem_fee_id": 2,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "Registration",
+        "amount": 370.0
+    },
+    {
+        "sem_fee_id": 2,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "E-Library",
+        "amount": 1000.0
+    },
+    {
+        "sem_fee_id": 2,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "Guidance",
+        "amount": 477.0
+    },
+    {
+        "sem_fee_id": 2,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "Development Fee",
+        "amount": 500.0
+    },
+    {
+        "sem_fee_id": 2,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "Energy Fee",
+        "amount": 375.0
+    },
+    {
+        "sem_fee_id": 3,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "School Paper",
+        "amount": 70.0
+    },
+    {
+        "sem_fee_id": 3,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "SAP",
+        "amount": 200.0
+    },
+    {
+        "sem_fee_id": 3,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "E-Learning",
+        "amount": 250.0
+    },
+    {
+        "sem_fee_id": 3,
+        "course_id": 2,
+        "year_id": 1,
+        "sem_id": 1,
+        "name": "Retreat",
+        "amount": 3000.0
+    }
+]

@@ -17,7 +17,6 @@ class CreateCoursesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('accronym');
-            $table->mediumText('description');
             $table->timestamps();
         });
     }

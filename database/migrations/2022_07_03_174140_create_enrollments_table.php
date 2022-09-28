@@ -25,8 +25,10 @@ class CreateEnrollmentsTable extends Migration
             $table->foreign('sem_id')->references('id')->on('semesters');
             $table->unsignedBigInteger('mop_id')->nullable();
             $table->foreign('mop_id')->references('id')->on('mode_of_payments');
+            $table->integer('units');
+            $table->integer('rle');
             $table->integer('discount');
-            $table->boolean('assessed')->default(0);
+            $table->boolean('assessed')->default(1);
             $table->timestamps();
         });
     }

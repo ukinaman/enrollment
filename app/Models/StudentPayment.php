@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Enrollment;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -10,11 +11,16 @@ class StudentPayment extends Model
 {
     use HasFactory;
 
-  protected $fillable = ['enrollment_id','term','payment_method','or_number','amount','balance'];
+  protected $fillable = ['enrollment_id','student_id','term','payment_method','or_number','amount','balance'];
 
   public function enrollee()
   {
     return $this->belongsTo(Enrollment::class, 'enrollment_id');
+  }
+
+  public function student()
+  {
+    return $this->belongsTo(Student::class, 'student_id');
   }
 
   // Get student payment count
@@ -82,4 +88,13 @@ class StudentPayment extends Model
     $paid = $this->where([['enrollment_id','=',$enrollment_id], ['term','LIKE',"%Downpayment%"]])->first();
     return $paid ? true : false;
   }
+
+  // Creaated at mutator
+  public function getPaymentDate($date)
+  {
+    $dt = Carbon::parse($date);
+    return $dt->toDayDateTimeString();  
+  }
+
+
 }

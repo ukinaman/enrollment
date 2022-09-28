@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SemestralFee extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['name', 'exclusiveTo'];
+  protected $fillable = ['name', 'exclusiveTo'];
 
-    public function fees()
-    {
-      return $this->hasMany(Fee::class, 'sem_fee_id');
-    }
+  public function fees()
+  {
+    return $this->hasMany(Fee::class, 'sem_fee_id');
+  }
 
   // Data Logic
   // GET Total Units if nursing excluded RLE units
@@ -59,6 +59,7 @@ class SemestralFee extends Model
 
     return $total_special_fee;
   }
+
   // GET Total RLE
   public function getTotalRLE($fee, $course, $year, $sem)
   {
@@ -66,6 +67,20 @@ class SemestralFee extends Model
     $rle_fee = $this->where('id','=',$fee)->with(['fees' => function($query) use($course, $year, $sem){
       $query->where([['course_id','=',$course], ['year_id','=',$year], ['sem_id','=',$sem]]);
     }])->first();
+    $totla_rle = $rle_fee->fees->sum('amount') * $hours;
+
+    return $totla_rle;
+  }
+
+  // GET Total RLE specific student
+  public function studentTotalRLE($fee, $enrollment_id)
+  {
+    $enrollee = Enrollment::where('id','=',$enrollment_id)->first();
+    $hours = $enrollee->rle;
+    $rle_fee = $this->where('id','=',$fee)->with(['fees' => function($query) use($enrollee){
+      $query->where([['course_id','=',$enrollee->course_id], ['year_id','=',$enrollee->year_id], ['sem_id','=',$enrollee->sem_id]]);
+    }])->first();
+
     $totla_rle = $rle_fee->fees->sum('amount') * $hours;
 
     return $totla_rle;

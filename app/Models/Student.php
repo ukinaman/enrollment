@@ -8,28 +8,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Student extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'firstname',
-        'middlename',
-        'lastname',
-        'birthplace',
-        'age',
-        'birthday',
-        'gender',
-        'address',
-        'citizenship',
-        'marital_status',
-        'email',
-        'contact_no'
-    ];
+  protected $fillable = [
+      'firstname',
+      'middlename',
+      'lastname',
+      'birthplace',
+      'age',
+      'birthday',
+      'gender',
+      'email',
+      'contact_no',
+      'balance'
+  ];
 
-    // Relationship Declaration
-    public function enrollment()
-    {
-        return $this->hasMany(Enrollment::class, 'student_id');
-    }
+  // Relationship Declaration
+  public function enrollment()
+  {
+      return $this->hasMany(Enrollment::class, 'student_id');
+  }
+
+  // Student Payments
+  public function payments()
+  {
+    return $this->hasMany(StudentPayment::class, 'student_id');
+  }
 
   // Has Many Discount
   public function discounts()
@@ -74,4 +78,9 @@ class Student extends Model
     return $firstWord[0]."".$lastWord[0];
   }
 
+  public function hasBalance($id)
+  {
+    $balance = $this->where('id','=',$id)->pluck('balance')->first();
+    return $balance != 0 ? true : false;
+  }
 }

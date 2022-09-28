@@ -22,11 +22,9 @@ class CreateStudentsTable extends Migration
             $table->integer('age');
             $table->date('birthday');
             $table->string('gender');
-            $table->string('address');
-            $table->string('citizenship');
-            $table->string('marital_status');
             $table->string('email');
             $table->string('contact_no');
+            $table->double('balance', 8, 2)->nullable();
             $table->timestamps();
         });
     }

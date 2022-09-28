@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
             SemFeeSeeder::class,
             ModeOfPaymentSeeder::class,
             TermSeeder::class,
-            DiscountSeeder::class
+            DiscountSeeder::class,
+            UserSeeder::class,
+            CourseSeeder::class,
+            FeesSeeder::class
         ]);
     }
 }

@@ -59,6 +59,10 @@
                         </svg>
                         Proceed to Payment
                       </a>
+                    @elseif($buttonType == "enroll")
+                      <a onclick="document.getElementById('{{ $routeName }}').submit()" class="btn btn-primary d-none d-sm-inline-block">
+                        Enroll
+                      </a>
                     @else
 
                     @endif

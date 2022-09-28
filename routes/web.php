@@ -17,6 +17,7 @@ use App\Http\Controllers\SemestralFeeController;
 use App\Http\Controllers\StudentDiscountController;
 use App\Http\Controllers\StudentAssessmentController;
 use App\Http\Controllers\EnrolleeAssessmentController;
+use App\Http\Controllers\AccountingDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/show/{id}', 'show')->name('course.show');
         Route::get('/subjects', 'getSubject')->name('course.subjects');
     });
+
     Route::controller(SubjectController::class)->prefix('subjects')->group(function () {
         Route::get('/', 'index')->name('subject.index');
         Route::get('/create', 'create')->name('subject.create');
@@ -69,6 +71,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/upload-view', 'getUploadView')->name('subject.uploadBlade');
         Route::post('/upload', 'uploadSubjects')->name('subject.upload');
     });
+    
     Route::controller(StudentAssessmentController::class)->prefix('/registrar/student-assessment')->group(function () {
         Route::get('/', 'index')->name('registrar.assessment.index');
         Route::get('/show/{id}', 'show')->name('registrar.assessment.show');
@@ -89,6 +92,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/print/{course}/{year}/{sem}', 'print')->name('semfee.print');
         Route::get('/dowload/{course}/{year}/{sem}', 'download')->name('semfee.download');
     });
+    // Dashboard
+    Route::controller(AccountingDashboardController::class)->prefix('accounting/dashboard')->group(function(){
+      Route::get('/select-transaction', 'selectTransaction')->name('accounting.dashboard.select');
+      Route::get('/new-student', 'index')->name('accounting.dashboard.new');
+      Route::get('/existing-student', 'existing')->name('accounting.dashboard.existing');
+      Route::get('/existing-student/enroll/{id}', 'existingEnrollPage')->name('accounting.dashboard.existing.enroll');
+      Route::post('/existing-student/store/{id}', 'existingStudentStore')->name('accounting.dashboard.existing.store');
+      Route::post('/store', 'store')->name('accounting.dashboard.store');
+      Route::get('/reciept/download/{id}', 'download')->name('accounting.reciept.download');
+    });
     // Assessment
     Route::controller(AssessmentController::class)->prefix('/course/assessment')->group(function () {
         Route::get('/', 'index')->name('assessment.index');
@@ -96,6 +109,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::controller(EnrolleeAssessmentController::class)->prefix('/enrollee/assessment')->group(function () {
         Route::get('/', 'index')->name('enrollee.index');
+        Route::get('/select/{id}', 'select')->name('enrollee.select');
         Route::get('/show/{id}', 'show')->name('enrollee.show');
     });
     // Payment

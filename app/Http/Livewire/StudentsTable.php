@@ -2,26 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Year;
-use App\Models\Course;
 use App\Models\Student;
-use App\Models\Semester;
-use App\Models\Enrollment;
-use App\Models\ModeOfPayment;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
-use PowerComponents\LivewirePowerGrid\Traits\Exportable;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
 
-final class EnrolleesTable extends PowerGridComponent
+final class StudentsTable extends PowerGridComponent
 {
     use ActionButton;
 
@@ -37,8 +30,9 @@ final class EnrolleesTable extends PowerGridComponent
     */
     public function setUp(): void
     {
-        $this->showPerPage()
-        ->showSearchInput();
+        $this->showCheckBox()
+            ->showPerPage()
+            ->showSearchInput();
     }
 
     /*
@@ -48,11 +42,11 @@ final class EnrolleesTable extends PowerGridComponent
     | Provides data to your Table using a Model or Collection
     |
     */
-    
+
     /**
     * PowerGrid datasource.
     *
-    * @return  \Illuminate\Database\Eloquent\Builder<\App\Models\Enrollment>|null
+    * @return  \Illuminate\Database\Eloquent\Builder<\App\Models\Student>|null
     */
     public function datasource(): ?Builder
     {
@@ -108,7 +102,7 @@ final class EnrolleesTable extends PowerGridComponent
     |
     */
 
-    /**
+     /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -162,7 +156,8 @@ final class EnrolleesTable extends PowerGridComponent
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
-        ];
+        ]
+;
     }
 
     /*
@@ -174,19 +169,18 @@ final class EnrolleesTable extends PowerGridComponent
     */
 
      /**
-     * PowerGrid Enrollment Action Buttons.
+     * PowerGrid Student Action Buttons.
      *
      * @return array<int, \PowerComponents\LivewirePowerGrid\Button>
      */
 
-  
     public function actions(): array
     {
       return [
         Button::add('assess')
-            ->caption('Assess')
+            ->caption('Enroll')
             ->class('btn btn-primary assess-btn')
-            ->route('enrollee.select', ['id' => 'id'])->target('_self')
+            ->route('accounting.dashboard.existing.enroll', ['id' => 'id'])->target('_self')
       ];
     }
     
@@ -200,22 +194,23 @@ final class EnrolleesTable extends PowerGridComponent
     */
 
      /**
-     * PowerGrid Enrollment Action Rules.
+     * PowerGrid Student Action Rules.
      *
      * @return array<int, \PowerComponents\LivewirePowerGrid\Rules\RuleActions>
      */
 
-    // public function actionRules(): array
-    // {
-    //    return [
+    /*
+    public function actionRules(): array
+    {
+       return [
            
-    //        //Hide button edit for ID 1
-    //         Rule::button('assess')
-    //           ->when(fn($enrollment) => $enrollment->assessed == true )
-    //           >redirect(fn($enrollment) => 'https://www.google.com/search?q='.$dish->name, '_blank'),
-    //     ];
-    // }
-
+           //Hide button edit for ID 1
+            Rule::button('edit')
+                ->when(fn($student) => $student->id === 1)
+                ->hide(),
+        ];
+    }
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -227,7 +222,7 @@ final class EnrolleesTable extends PowerGridComponent
     */
 
      /**
-     * PowerGrid Enrollment Update.
+     * PowerGrid Student Update.
      *
      * @param array<string,string> $data
      */
@@ -236,7 +231,7 @@ final class EnrolleesTable extends PowerGridComponent
     public function update(array $data ): bool
     {
        try {
-           $updated = Enrollment::query()
+           $updated = Student::query()->findOrFail($data['id'])
                 ->update([
                     $data['field'] => $data['value'],
                 ]);
