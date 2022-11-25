@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Tuition",
+        "exclusiveTo": 0
+    },
+    {
+        "name": "School Fees",
+        "exclusiveTo": 0
+    },
+    {
+        "name": "Special Fees",
+        "exclusiveTo": 0
+    },
+    {
+        "name": "RLE",
+        "exclusiveTo": 0
+    }
+]
