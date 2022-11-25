@@ -7,7 +7,7 @@ use App\Models\Course;
 use App\Models\Subject;
 use App\Models\Semester;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
+// use Maatwebsite\Excel\Excel;
 use App\Imports\SubjectsImport;
 
 class SubjectController extends Controller
@@ -42,16 +42,16 @@ class SubjectController extends Controller
         return view('backend.registrar.subject.upload');
     }
 
-    public function uploadSubjects(Request $request)
-    {
-        if($request->hasFile('file')){
-            $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
-            $path1 = $request->file->storeAs('document',$filename);
-            $path=storage_path('app').'/'.$path1;  
-            (new SubjectsImport)->import($path);
-            return redirect()->route('subject.index')->with('success', 'Subjects Imported Successfully');
-        }
-        dd('error');
-    }
+    // public function uploadSubjects(Request $request)
+    // {
+    //     if($request->hasFile('file')){
+    //         $file = $request->file('file');
+    //         $filename = $file->getClientOriginalName();
+    //         $path1 = $request->file->storeAs('document',$filename);
+    //         $path=storage_path('app').'/'.$path1;  
+    //         (new SubjectsImport)->import($path);
+    //         return redirect()->route('subject.index')->with('success', 'Subjects Imported Successfully');
+    //     }
+    //     dd('error');
+    // }
 }

@@ -206,8 +206,8 @@ class SemestralFeeController extends Controller
 
       $filename = $course_accronym.'-'.$year_sem.'-'.$school_year.'-'.'assessment.pdf';
 
-      $pdf = Pdf::loadView('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees', 'school_year', 'course_name', 'year_sem'))->setOptions(['defaultFont' => 'sans-serif', 'dpi' => 150])->setPaper('a4', 'portrait');
-      return $pdf->download($filename);
+      // $pdf = Pdf::loadView('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees', 'school_year', 'course_name', 'year_sem'))->setOptions(['defaultFont' => 'sans-serif', 'dpi' => 150])->setPaper('a4', 'portrait');
+      // return $pdf->download($filename);
 
       // return view('backend.pdf.semfee', compact('course', 'year', 'sem', 'subjects', 'sem_fees', 'school_year', 'course_name', 'year_sem'));
     }
